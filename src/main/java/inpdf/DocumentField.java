@@ -2,9 +2,9 @@ package inpdf;
 
 import java.awt.geom.Rectangle2D;
 
-public class Field {
+public class DocumentField {
 	private String fieldName;
-	private int pageFoundIndex;
+	private Integer pageFoundIndex;
 	private Rectangle2D coordinates;
 	
 	public String getFieldName() {
@@ -19,7 +19,7 @@ public class Field {
 		return pageFoundIndex;
 	}
 
-	public void setPageFoundIndex(int pageFoundIndex) {
+	public void setPageFoundIndex(Integer pageFoundIndex) {
 		this.pageFoundIndex = pageFoundIndex;
 	}
 	
@@ -30,5 +30,4 @@ public class Field {
 	public void setCoordinates(Rectangle2D coordinates) {
 		this.coordinates = coordinates;
 	}
-
 }
