@@ -1,0 +1,277 @@
+[
+  {
+    "fieldName": "Compe",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Linha Digitável",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Local de Pagamento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Beneficiário/Cedente",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Data do Documento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Nº do Documento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Espécie Documento ",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Aceite",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Data do Processamento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Uso do Banco",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Carteira",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Moeda",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Quantidade",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Valor",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Mora",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Vencimento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Agência/Código Beneficiário",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Nosso Número",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Valor do Documento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Desconto/Abatimento",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Outras Deduções",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Mora/Multa",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Outros Acréscimos",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Valor Cobrado",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  },
+  {
+    "fieldName": "Sacado/Pagador",
+    "pageFoundIndex": 0,
+    "coordinates": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "shouldRead": false
+  }
+]

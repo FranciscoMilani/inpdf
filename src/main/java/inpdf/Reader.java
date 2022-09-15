@@ -34,13 +34,13 @@ public class Reader {
 		Float page0Height = document.getPage(0).getMediaBox().getHeight();
 		Float page0Width = document.getPage(0).getMediaBox().getWidth();
 				
-		System.out.println(str.getText(document));
+		//System.out.println(str.getText(document));
 		
 		//Stripper de área
-//		strArea.addRegion(regionName, new Rectangle2D.Float(0, 0, page0Width, page0Height));
-//		strArea.extractRegions(document.getPage(0));
-//		String strippedText = strArea.getTextForRegion(regionName);
-//		System.out.println(strippedText);
+		strArea.addRegion(regionName, new Rectangle2D.Float(0, 0, page0Width, page0Height));
+		strArea.extractRegions(document.getPage(0));
+		String strippedText = strArea.getTextForRegion(regionName);
+		System.out.println(strippedText);
 		
 		document.close();
 		inputStream.close();	

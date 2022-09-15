@@ -6,6 +6,13 @@ public class DocumentField {
 	private String fieldName;
 	private Integer pageFoundIndex;
 	private Rectangle2D coordinates;
+	private Boolean shouldRead = false;
+	
+	public DocumentField(String fieldName, Integer pageFoundIndex, Rectangle2D coordinates) {
+		this.fieldName = fieldName;
+		this.pageFoundIndex = pageFoundIndex;
+		this.coordinates = coordinates;
+	}
 	
 	public String getFieldName() {
 		return fieldName;
@@ -29,5 +36,13 @@ public class DocumentField {
 	
 	public void setCoordinates(Rectangle2D coordinates) {
 		this.coordinates = coordinates;
+	}
+
+	public Boolean getShouldRead() {
+		return shouldRead;
+	}
+
+	public void setShouldRead(Boolean shouldRead) {
+		this.shouldRead = shouldRead;
 	}
 }
