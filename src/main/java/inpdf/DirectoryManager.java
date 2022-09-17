@@ -1,13 +1,26 @@
 package inpdf;
 
-public class DirectoryManager {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.EventListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class DirectoryManager{
 	private String inputDirectoryPath;
 	private String outputDirectoryPath;
 	private String rejectedDirectoryPath;
 	
-	public void SaveDirectories() {
-		// TO-DO: Armazenar diretórios quando o usuário salvar
-		
+	
+	public void saveDirectories() throws Exception{
+		if(this.getInputDirectoryPath() != null) {
+			Reader reader = new Reader();
+			String projectDir = System.getProperty("user.dir");
+			String documentDir = this.getInputDirectoryPath();
+			reader.ReadPDF(documentDir);
+		}	
 	}
 	
 	private String[] LoadDirectories() {
@@ -37,6 +50,10 @@ public class DirectoryManager {
 	
 	public void setRejectedDirectoryPath(String rejectedDirectoryPath) {
 		this.rejectedDirectoryPath = rejectedDirectoryPath;
+	}
+	
+	public void clearInputDirectoryPath() {
+		this.setInputDirectoryPath(null);
 	}
 
 }
