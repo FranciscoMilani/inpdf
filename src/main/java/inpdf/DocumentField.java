@@ -4,14 +4,15 @@ import java.awt.geom.Rectangle2D;
 
 public class DocumentField {
 	private String fieldName;
-	private Integer pageFoundIndex;
-	private Rectangle2D coordinates;
+	private Integer pageLocated;
+	private Integer lineLocated;
+	//private Rectangle2D coordinates;
 	private Boolean shouldRead = false;
 	
-	public DocumentField(String fieldName, Integer pageFoundIndex, Rectangle2D coordinates) {
+	public DocumentField(String fieldName, Integer pageFoundIndex, Integer lineLocated) {
 		this.fieldName = fieldName;
-		this.pageFoundIndex = pageFoundIndex;
-		this.coordinates = coordinates;
+		this.pageLocated = pageFoundIndex;
+		this.setLineLocated(lineLocated);
 	}
 	
 	public String getFieldName() {
@@ -23,20 +24,20 @@ public class DocumentField {
 	}
 
 	public int getPageFoundIndex() {
-		return pageFoundIndex;
+		return pageLocated;
 	}
 
 	public void setPageFoundIndex(Integer pageFoundIndex) {
-		this.pageFoundIndex = pageFoundIndex;
+		this.pageLocated = pageFoundIndex;
 	}
 	
-	public Rectangle2D getCoordinates() {
-		return coordinates;
-	}
-	
-	public void setCoordinates(Rectangle2D coordinates) {
-		this.coordinates = coordinates;
-	}
+//	public Rectangle2D getCoordinates() {
+//		return coordinates;
+//	}
+//	
+//	public void setCoordinates(Rectangle2D coordinates) {
+//		this.coordinates = coordinates;
+//	}
 
 	public Boolean getShouldRead() {
 		return shouldRead;
@@ -44,5 +45,13 @@ public class DocumentField {
 
 	public void setShouldRead(Boolean shouldRead) {
 		this.shouldRead = shouldRead;
+	}
+
+	public Integer getLineLocated() {
+		return lineLocated;
+	}
+
+	public void setLineLocated(Integer lineLocated) {
+		this.lineLocated = lineLocated;
 	}
 }

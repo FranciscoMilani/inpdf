@@ -49,7 +49,5 @@ public class Main {
 		frame.add(selectFileButton);
 		frame.add(confirmButton);
 		frame.add(clearButton);
-		
-		DocumentConfiguration doc = new DocumentConfiguration(DocumentType.BOLETO_BANCARIO);
 	}
 }

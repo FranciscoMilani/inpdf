@@ -16,10 +16,10 @@ public class DirectoryManager{
 	
 	public void saveDirectories() throws Exception{
 		if(this.getInputDirectoryPath() != null) {
-			Reader reader = new Reader();
+			//Reader reader = new Reader();
 			String projectDir = System.getProperty("user.dir");
 			String documentDir = this.getInputDirectoryPath();
-			reader.ReadPDF(documentDir);
+			Reader.ReadPDF(documentDir);
 		}	
 	}
 	
