@@ -3,6 +3,7 @@ package inpdf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.EventListener;
 
 import javax.swing.JFileChooser;
@@ -14,12 +15,17 @@ public class DirectoryManager{
 	private String rejectedDirectoryPath;
 	
 	
-	public void saveDirectories() throws Exception{
-		if(this.getInputDirectoryPath() != null) {
-			//Reader reader = new Reader();
-			String projectDir = System.getProperty("user.dir");
-			String documentDir = this.getInputDirectoryPath();
-			Reader.ReadPDF(documentDir);
+	public void saveDirectories() {
+		if(this.getInputDirectoryPath() != null) {		
+			try {
+				Reader reader = new Reader();
+				String projectDir = System.getProperty("user.dir");
+				String documentDir = this.getInputDirectoryPath();
+				reader.ReadPDF(documentDir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 		}	
 	}
 	
