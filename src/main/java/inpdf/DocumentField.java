@@ -4,23 +4,26 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class DocumentField {
+	private Integer id;
 	private ArrayList<String> names = new ArrayList<String>();
 	private Integer pageLocated;
 	private Integer lineLocated;
 	//private Rectangle2D coordinates;
 	private Boolean shouldRead = false;
 	
-	public DocumentField(String name, Integer pageFoundIndex, Integer lineLocated) {
+	public DocumentField(Integer id, String name, Integer pageFoundIndex, Integer lineLocated) {
 		names.add(name);
 		this.pageLocated = pageFoundIndex;
 		this.setLineLocated(lineLocated);
+		this.id = id;
 	}
 	
-	public DocumentField(String name, String secondName, Integer pageFoundIndex, Integer lineLocated) {
+	public DocumentField(Integer id, String name, String secondName, Integer pageFoundIndex, Integer lineLocated) {
 		names.add(name);
 		names.add(secondName);
 		this.pageLocated = pageFoundIndex;
 		this.setLineLocated(lineLocated);
+		this.id = id;
 	}
 
 	public ArrayList<String> getFieldName() {

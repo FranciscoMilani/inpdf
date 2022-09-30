@@ -14,23 +14,45 @@ public class DirectoryManager{
 	private String outputDirectoryPath;
 	private String rejectedDirectoryPath;
 	
-	
 	public void saveDirectories() {
-		if(this.getInputDirectoryPath() != null) {		
+		if(this.getInputDirectoryPath() != null) {
 			try {
-				Reader reader = new Reader();
 				String projectDir = System.getProperty("user.dir");
 				String documentDir = this.getInputDirectoryPath();
-				reader.ReadPDF(documentDir);
-			} catch (IOException e) {
+				
+				if (Reader.checkFileConformity(documentDir)) {
+					// temporário de teste
+					Reader reader = new Reader();
+					reader.ReadPDF(documentDir);
+					
+					DocumentType type = Reader.determineDocumentType(documentDir);
+					
+					if (type == DocumentType.UNKNOWN) {
+						// Indeterminado, informar no log que não foi reconhecido
+						
+					}
+					else if (type == DocumentType.DECLARACAO_IMPOSTO_DE_RENDA) {
+						// IRPF
+						IRPFReader IRPFReader = new IRPFReader();
+					} 
+					else {
+						// Boletos
+						BoletoReader BoletoReader = new BoletoReader();
+					}		
+				} 
+				else {
+					System.out.println("Arquivo não é formato PDF");
+				}			
+			} 
+			catch (IOException e) {
 				e.printStackTrace();
+				throw new RuntimeException();
 			}
-			
 		}	
 	}
 	
-	private String[] LoadDirectories() {
-		// TO-DO: Carregar diretórios necessários para as outra classes
+	private String[] loadDirectories() {
+		// TODO: Carregar diretórios necessários para as outra classes
 		return null;
 	}
 	
