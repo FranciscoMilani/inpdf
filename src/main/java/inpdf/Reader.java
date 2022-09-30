@@ -98,7 +98,8 @@ public class Reader extends PDFTextStripper  {
 			stripperArea.extractRegions(document.getPage(0));
 			
 			String strippedText = stripperArea.getTextForRegion("boleto");
-			extractFieldsFromText(new DocumentConfiguration(DocumentType.BOLETO_BANCARIO_SANTANDER), strippedText);
+			DocumentConfigurationManager docManager = new DocumentConfigurationManager();
+			extractFieldsFromText(docManager.createConfiguration(DocumentType.BOLETO_BANCARIO_SANTANDER), strippedText);
 
 			document.close();
 			inputStream.close();
@@ -178,7 +179,7 @@ public class Reader extends PDFTextStripper  {
 			System.out.println(l + " " + outputLines[l-1]);
 		}
 		
-		List<DocumentField> fields = config.getSelectedFields();	
+		List<DocumentField> fields = config.fields;
 		for (DocumentField f : fields) {
 			int line = f.getLineLocated();
 			dataMap.put(f, outputLines[line - 1]);
