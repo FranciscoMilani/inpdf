@@ -153,7 +153,8 @@ public class Main {
 		saveButton.addActionListener(saveAction);	
 		frame2.add(saveButton);
 		
-		
+		//saveAction.getSelectedBoxes(); ESSE MÉTODO PEGA OS CHECKBOXES DAS CONFIGURAÇÕES, RETORNA UM ARRAY DE STRINGS COM OS SELECIONADOS
+		//saveAction.getSelectedDocumentType(); ESSE MÉTODO PEGA O TIPO DE DOCUMENTO SELECIONADO, BOLETOS OU IRF, RETORNA UMA STRING
 	
 	}
 }

@@ -19,8 +19,7 @@ public class ButtonActionSave implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(this.getSelectedBoxes());
-		System.out.println(this.getSelectedDocumentType());
+		
 	}
 	
 	public List <String> getSelectedBoxes(){
@@ -34,6 +33,9 @@ public class ButtonActionSave implements ActionListener{
 	public String getSelectedDocumentType() {
 		return comboBox.getSelectedItem().toString();
 	}
+	
+	
+	
 }
 
 
