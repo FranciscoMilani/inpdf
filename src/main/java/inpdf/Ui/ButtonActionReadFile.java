@@ -10,11 +10,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import inpdf.DirectoryManager;
 
 public class ButtonActionReadFile implements ActionListener{
-	private DirectoryManager directory;
 	private LabelManager labelManager;
 
 	public ButtonActionReadFile(DirectoryManager directory, LabelManager labelManager) {
-		this.directory = directory;
 		this.labelManager = labelManager;
 	}
 
@@ -27,9 +25,8 @@ public class ButtonActionReadFile implements ActionListener{
 		if(res == JFileChooser.APPROVE_OPTION) {
 			System.out.println("TESTE");
 			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-			this.directory.setInputDirectoryPath(file.toString());
-			this.labelManager.addText(this.directory.getInputDirectoryPath());
+			DirectoryManager.setInputDirectoryPath(file.toString());
+			this.labelManager.addText(DirectoryManager.getInputDirectoryPath());
 		}
 	}
-
 }

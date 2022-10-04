@@ -4,21 +4,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.EventListener;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DirectoryManager{
-	private String inputDirectoryPath;
-	private String outputDirectoryPath;
-	private String rejectedDirectoryPath;
+	private static String inputDirectoryPath;
+	private static String outputDirectoryPath;
+	private static String rejectedDirectoryPath;
 	
-	public void saveDirectories() {
-		if(this.getInputDirectoryPath() != null) {
+	static {
+		outputDirectoryPath = System.getProperty("user.dir") + File.separator + "Saida";
+	}
+	
+	public static void saveDirectories() {
+		if(getInputDirectoryPath() != null) {
 			try {
 				String projectDir = System.getProperty("user.dir");
-				String documentDir = this.getInputDirectoryPath();
+				String documentDir = getInputDirectoryPath();
 				
 				if (Reader.checkFileConformity(documentDir)) {
 					// temporário de teste
@@ -51,37 +61,82 @@ public class DirectoryManager{
 		}	
 	}
 	
-	private String[] loadDirectories() {
+	public static void saveJsonToOutputPath(String jsonText, String fileName) {	
+		String newName = getNewFileName(fileName);
+		
+		Path filePath = Paths.get(outputDirectoryPath + 
+				File.separator + 
+				newName +
+				".json" );
+
+		try {
+			Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
+		} 
+		catch (NoSuchFileException e) {
+			new File(outputDirectoryPath.toString()).mkdir();
+			
+			try {
+				Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
+			}
+			catch (Exception er) {
+				er.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private static String getNewFileName(String fileName) {
+		File file = new File(outputDirectoryPath + File.separator + fileName + ".json");
+		int number = 0;
+		String fName = "";
+		
+		if (file.exists() && file.isFile()) {
+			while(file.exists()) {
+				number++;
+				fName = fileName + "("+ number +")";
+				file = new File(outputDirectoryPath + File.separator + fName + ".json");
+			}
+		} else if(!file.exists()) {
+			fName = fileName;
+		}
+
+		return fName;
+	}
+	
+	private static String[] loadDirectories() {
 		// TODO: Carregar diretórios necessários para as outra classes
 		return null;
 	}
 	
-	public String getInputDirectoryPath() {
+	public static String getInputDirectoryPath() {
 		return inputDirectoryPath;
 	}
 	
-	public void setInputDirectoryPath(String inputDirectoryPath) {
-		this.inputDirectoryPath = inputDirectoryPath;
+	public static void setInputDirectoryPath(String newInputDirectoryPath) {
+		inputDirectoryPath = newInputDirectoryPath;
 	}
 	
-	public String getOutputDirectoryPath() {
+	public static String getOutputDirectoryPath() {
 		return outputDirectoryPath;
 	}
 	
-	public void setOutputDirectoryPath(String outputDirectoryPath) {
-		this.outputDirectoryPath = outputDirectoryPath;
+	public static void setOutputDirectoryPath(String newOutputDirectoryPath) {
+		outputDirectoryPath = newOutputDirectoryPath;
 	}
 	
-	public String getRejectedDirectoryPath() {
+	public static String getRejectedDirectoryPath() {
 		return rejectedDirectoryPath;
 	}
 	
-	public void setRejectedDirectoryPath(String rejectedDirectoryPath) {
-		this.rejectedDirectoryPath = rejectedDirectoryPath;
+	public static void setRejectedDirectoryPath(String newRejectedDirectoryPath) {
+		rejectedDirectoryPath = newRejectedDirectoryPath;
 	}
 	
-	public void clearInputDirectoryPath() {
-		this.setInputDirectoryPath(null);
+	public static void clearInputDirectoryPath() {
+		setInputDirectoryPath(null);
 	}
-
 }

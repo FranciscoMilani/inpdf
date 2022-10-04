@@ -29,6 +29,13 @@ public class DocumentField {
 	public ArrayList<String> getFieldName() {
 		return names;
 	}
+	
+	public String getFieldNameAtIndexOrFirst(int i) {
+		if (i < this.names.size())
+			return names.get(i);
+		else
+			return names.get(0);
+	}
 
 	public void setFieldName(ArrayList<String> fieldName) {
 		this.names = fieldName;

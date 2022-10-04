@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
-import inpdf.DirectoryManager;
-
 public class ButtonActionOptions implements ActionListener{
 	private JFrame frame1;
 	private JFrame frame2;
