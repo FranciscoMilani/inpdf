@@ -2,7 +2,13 @@ package inpdf;
 
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
 public class DocumentConfiguration {
+	@Expose
 	public DocumentType type;
-	public List<DocumentField> fields;
+	@Expose
+	public List<DocumentField> fields;	
+	public List<DocumentField> selectedFields;
+	public List<String> selectedFieldsString;
 }

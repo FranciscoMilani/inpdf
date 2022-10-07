@@ -31,24 +31,8 @@ public class DirectoryManager{
 				String documentDir = getInputDirectoryPath();
 				
 				if (Reader.checkFileConformity(documentDir)) {
-					// temporário de teste
 					Reader reader = new Reader();
 					reader.ReadPDF(documentDir);
-					
-					DocumentType type = Reader.determineDocumentType(documentDir);
-					
-					if (type == DocumentType.UNKNOWN) {
-						// Indeterminado, informar no log que não foi reconhecido
-						
-					}
-					else if (type == DocumentType.DECLARACAO_IMPOSTO_DE_RENDA) {
-						// IRPF
-						IRPFReader IRPFReader = new IRPFReader();
-					} 
-					else {
-						// Boletos
-						BoletoReader BoletoReader = new BoletoReader();
-					}		
 				} 
 				else {
 					System.out.println("Arquivo não é formato PDF");
