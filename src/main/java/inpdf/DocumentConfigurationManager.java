@@ -27,6 +27,7 @@ public class DocumentConfigurationManager {
 	private static ArrayList<DocumentConfiguration> configurations = new ArrayList<>();
 	private static HashMap<DocumentType, DocumentConfiguration> configTypeMap = new HashMap<>();
 	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento"}; // serve p/ definir campos da UI
+	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
 	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
 
 	static {

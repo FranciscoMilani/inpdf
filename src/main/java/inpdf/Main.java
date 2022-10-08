@@ -1,22 +1,12 @@
 package inpdf;
-import java.awt.BorderLayout;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import inpdf.Ui.ButtonActionBack;
 import inpdf.Ui.ButtonActionClear;
@@ -24,7 +14,7 @@ import inpdf.Ui.ButtonActionConfirm;
 import inpdf.Ui.ButtonActionOptions;
 import inpdf.Ui.ButtonActionReadFile;
 import inpdf.Ui.ButtonActionSave;
-import inpdf.Ui.JCheckBoxList;
+import inpdf.Ui.DropdownChangeAction;
 import inpdf.Ui.LabelManager;  
 
 public class Main {
@@ -108,13 +98,14 @@ public class Main {
 //				 "Boleto bancário Sicredi"
 //				 };
 		 
-		DocumentType[] dropdownOptionsEnum = { DocumentType.DECLARACAO_IMPOSTO_DE_RENDA,
+		DocumentType[] dropdownOptionsEnum = { 
 				 DocumentType.BOLETO_BANCARIO_BRADESCO, 
 				 DocumentType.BOLETO_BANCARIO_SANTANDER,
 				 DocumentType.BOLETO_BANCARIO_BANCO_DO_BRASIL,
 				 DocumentType.BOLETO_BANCARIO_BANRISUL,
 				 DocumentType.BOLETO_BANCARIO_ITAU,
-				 DocumentType.BOLETO_BANCARIO_SICREDI
+				 DocumentType.BOLETO_BANCARIO_SICREDI,
+				 DocumentType.DECLARACAO_IMPOSTO_DE_RENDA,
 				 };
 		 
 		//dropdown
@@ -144,6 +135,27 @@ public class Main {
 			frame2.add(rbtn);
 			yCurrent += yOffset;
 		}
+		
+		ArrayList <JRadioButton> irfFieldOptions = new ArrayList <JRadioButton>();
+		
+		comboBox.addActionListener(e -> {
+			irfFieldOptions.forEach(irfOption -> {
+				 irfOption.setSelected(false);
+			});		
+		});
+		
+		
+		String[] irfFieldNames = DocumentConfigurationManager.irfFieldNames;
+		for (String str : irfFieldNames) {
+			JRadioButton rbtn = new JRadioButton(str);
+			rbtn.setBounds(100, yCurrent, 150, 20);
+			irfFieldOptions.add(rbtn);
+			frame2.add(rbtn);
+			yCurrent += yOffset;
+		}
+		
+		DropdownChangeAction dropdownAction = new DropdownChangeAction(frame2, boletoFieldOptions, irfFieldOptions, comboBox);
+		comboBox.addActionListener(dropdownAction);
 		
 //		JPanel optionsPanel = new JPanel(new BorderLayout());
 //		optionsPanel.setSize(500, 500);
@@ -197,13 +209,7 @@ public class Main {
 //		boletoFieldOptions.add(beneficiario);
 //		boletoFieldOptions.add(pagador);
 //
-//		
-//		frame2.add(vencimento);
-//		frame2.add(local);
-//		frame2.add(valor);
-//		frame2.add(beneficiario);
-//		frame2.add(pagador);
-//		frame2.add(dataDocumento);
+
 		
 		JButton saveButton = new JButton("SALVAR");
 
