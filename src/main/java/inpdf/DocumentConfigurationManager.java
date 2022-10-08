@@ -26,8 +26,8 @@ public class DocumentConfigurationManager {
 	private static Path filePath;
 	private static ArrayList<DocumentConfiguration> configurations = new ArrayList<>();
 	private static HashMap<DocumentType, DocumentConfiguration> configTypeMap = new HashMap<>();
-	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento"}; // serve p/ definir campos da UI
 	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
+	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Nº do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora", "Outros Acréscimos", "Valor Cobrado", "Sacado" }; // serve p/ definir campos da UI
 	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
 
 	static {
@@ -48,33 +48,29 @@ public class DocumentConfigurationManager {
 				fields.add(new DocumentField(0, "Compe", 0, 1));
 				fields.add(new DocumentField(1, "Linha Digitável", 0, 2));
 				fields.add(new DocumentField(2, "Local de Pagamento", 0, 5));					
-//				fields.add(new DocumentField("Beneficiário", "Cedente", 0, 35));
-//				fields.add(new DocumentField("Data do Documento", 0, 37)); 
-//				fields.add(new DocumentField("Nº do Documento", 0, 0)); 
-//				fields.add(new DocumentField("Espécie Documento ", 0, 0)); 
-//				fields.add(new DocumentField("Aceite", 0, 0)); 
-//				fields.add(new DocumentField("Data do Processamento", 0, 0)); 
-//				fields.add(new DocumentField("Uso do Banco", 0, 0)); 
-//				fields.add(new DocumentField("Carteira", 0, 0)); 
-//				fields.add(new DocumentField("Moeda", 0,0)); 
-//				fields.add(new DocumentField("Quantidade", 0, 0)); 
-//				fields.add(new DocumentField("Valor", 0, 0)); 
-//				fields.add(new DocumentField("Mora", 0, 0));
-//				fields.add(new DocumentField("Vencimento", 0, 0)); 
-//				fields.add(new DocumentField("Agência", "Código Beneficiário", 0, 0)); 
-//				fields.add(new DocumentField("Nosso Número", 0, 0)); 
-//				fields.add(new DocumentField("Valor do Documento", 0, 0)); 
-//				fields.add(new DocumentField("Desconto", "Abatimento", 0, 0)); 
-//				fields.add(new DocumentField("Outras Deduções", 0, 0)); 
-//				fields.add(new DocumentField("Mora","Multa", 0, 0)); 
-//				fields.add(new DocumentField("Outros Acréscimos", 0, 0));
-//				fields.add(new DocumentField("Valor Cobrado", 0, 0));
-//				fields.add(new DocumentField("Sacado", "Pagador", 0, 0));		 
+				fields.add(new DocumentField(3, "Beneficiário", "Cedente", 0, 9));
+				fields.add(new DocumentField(4, "Data do Documento", 0, 17)); 
+				fields.add(new DocumentField(5, "Nº do Documento", 0, 18)); 
+//				fields.add(new DocumentField(6, "Espécie Documento", 0, 0)); //19
+//				fields.add(new DocumentField(7, "Aceite", 0, 0)); //20
+				fields.add(new DocumentField(8, "Data do Processamento", 0, 19)); //21
+//				fields.add(new DocumentField(9, "Uso do Banco", 0, 0)); 
+				fields.add(new DocumentField(10, "Carteira", 0, 27)); 
+				fields.add(new DocumentField(11, "Moeda", 0, 28));
+//				fields.add(new DocumentField(12, "Quantidade", 0, 0)); 
+//				fields.add(new DocumentField(13, "Valor", 0, 0)); 
+				fields.add(new DocumentField(14, "Vencimento", 0, 6)); 
+				fields.add(new DocumentField(15, "Agência", "Código Beneficiário", 0, 10)); 
+				fields.add(new DocumentField(16, "Nosso Número", 0, 20)); 
+				fields.add(new DocumentField(17, "Valor do Documento", 0, 30)); 
+//				fields.add(new DocumentField(18, "Desconto", "Abatimento", 0, 0)); 
+//				fields.add(new DocumentField(19, "Outras Deduções", 0, 0)); 
+//				fields.add(new DocumentField(20, "Mora","Multa", 0, 0)); 
+//				fields.add(new DocumentField(21, "Outros Acréscimos", 0, 0));
+//				fields.add(new DocumentField(22, "Valor Cobrado", 0, 0));
+				fields.add(new DocumentField(23, "Sacado", "Pagador", 0, 49));		 
 				break;
 			case BOLETO_BANCARIO_BANCO_DO_BRASIL:
-				fields.add(new DocumentField(0, "Compe", 0, 1));
-				fields.add(new DocumentField(1, "Linha Digitável", 0, 2));
-				fields.add(new DocumentField(2, "Local de Pagamento", 0, 5));	
 				break;
 			case BOLETO_BANCARIO_BANRISUL:
 				break;
