@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ public class DocumentConfigurationManager {
 	private static final String CONFIG_DIRECTORY_NAME = "configuracoes";
 	private static final Path DEFAULT_CONFIG_PATH = Paths.get(System.getProperty("user.dir") + File.separator + CONFIG_DIRECTORY_NAME);
 	private static Path filePath;
-	private static ArrayList<DocumentConfiguration> configurations = new ArrayList<>();
 	private static HashMap<DocumentType, DocumentConfiguration> configTypeMap = new HashMap<>();
 	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
 	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Nº do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora", "Outros Acréscimos", "Valor Cobrado", "Sacado" }; // serve p/ definir campos da UI
@@ -39,54 +39,6 @@ public class DocumentConfigurationManager {
 		initAllConfigurations();	
 	}
 		
-	private static void setupDefaultFields(DocumentConfiguration config) {
-		List<DocumentField> fields = new ArrayList<DocumentField>();
-		DocumentType type = config.type;
-
-		switch (type) {
-			case BOLETO_BANCARIO_SANTANDER:
-				fields.add(new DocumentField(0, "Compe", 0, 1));
-				fields.add(new DocumentField(1, "Linha Digitável", 0, 2));
-				fields.add(new DocumentField(2, "Local de Pagamento", 0, 5));					
-				fields.add(new DocumentField(3, "Beneficiário", "Cedente", 0, 9));
-				fields.add(new DocumentField(4, "Data do Documento", 0, 17)); 
-				fields.add(new DocumentField(5, "Nº do Documento", 0, 18)); 
-//				fields.add(new DocumentField(6, "Espécie Documento", 0, 0)); //19
-//				fields.add(new DocumentField(7, "Aceite", 0, 0)); //20
-				fields.add(new DocumentField(8, "Data do Processamento", 0, 19)); //21
-//				fields.add(new DocumentField(9, "Uso do Banco", 0, 0)); 
-				fields.add(new DocumentField(10, "Carteira", 0, 27)); 
-				fields.add(new DocumentField(11, "Moeda", 0, 28));
-//				fields.add(new DocumentField(12, "Quantidade", 0, 0)); 
-//				fields.add(new DocumentField(13, "Valor", 0, 0)); 
-				fields.add(new DocumentField(14, "Vencimento", 0, 6)); 
-				fields.add(new DocumentField(15, "Agência", "Código Beneficiário", 0, 10)); 
-				fields.add(new DocumentField(16, "Nosso Número", 0, 20)); 
-				fields.add(new DocumentField(17, "Valor do Documento", 0, 30)); 
-//				fields.add(new DocumentField(18, "Desconto", "Abatimento", 0, 0)); 
-//				fields.add(new DocumentField(19, "Outras Deduções", 0, 0)); 
-//				fields.add(new DocumentField(20, "Mora","Multa", 0, 0)); 
-//				fields.add(new DocumentField(21, "Outros Acréscimos", 0, 0));
-//				fields.add(new DocumentField(22, "Valor Cobrado", 0, 0));
-				fields.add(new DocumentField(23, "Sacado", "Pagador", 0, 49));		 
-				break;
-			case BOLETO_BANCARIO_BANCO_DO_BRASIL:
-				break;
-			case BOLETO_BANCARIO_BANRISUL:
-				break;
-			case BOLETO_BANCARIO_BRADESCO:
-				break;
-			case BOLETO_BANCARIO_ITAU:
-				break;
-			case BOLETO_BANCARIO_SICREDI:
-				break;
-			case DECLARACAO_IMPOSTO_DE_RENDA:
-				break;			
-		}
-		
-		config.fields = fields;
-	}
-	
 	private static void initAllConfigurations() {
 		DocumentType[] types = DocumentType.values();
 		for (DocumentType t : types) {
@@ -97,10 +49,10 @@ public class DocumentConfigurationManager {
 	}
 	
 	public static DocumentConfiguration createConfiguration(DocumentType type) {		
-		// Configuração e criação do Gson
-		DocumentConfiguration config = new DocumentConfiguration();
-		config.type = type;
-		setupDefaultFields(config);
+		DocumentConfiguration config = new DocumentConfiguration(type);
+		setupDefaultFields(config);		
+		configTypeMap.put(config.type, config);
+		return config;
 
 //		String dir = DEFAULT_CONFIG_PATH + 
 //				File.separator + 
@@ -134,48 +86,62 @@ public class DocumentConfigurationManager {
 //			e.printStackTrace();
 //			throw new RuntimeException(e);
 //		}
+	}
+	
+	@SuppressWarnings("incomplete-switch")
+	private static void setupDefaultFields(DocumentConfiguration config) {
+		List<DocumentField> list;
 		
-		configurations.add(config);
-		configTypeMap.put(type, config);
-		return config;
+		switch (config.type) {
+			case BOLETO_BANCARIO_SANTANDER:
+				list = Arrays.asList (
+						new DocumentField(0, "Compe", 0, 1),
+						new DocumentField(1, "Linha Digitável", 0, 2),
+						new DocumentField(2, "Local de Pagamento", 0, 5),
+						new DocumentField(3, "Beneficiário", "Cedente", 0, 9),
+						new DocumentField(4, "Data do Documento", 0, 17),
+						new DocumentField(5, "Nº do Documento", 0, 18),
+						new DocumentField(7, "Aceite", 0, null),
+						new DocumentField(6, "Espécie Documento", 0, null),
+						new DocumentField(8, "Data do Processamento", 0, 19),
+						new DocumentField(9, "Uso do Banco", 0, null),
+						new DocumentField(10, "Carteira", 0, 27),
+						new DocumentField(11, "Moeda", 0, 28),
+						new DocumentField(12, "Quantidade", 0, null),
+						new DocumentField(13, "Valor", 0, null),
+						new DocumentField(14, "Vencimento", 0, 6),
+						new DocumentField(15, "Agência", "Código Beneficiário", 0, 10),
+						new DocumentField(16, "Nosso Número", 0, 20),
+						new DocumentField(17, "Valor do Documento", 0, 30),
+						new DocumentField(18, "Desconto", "Abatimento", 0, null),
+						new DocumentField(19, "Outras Deduções", 0, null),
+						new DocumentField(20, "Mora","Multa", 0, null),
+						new DocumentField(21, "Outros Acréscimos", 0, null),
+						new DocumentField(22, "Valor Cobrado", 0, null),
+						new DocumentField(23, "Sacado", "Pagador", 0, 49)
+				);	
+				config.fields = list;	
+				break;
+			case BOLETO_BANCARIO_BANCO_DO_BRASIL:
+				break;
+			case BOLETO_BANCARIO_BANRISUL:
+				break;
+			case BOLETO_BANCARIO_BRADESCO:
+				break;
+			case BOLETO_BANCARIO_ITAU:
+				break;
+			case BOLETO_BANCARIO_SICREDI:
+				break;
+			case DECLARACAO_IMPOSTO_DE_RENDA:
+				break;			
+		}
 	}
 	
-	public void updateConfiguration(Path configPath, ArrayList<DocumentField> fields) {
-		// TODO: Atualizar configuração quando o usuário reconfigurar (excluir o json e salvar um novo, mais fácil)
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		updateSelectedFieldsList();
-	}
-	
-	private void updateSelectedFieldsList() {
-		// atualizar a lista de campos selecionados que estão marcados como "shouldread"
-	}
-	
-	public HashMap<DocumentField, String> readConfiguration(ArrayList<DocumentField> selectedFields) {
-		// Método a ser chamado quando o Leitor precisar ler um arquivo
-		return null;
-	}
-	
-//	public LinkedHashMap<DocumentField, Integer> getFieldLineMap(DocumentConfiguration config) {
-//		ArrayList<DocumentField> fields = (ArrayList<DocumentField>) config.selectedFields;
-//		LinkedHashMap<DocumentField, Integer> map = new LinkedHashMap<DocumentField, Integer>();
-//		for (DocumentField field : fields) {
-//			map.put(field, field.getLineLocated());
-//		}
-//		
-//		return map;
-//	}
-	
-	public void addFieldToRead(DocumentField fieldToRead) {
-		// implementar se formos salvar
-	}
-	
-	public void removeFieldToRead(DocumentField fieldToRead) {
-		// implementar se formos salvar
-	}
-	
-	public List<DocumentField> getFields(DocumentConfiguration config) {
-		// retornar todos os campos default da configuração
-		return null;
+	public static void updateConfigurationValues(DocumentConfiguration config, Integer[] newLines, Boolean[] newBooleans) {
+		for (int i = 0; i < config.fields.size(); i++) {
+			config.fields.get(i).setLineLocated(newLines[i]);
+			config.fields.get(i).setShouldRead(newBooleans[i]);
+		}
 	}
 	
 	public static DocumentConfiguration getConfigurationFromType(DocumentType configType) {

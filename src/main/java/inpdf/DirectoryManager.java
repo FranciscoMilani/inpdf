@@ -16,19 +16,27 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DirectoryManager{
-	private static String inputDirectoryPath;
-	private static String outputDirectoryPath;
-	private static String rejectedDirectoryPath;
+	private static Path inputDirectoryPath;
+	private static Path outputDirectoryPath;
+	private static Path processedDirectoryPath;
+	private static Path rejectedDirectoryPath;
 	
 	static {
-		outputDirectoryPath = System.getProperty("user.dir") + File.separator + "Saida";
+		inputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "entrada");
+		outputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "saida");
+		processedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "processados");
+		rejectedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "rejeitados");
+		createIfDoesntExist(inputDirectoryPath);
+		createIfDoesntExist(outputDirectoryPath);
+		createIfDoesntExist(processedDirectoryPath);
+		createIfDoesntExist(rejectedDirectoryPath);
 	}
 	
 	public static void saveDirectories() {
 		if(getInputDirectoryPath() != null) {
 			try {
 				String projectDir = System.getProperty("user.dir");
-				String documentDir = getInputDirectoryPath();
+				Path documentDir = getInputDirectoryPath(); // está retornando o caminho do arquivo selecionado, temporariamente
 				
 				if (Reader.checkFileConformity(documentDir)) {
 					Reader reader = new Reader();
@@ -91,32 +99,46 @@ public class DirectoryManager{
 		return fName;
 	}
 	
-	private static String[] loadDirectories() {
-		// TODO: Carregar diretórios necessários para as outra classes
-		return null;
+	private static void createIfDoesntExist(Path path) {
+		if (!Files.exists(path)){
+			File directory = new File(path.toString());
+			directory.mkdir();
+		}
 	}
 	
-	public static String getInputDirectoryPath() {
+	public static Path getInputDirectoryPath() {
+		createIfDoesntExist(inputDirectoryPath);
 		return inputDirectoryPath;
 	}
 	
-	public static void setInputDirectoryPath(String newInputDirectoryPath) {
+	public static void setInputDirectoryPath(Path newInputDirectoryPath) {
 		inputDirectoryPath = newInputDirectoryPath;
 	}
 	
-	public static String getOutputDirectoryPath() {
+	public static Path getOutputDirectoryPath() {
+		createIfDoesntExist(outputDirectoryPath);
 		return outputDirectoryPath;
 	}
 	
-	public static void setOutputDirectoryPath(String newOutputDirectoryPath) {
+	public static void setOutputDirectoryPath(Path newOutputDirectoryPath) {
 		outputDirectoryPath = newOutputDirectoryPath;
 	}
 	
-	public static String getRejectedDirectoryPath() {
+	public static Path getProcessedDirectoryPath() {
+		createIfDoesntExist(processedDirectoryPath);
+		return processedDirectoryPath;
+	}
+	
+	public static void setProcessedDirectoryPath(Path newProcessedDirectoryPath) {
+		processedDirectoryPath = newProcessedDirectoryPath;
+	}
+	
+	public static Path getRejectedDirectoryPath() {
+		createIfDoesntExist(rejectedDirectoryPath);
 		return rejectedDirectoryPath;
 	}
 	
-	public static void setRejectedDirectoryPath(String newRejectedDirectoryPath) {
+	public static void setRejectedDirectoryPath(Path newRejectedDirectoryPath) {
 		rejectedDirectoryPath = newRejectedDirectoryPath;
 	}
 	

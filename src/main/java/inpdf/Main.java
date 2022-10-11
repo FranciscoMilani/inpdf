@@ -1,26 +1,65 @@
 package inpdf;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.swing.ActionMap;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import inpdf.Ui.ButtonActionBack;
 import inpdf.Ui.ButtonActionClear;
 import inpdf.Ui.ButtonActionConfirm;
+import inpdf.Ui.ButtonActionExtract;
 import inpdf.Ui.ButtonActionOptions;
 import inpdf.Ui.ButtonActionReadFile;
 import inpdf.Ui.ButtonActionSave;
+import inpdf.Ui.ButtonActionSaveBoleto;
+import inpdf.Ui.ButtonChangeConfigStateAction;
 import inpdf.Ui.DropdownChangeAction;
-import inpdf.Ui.LabelManager;  
+import inpdf.Ui.LabelManager;
+import inpdf.Ui.TableManager;  
 
 public class Main {
 	
 	public static void main(String[] args) throws Exception{
-		
 		//interface
 		JFrame frame = new JFrame();
 		frame.setTitle("PDF READER");
@@ -45,10 +84,10 @@ public class Main {
 		LabelManager labelManager = new LabelManager(frame);
 		
 		//File button
-		JButton selectFileButton = new JButton("Selecione um arquivo...");
-		ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager);
-		selectFileButton.setBounds(400 ,280, 200, 100);  
-		selectFileButton.addActionListener(readFileAction);
+//		JButton selectFileButton = new JButton("Selecione um arquivo...");
+//		ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager);
+//		selectFileButton.setBounds(400 ,280, 200, 100);  
+//		selectFileButton.addActionListener(readFileAction);
 	
 		
 		//Clear button
@@ -58,11 +97,13 @@ public class Main {
 		clearButton.addActionListener(cancelAction);
 	
 		
-		//Confirm button
-		JButton confirmButton = new JButton("OK");
+		//Confirm button: temporário pois vai ser automático
+		JButton extractButton = new JButton("EXTRAIR");
+		//ButtonActionExtract extractAction = new ButtonActionExtract();
 		ButtonActionConfirm confirmAction = new ButtonActionConfirm(directory, labelManager);
-		confirmButton.setBounds(820 ,580, 100, 50);  
-		confirmButton.addActionListener(confirmAction);
+		extractButton.setBounds(820 ,580, 100, 50);  
+		extractButton.addActionListener(confirmAction);
+		//extractButton.addActionListener(extractAction);
 		
 		//Options button
 		JButton optionsButton = new JButton("OPÇÕES");
@@ -76,27 +117,19 @@ public class Main {
 		backButton.setBounds(620 ,580, 100, 50);  
 		backButton.addActionListener(backAction);
 		
-		frame.add(selectFileButton);
+		//frame.add(selectFileButton);
 		frame.add(optionsButton);
-		frame.add(confirmButton);
+		frame.add(extractButton);
 		frame.add(clearButton);
 		frame2.add(backButton);
 		
 		//Dropdown
 		JPanel dropdown = new JPanel();
 		frame2.add(dropdown);
-		JLabel dropdownLabel = new JLabel("Selecione um tipo de documento...");
+		JLabel dropdownLabel = new JLabel("Tipo de Documento");
 		dropdownLabel.setVisible(true);
 		dropdown.add(dropdownLabel);
 		dropdown.setBounds(620, 200, 300, 50);
-//		String[] dropdownOptions = { "Declaração de imposto de renda",
-//				 "Boleto bancário Bradesco", 
-//				 "Boleto bancário Santander",
-//				 "Boleto bancário Banco do Brasil",
-//				 "Boleto bancário Banrisul",
-//				 "Boleto bancário Itaú",
-//				 "Boleto bancário Sicredi"
-//				 };
 		 
 		DocumentType[] dropdownOptionsEnum = { 
 				 DocumentType.BOLETO_BANCARIO_BRADESCO, 
@@ -105,23 +138,23 @@ public class Main {
 				 DocumentType.BOLETO_BANCARIO_BANRISUL,
 				 DocumentType.BOLETO_BANCARIO_ITAU,
 				 DocumentType.BOLETO_BANCARIO_SICREDI,
-				 DocumentType.DECLARACAO_IMPOSTO_DE_RENDA,
+//				 DocumentType.DECLARACAO_IMPOSTO_DE_RENDA,
 				 };
 		 
 		//dropdown
 		final JComboBox<DocumentType> comboBox = new JComboBox<DocumentType>(dropdownOptionsEnum);
 		comboBox.setVisible(true);
 		dropdown.add(comboBox);
-		//String[] items = (String[])comboBox.getSelectedItem();
-		//String selectedDocument = ((String[]) comboBox.getSelectedItem())[0];
 		frame2.add(dropdown);
 		 
 		ArrayList <JRadioButton> boletoFieldOptions = new ArrayList <JRadioButton>();
 		
 		comboBox.addActionListener(e -> {
-			boletoFieldOptions.forEach(boletoOption -> {
-				 boletoOption.setSelected(false);
-			});		
+			
+			
+//			boletoFieldOptions.forEach(boletoOption -> {
+//				 boletoOption.setSelected(false);
+//			});		
 		});
 		
 		int yCurrent = 100;
@@ -222,6 +255,101 @@ public class Main {
 		
 		//saveAction.getSelectedBoxes(); ESSE MÉTODO PEGA OS CHECKBOXES DAS CONFIGURAÇÕES, RETORNA UM ARRAY DE STRINGS COM OS SELECIONADOS
 		//saveAction.getSelectedDocumentType(); ESSE MÉTODO PEGA O TIPO DE DOCUMENTO SELECIONADO, BOLETOS OU IRF, RETORNA UMA STRING
+		
+		
+		// --------------------------------------------------
+		
+		JFrame frame3 = new JFrame("Configurador do InPDF");
+		//frame3.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame3.setSize(640, 480);
+		JTabbedPane tabPane = new JTabbedPane();
+		JPanel mainBoletoPanel = new JPanel(new BorderLayout());
+		JPanel mainIRPFPanel = new JPanel();
+		JPanel textAreaMainPanel = new JPanel(new BorderLayout());
+		JPanel textAreaPanel = new JPanel(new BorderLayout());
+		JPanel textAreaBottomPanel = new JPanel();
+		JPanel tablePanel = new JPanel(new BorderLayout());
+		JScrollPane tableScrollPane = new JScrollPane(tablePanel);
+		ExtractedTextArea extractedTextArea = new ExtractedTextArea(null);
+		
+		String[] columnHeaders = new String[] {"Campo", "Linha", "Selecionar"};
+		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 24) {
+		    public boolean isCellEditable(int row, int column) {
+		        return column != 0; // primeira coluna fica bloqueada para o usuário.
+			}
+
+		    public Class<?> getColumnClass(int column) {
+		    	if (column == 2) {
+		    		return Boolean.class;
+		    	}
+		    	else if (column == 1) {
+	    			return Integer.class;
+		    	}
+			    else if (column == 0) {
+			    	return String.class;
+			    }
+			    else {
+			    	return String.class;
+			    }
+		    }
+		};
+
+		JTable configTable = new JTable(tableModel);
+		new TableManager(configTable);
+		
+		textAreaPanel.setBorder(new TitledBorder("Texto Extraído"));
+        JScrollPane textAreaScrollPane = new JScrollPane(textAreaPanel);
+        textAreaPanel.add(extractedTextArea, BorderLayout.CENTER);
+        
+        JButton jbtnSearch = new JButton("Procurar");
+        ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager, comboBox);
+        jbtnSearch.addActionListener(readFileAction);
+        
+        JButton jbtnClear = new JButton("Limpar");
+        ButtonChangeConfigStateAction clearTextAction = new ButtonChangeConfigStateAction(comboBox);
+        jbtnClear.addActionListener(clearTextAction);
+        
+        textAreaMainPanel.add(textAreaScrollPane, BorderLayout.CENTER);
+        textAreaMainPanel.add(textAreaBottomPanel, BorderLayout.SOUTH);
+        textAreaBottomPanel.add(jbtnSearch);
+        textAreaBottomPanel.add(jbtnClear);
+		
+		tablePanel.setBorder(new TitledBorder("Configurações"));		
+		tablePanel.add(configTable, BorderLayout.CENTER);
+		tablePanel.add(configTable.getTableHeader(), BorderLayout.NORTH);
+		
+		configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		configTable.setColumnSelectionAllowed(false);
+		configTable.setRowSelectionAllowed(false);
+
+		GridLayout grid = new GridLayout(1,2);
+		grid.setHgap(10);
+		grid.setVgap(10);
+		mainBoletoPanel.setLayout(grid);
+		mainBoletoPanel.add(textAreaMainPanel);
+		mainBoletoPanel.add(tableScrollPane);
+
+		tabPane.addTab("Boletos", mainBoletoPanel);
+		tabPane.addTab("IRPF", mainIRPFPanel);
+		
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		JButton jbtnSave = new JButton("Salvar");
+		JButton jbtnBack = new JButton("Voltar");
+		jbtnSave.addActionListener(new ButtonActionSaveBoleto(comboBox));
+		
+		buttonPanel.add(jbtnSave);
+		buttonPanel.add(jbtnBack);
+		buttonPanel.add(dropdown);
+		tablePanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+		frame3.add(tabPane);
+		frame3.pack();
+		frame3.setVisible(true);
 	
+//		JButton selectFileConfigButton = new JButton("Arquivo para configurar");
+//		ButtonActionReadFile barf = new ButtonActionReadFile(directory, labelManager, comboBox);
+//		selectFileConfigButton.setBounds(820, 580, 100, 50);
+//		selectFileConfigButton.addActionListener(barf);	
+//		frame2.add(selectFileConfigButton);
 	}
 }

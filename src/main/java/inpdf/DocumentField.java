@@ -11,9 +11,10 @@ public class DocumentField {
 	@Expose
 	private ArrayList<String> names = new ArrayList<String>();
 	@Expose
-	private Boolean shouldRead = false;
 	private Integer pageLocated;
+	@Expose
 	private Integer lineLocated;
+	private Boolean shouldRead = false;
 	//private Rectangle2D coordinates;
 	
 	public DocumentField(Integer id, String name, Integer pageFoundIndex, Integer lineLocated) {
