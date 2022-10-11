@@ -26,7 +26,7 @@ public class ButtonActionSave implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(getSelectedBoxesString());
 		System.out.println(getSelectedDocumentType());
-		
+		System.out.println("A");
 		if (!getSelectedBoxesString().isEmpty()) {
 			DocumentConfigurationManager.setConfigSelectedFields(getSelectedDocumentType(), getSelectedBoxesString());
 			DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType(getSelectedDocumentType());

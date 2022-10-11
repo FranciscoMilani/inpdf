@@ -14,10 +14,13 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.javatuples.Triplet;
 
 import com.google.gson.*;
 
@@ -29,7 +32,20 @@ public class DocumentConfigurationManager {
 	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
 	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Nº do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora", "Outros Acréscimos", "Valor Cobrado", "Sacado" }; // serve p/ definir campos da UI
 	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
-
+	
+	/*
+	public static enum FieldEnum{
+		COMPE("Compe"),
+		LINHA_DIGITAVEL("Linha Digitável");
+		
+		public final String name;
+			
+		FieldEnum(String name) {
+			this.name = name;
+		}	
+	}
+	*/
+	
 	static {
 		// TODO: a inicialização no momento está excluindo os arquivos se ja existem e recriando-os, corrigir se implementarmos o salvamento
 		for (int i = 0; i < boletoFieldNames.length; i++) {
@@ -95,34 +111,61 @@ public class DocumentConfigurationManager {
 		switch (config.type) {
 			case BOLETO_BANCARIO_SANTANDER:
 				list = Arrays.asList (
-						new DocumentField(0, "Compe", 0, 1),
-						new DocumentField(1, "Linha Digitável", 0, 2),
-						new DocumentField(2, "Local de Pagamento", 0, 5),
-						new DocumentField(3, "Beneficiário", "Cedente", 0, 9),
-						new DocumentField(4, "Data do Documento", 0, 17),
-						new DocumentField(5, "Nº do Documento", 0, 18),
-						new DocumentField(7, "Aceite", 0, null),
-						new DocumentField(6, "Espécie Documento", 0, null),
-						new DocumentField(8, "Data do Processamento", 0, 19),
-						new DocumentField(9, "Uso do Banco", 0, null),
-						new DocumentField(10, "Carteira", 0, 27),
-						new DocumentField(11, "Moeda", 0, 28),
-						new DocumentField(12, "Quantidade", 0, null),
-						new DocumentField(13, "Valor", 0, null),
-						new DocumentField(14, "Vencimento", 0, 6),
-						new DocumentField(15, "Agência", "Código Beneficiário", 0, 10),
-						new DocumentField(16, "Nosso Número", 0, 20),
-						new DocumentField(17, "Valor do Documento", 0, 30),
-						new DocumentField(18, "Desconto", "Abatimento", 0, null),
-						new DocumentField(19, "Outras Deduções", 0, null),
-						new DocumentField(20, "Mora","Multa", 0, null),
-						new DocumentField(21, "Outros Acréscimos", 0, null),
-						new DocumentField(22, "Valor Cobrado", 0, null),
-						new DocumentField(23, "Sacado", "Pagador", 0, 49)
+						new DocumentField(0, "Compe", 1),
+						new DocumentField(1, "Linha Digitável", 2),
+						new DocumentField(2, "Local de Pagamento", 5),
+						new DocumentField(3, "Beneficiário", "Cedente", 9),
+						new DocumentField(4, "Data do Documento", 17),
+						new DocumentField(5, "Nº do Documento", 18),
+						new DocumentField(6, "Espécie Documento", null),
+						new DocumentField(7, "Aceite", null),
+						new DocumentField(8, "Data do Processamento", 19),
+						new DocumentField(9, "Uso do Banco", null),
+						new DocumentField(10, "Carteira", 27),
+						new DocumentField(11, "Moeda", 28),
+						new DocumentField(12, "Quantidade", null),
+						new DocumentField(13, "Valor", null),
+						new DocumentField(14, "Vencimento", 6),
+						new DocumentField(15, "Agência", "Código Beneficiário", 10),
+						new DocumentField(16, "Nosso Número", 20),
+						new DocumentField(17, "Valor do Documento", 30),
+						new DocumentField(18, "Desconto", "Abatimento", null),
+						new DocumentField(19, "Outras Deduções", null),
+						new DocumentField(20, "Mora","Multa", null),
+						new DocumentField(21, "Outros Acréscimos", null),
+						new DocumentField(22, "Valor Cobrado", null),
+						new DocumentField(23, "Sacado", "Pagador", 49)
 				);	
 				config.fields = list;	
 				break;
 			case BOLETO_BANCARIO_BANCO_DO_BRASIL:
+				list = Arrays.asList (
+						new DocumentField(0, "Compe", null),
+						new DocumentField(1, "Linha Digitável", null),
+						new DocumentField(2, "Local de Pagamento", null),
+						new DocumentField(3, "Beneficiário", "Cedente", null),
+						new DocumentField(4, "Data do Documento", null),
+						new DocumentField(5, "Nº do Documento", null),
+						new DocumentField(6, "Espécie Documento", null),
+						new DocumentField(7, "Aceite", null),
+						new DocumentField(8, "Data do Processamento", null),
+						new DocumentField(9, "Uso do Banco", null),
+						new DocumentField(10, "Carteira", null),
+						new DocumentField(11, "Moeda", null),
+						new DocumentField(12, "Quantidade", null),
+						new DocumentField(13, "Valor", null),
+						new DocumentField(14, "Vencimento", null),
+						new DocumentField(15, "Agência", "Código Beneficiário", null),
+						new DocumentField(16, "Nosso Número", null),
+						new DocumentField(17, "Valor do Documento", null),
+						new DocumentField(18, "Desconto", "Abatimento", null),
+						new DocumentField(19, "Outras Deduções", null),
+						new DocumentField(20, "Mora","Multa", null),
+						new DocumentField(21, "Outros Acréscimos", null),
+						new DocumentField(22, "Valor Cobrado", null),
+						new DocumentField(23, "Sacado", "Pagador", null)
+						);
+				config.fields = list;
 				break;
 			case BOLETO_BANCARIO_BANRISUL:
 				break;
@@ -137,11 +180,14 @@ public class DocumentConfigurationManager {
 		}
 	}
 	
-	public static void updateConfigurationValues(DocumentConfiguration config, Integer[] newLines, Boolean[] newBooleans) {
-		for (int i = 0; i < config.fields.size(); i++) {
-			config.fields.get(i).setLineLocated(newLines[i]);
-			config.fields.get(i).setShouldRead(newBooleans[i]);
+	public static void updateConfigurationValues(DocumentConfiguration config, List<Triplet<String, Integer, Boolean>> values) {
+		if (config.fields != null) {
+			for (int i = 0; i < config.fields.size(); i++) {
+				config.fields.get(i).setLineLocated(values.get(i).getValue1());
+				config.fields.get(i).setShouldRead(values.get(i).getValue2());
+			}	
 		}
+		
 	}
 	
 	public static DocumentConfiguration getConfigurationFromType(DocumentType configType) {

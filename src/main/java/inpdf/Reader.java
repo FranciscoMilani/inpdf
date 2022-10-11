@@ -93,12 +93,16 @@ public class Reader extends PDFTextStripper  {
 	        
 	        debugStartPositions();
 			String areaTxt = extractBoletoArea(doc);
-			
-			ExtractedTextArea.displayText(areaTxt);
 
 			DocumentConfiguration docConfig = DocumentConfigurationManager.getConfigurationFromType(docType);
 			LinkedHashMap<DocumentField, String> dataMap = extractFieldsFromText(docConfig, areaTxt);
 			String jText = generateJson(dataMap);
+			
+			if (jText == null) {
+				System.out.println("JSON de saída ignorado. \"Reader.generateJson\" recebeu um HashMap nulo.");
+				return;
+			}
+			
 			String fileName = FilenameUtils.removeExtension(readPath.toFile().getName());
 			DirectoryManager.saveJsonToOutputPath(jText, fileName);
 
@@ -202,6 +206,7 @@ public class Reader extends PDFTextStripper  {
 	}
 	
 	// extrai os campos em formato String do PDF, e mapeia os campos selecionados que estão na config
+	/*
 	private LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
 		String[] outputLines = strippedText.split(System.lineSeparator());
 		LinkedHashMap<DocumentField, String> dataMap = new LinkedHashMap<DocumentField, String>();
@@ -227,8 +232,37 @@ public class Reader extends PDFTextStripper  {
 		
 		return dataMap;
 	}
+	*/
+	
+	// extrai os campos em formato String do PDF, e mapeia os campos selecionados que estão na config
+	private LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
+		String[] outputLines = strippedText.split(System.lineSeparator());
+		LinkedHashMap<DocumentField, String> dataMap = new LinkedHashMap<DocumentField, String>();
+		
+		// debuga as linhas
+		for (int l = 1; l <= outputLines.length; l++) {
+			System.out.println(l + " " + outputLines[l-1]);
+		}
+
+		List<DocumentField> fields = config.fields;	
+		for (DocumentField f : fields) {
+			if (f.getShouldRead()) {
+				if (f.getLineLocated() > outputLines.length) {
+					continue;
+				} else {
+					dataMap.put(f, outputLines[f.getLineLocated() - 1]);			
+				}			
+			}
+		}
+		
+		return dataMap;
+	}
 	
 	private String generateJson(LinkedHashMap<DocumentField, String> fields) {
+		if (fields.isEmpty()) {
+			return null;
+		}
+		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		JsonObject obj = new JsonObject();
 		fields.forEach((field, data) -> {

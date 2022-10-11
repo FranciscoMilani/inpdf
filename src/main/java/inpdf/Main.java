@@ -50,6 +50,7 @@ import inpdf.Ui.ButtonActionConfirm;
 import inpdf.Ui.ButtonActionExtract;
 import inpdf.Ui.ButtonActionOptions;
 import inpdf.Ui.ButtonActionReadFile;
+import inpdf.Ui.ButtonActionReadToDisplay;
 import inpdf.Ui.ButtonActionSave;
 import inpdf.Ui.ButtonActionSaveBoleto;
 import inpdf.Ui.ButtonChangeConfigStateAction;
@@ -84,10 +85,10 @@ public class Main {
 		LabelManager labelManager = new LabelManager(frame);
 		
 		//File button
-//		JButton selectFileButton = new JButton("Selecione um arquivo...");
-//		ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager);
-//		selectFileButton.setBounds(400 ,280, 200, 100);  
-//		selectFileButton.addActionListener(readFileAction);
+		JButton selectFileButton = new JButton("Selecione um arquivo...");
+		ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager);
+		selectFileButton.setBounds(400 ,280, 200, 100);  
+		selectFileButton.addActionListener(readFileAction);
 	
 		
 		//Clear button
@@ -117,7 +118,7 @@ public class Main {
 		backButton.setBounds(620 ,580, 100, 50);  
 		backButton.addActionListener(backAction);
 		
-		//frame.add(selectFileButton);
+		frame.add(selectFileButton);
 		frame.add(optionsButton);
 		frame.add(extractButton);
 		frame.add(clearButton);
@@ -274,10 +275,12 @@ public class Main {
 		
 		String[] columnHeaders = new String[] {"Campo", "Linha", "Selecionar"};
 		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 24) {
+			// Bloqueia a edição da primeira coluna
 		    public boolean isCellEditable(int row, int column) {
-		        return column != 0; // primeira coluna fica bloqueada para o usuário.
+		        return column != 0;
 			}
-
+		    
+		    // Cria colunas de tipos diferentes
 		    public Class<?> getColumnClass(int column) {
 		    	if (column == 2) {
 		    		return Boolean.class;
@@ -302,8 +305,8 @@ public class Main {
         textAreaPanel.add(extractedTextArea, BorderLayout.CENTER);
         
         JButton jbtnSearch = new JButton("Procurar");
-        ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager, comboBox);
-        jbtnSearch.addActionListener(readFileAction);
+        ButtonActionReadToDisplay readFileToDisplayAction = new ButtonActionReadToDisplay(directory, labelManager, comboBox);
+        jbtnSearch.addActionListener(readFileToDisplayAction);
         
         JButton jbtnClear = new JButton("Limpar");
         ButtonChangeConfigStateAction clearTextAction = new ButtonChangeConfigStateAction(comboBox);
@@ -317,10 +320,6 @@ public class Main {
 		tablePanel.setBorder(new TitledBorder("Configurações"));		
 		tablePanel.add(configTable, BorderLayout.CENTER);
 		tablePanel.add(configTable.getTableHeader(), BorderLayout.NORTH);
-		
-		configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		configTable.setColumnSelectionAllowed(false);
-		configTable.setRowSelectionAllowed(false);
 
 		GridLayout grid = new GridLayout(1,2);
 		grid.setHgap(10);

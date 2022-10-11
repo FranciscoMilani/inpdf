@@ -16,10 +16,12 @@ import inpdf.DocumentType;
 import inpdf.ExtractedTextArea;
 import inpdf.Reader;
 
-public class ButtonActionReadFile implements ActionListener{
+public class ButtonActionReadToDisplay implements ActionListener{
 	private LabelManager labelManager;
+	private JComboBox comboBox;
 
-	public ButtonActionReadFile(DirectoryManager directory, LabelManager labelManager) {
+	public ButtonActionReadToDisplay(DirectoryManager directory, LabelManager labelManager, JComboBox comboBox) {
+		this.comboBox = comboBox;
 		this.labelManager = labelManager;
 	}
 
@@ -34,17 +36,17 @@ public class ButtonActionReadFile implements ActionListener{
 			DirectoryManager.setInputDirectoryPath(file.toPath().toAbsolutePath());
 			this.labelManager.addText(DirectoryManager.getInputDirectoryPath().toString());
 			
-//			try {
-//				Reader r = new Reader();
-//				DocumentType type =  r.readAndShowPDFText(file.toPath().toAbsolutePath());
-//				if (type != null) {
-//					comboBox.setEnabled(false);
-//					comboBox.setSelectedItem(type);				
-//				}
-//			} catch (Exception err) {
-//				err.printStackTrace();
-//				labelManager.addText("Arquivo inválido");
-//			}
+			try {
+				Reader r = new Reader();
+				DocumentType type =  r.readAndShowPDFText(file.toPath().toAbsolutePath());
+				if (type != null) {
+					comboBox.setEnabled(false);
+					comboBox.setSelectedItem(type);				
+				}
+			} catch (Exception err) {
+				err.printStackTrace();
+				labelManager.addText("Arquivo inválido");
+			}
 		}
 	}
 }

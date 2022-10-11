@@ -2,6 +2,7 @@ package inpdf;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.google.gson.annotations.Expose;
 
@@ -11,23 +12,21 @@ public class DocumentField {
 	@Expose
 	private ArrayList<String> names = new ArrayList<String>();
 	@Expose
-	private Integer pageLocated;
-	@Expose
 	private Integer lineLocated;
+	@Expose
 	private Boolean shouldRead = false;
+	
 	//private Rectangle2D coordinates;
 	
-	public DocumentField(Integer id, String name, Integer pageFoundIndex, Integer lineLocated) {
+	public DocumentField(Integer id, String name, Integer lineLocated) {
 		names.add(name);
-		this.pageLocated = pageFoundIndex;
 		this.setLineLocated(lineLocated);
 		this.id = id;
 	}
 	
-	public DocumentField(Integer id, String name, String secondName, Integer pageFoundIndex, Integer lineLocated) {
+	public DocumentField(Integer id, String name, String secondName, Integer lineLocated) {
 		names.add(name);
 		names.add(secondName);
-		this.pageLocated = pageFoundIndex;
 		this.setLineLocated(lineLocated);
 		this.id = id;
 	}
@@ -49,14 +48,6 @@ public class DocumentField {
 
 	public void setFieldName(ArrayList<String> fieldName) {
 		this.names = fieldName;
-	}
-
-	public int getPageFoundIndex() {
-		return pageLocated;
-	}
-
-	public void setPageFoundIndex(Integer pageFoundIndex) {
-		this.pageLocated = pageFoundIndex;
 	}
 	
 //	public Rectangle2D getCoordinates() {

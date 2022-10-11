@@ -11,6 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 
+import org.javatuples.Pair;
+
 import inpdf.DocumentConfiguration;
 import inpdf.DocumentConfigurationManager;
 import inpdf.DocumentField;
@@ -22,7 +24,7 @@ public class DropdownChangeAction implements ActionListener {
 	private ArrayList<JRadioButton> boletoFieldOptions;
 	private ArrayList<JRadioButton> irfFieldOptions;
 	private JComboBox comboBox;
-	private Object previousBox;
+	private Object previousType;
 	
 	public DropdownChangeAction(
 			JFrame frame, 
@@ -31,46 +33,45 @@ public class DropdownChangeAction implements ActionListener {
 			JComboBox comboBox
 			) 
 	{
-		previousBox = comboBox.getSelectedItem();
-//		this.frame = frame;
-//		this.boletoFieldOptions = boletoFieldOptions;
-//		this.irfFieldOptions = irfFieldOptions;
+		previousType = comboBox.getSelectedItem();
 		this.comboBox = comboBox;
-//		
-//		this.irfFieldOptions.forEach(opt -> this.frame.remove(opt));
-//		this.boletoFieldOptions.forEach(opt -> this.frame.remove(opt));
-//		
-//		this.boletoFieldOptions.forEach(opt ->{
-//			this.frame.add(opt);
-//		});
+		/*
+		this.frame = frame;
+		this.boletoFieldOptions = boletoFieldOptions;
+		this.irfFieldOptions = irfFieldOptions;		
+		this.irfFieldOptions.forEach(opt -> this.frame.remove(opt));
+		this.boletoFieldOptions.forEach(opt -> this.frame.remove(opt));		
+		this.boletoFieldOptions.forEach(opt ->{ this.frame.add(opt);});
+		*/
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!previousBox.equals(comboBox.getSelectedItem())) {
-			previousBox = comboBox.getSelectedItem();
-			//ExtractedTextArea.clear();
+		if (!previousType.equals(comboBox.getSelectedItem())) {
+			previousType = comboBox.getSelectedItem();
 			updateTableCells();
 		}
 		
+		/*		
+		DocumentType selectedDoc = (DocumentType) this.comboBox.getSelectedItem();
+		System.out.println(selectedDoc);
 		
-//		DocumentType selectedDoc = (DocumentType) this.comboBox.getSelectedItem();
-//		System.out.println(selectedDoc);
-//		
-//		
-//		if(selectedDoc.equals(DocumentType.DECLARACAO_IMPOSTO_DE_RENDA)) {
-//			updateOptions(boletoFieldOptions, irfFieldOptions);
-//		}else {
-//			updateOptions(irfFieldOptions, boletoFieldOptions);
-//		}
+		
+		if(selectedDoc.equals(DocumentType.DECLARACAO_IMPOSTO_DE_RENDA)) {
+			updateOptions(boletoFieldOptions, irfFieldOptions);
+		}else {
+			updateOptions(irfFieldOptions, boletoFieldOptions);
+		}
+		 */
 	}
 	
 	private void updateTableCells() {
 		DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType((DocumentType) comboBox.getSelectedItem());
 		List<DocumentField> fields = config.fields;	
 		
+		TableManager.resetValuesToNull();	
+		
 		if(fields == null) {
-			TableManager.resetValuesToNull();	
 			return;
 		}
 		
@@ -86,6 +87,7 @@ public class DropdownChangeAction implements ActionListener {
 		TableManager.setBoolValues(bools);	
 	}
 	
+	/*
 	private void updateOptions(ArrayList<JRadioButton> oldOpts, ArrayList<JRadioButton> newOpts) {
 		oldOpts.forEach(opt -> {
 			this.frame.remove(opt);
@@ -97,7 +99,7 @@ public class DropdownChangeAction implements ActionListener {
 		
 		this.frame.repaint();
 	}
-
+	*/
 }
 
 
