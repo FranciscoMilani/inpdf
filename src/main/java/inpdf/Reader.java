@@ -1,51 +1,30 @@
 package inpdf;
 
-import java.awt.BorderLayout;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.Log;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
-import org.apache.pdfbox.pdmodel.encryption.PDEncryption;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.apache.pdfbox.text.TextPosition;
-import org.apache.pdfbox.util.Hex;
-import org.apache.pdfbox.util.filetypedetector.FileTypeDetector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import inpdf.Ui.TableManager;
 
 public class Reader extends PDFTextStripper  {
 	
@@ -67,13 +46,16 @@ public class Reader extends PDFTextStripper  {
 		super();
 	}
 	
-	public void ReadPDF(Path readPath) {			
+	public void ReadPDF(Path readPath) {
+		PDDocument doc = null;
+		
 		try {
-			PDDocument doc = loadDocument(readPath);
+			doc = loadDocument(readPath);
 			boolean canReadFile = canReadFile(doc);
 			
 			if (!canReadFile) {
 				System.out.println("Não há permissão para extrair texto do documento.");
+				doc.close();
 				return;
 			}
 			
@@ -81,6 +63,7 @@ public class Reader extends PDFTextStripper  {
 			DocumentType docType = determineDocumentType(text);
 			if (docType == DocumentType.UNKNOWN) {
 				System.out.println("Não foi possível determinar o tipo do documento.");
+				doc.close();
 				return;
 			}
 			//createReaderFromType(readPath, docType);
@@ -100,6 +83,7 @@ public class Reader extends PDFTextStripper  {
 			
 			if (jText == null) {
 				System.out.println("JSON de saída ignorado. \"Reader.generateJson\" recebeu um HashMap nulo.");
+				doc.close();
 				return;
 			}
 			
@@ -113,6 +97,13 @@ public class Reader extends PDFTextStripper  {
 		} 
 		catch (IOException e) {
 			System.out.println(e.getLocalizedMessage());
+		}
+		finally {
+			try {
+				doc.close();
+			} catch (IOException e){
+				System.out.println(e.getMessage());
+			}
 		}
 	}
 	
@@ -249,9 +240,9 @@ public class Reader extends PDFTextStripper  {
 			if (f.getShouldRead()) {
 				if (f.getLineLocated() > outputLines.length) {
 					continue;
-				} else {
-					dataMap.put(f, outputLines[f.getLineLocated() - 1]);			
-				}			
+				}
+				
+				dataMap.put(f, outputLines[f.getLineLocated() - 1]);	
 			}
 		}
 		

@@ -20,29 +20,12 @@ import inpdf.DocumentType;
 import inpdf.ExtractedTextArea;
 
 public class DropdownChangeAction implements ActionListener {
-	private JFrame frame;
-	private ArrayList<JRadioButton> boletoFieldOptions;
-	private ArrayList<JRadioButton> irfFieldOptions;
 	private JComboBox comboBox;
 	private Object previousType;
 	
-	public DropdownChangeAction(
-			JFrame frame, 
-			ArrayList<JRadioButton> boletoFieldOptions, 
-			ArrayList<JRadioButton> irfFieldOptions, 
-			JComboBox comboBox
-			) 
-	{
+	public DropdownChangeAction(JComboBox comboBox) {
 		previousType = comboBox.getSelectedItem();
-		this.comboBox = comboBox;
-		/*
-		this.frame = frame;
-		this.boletoFieldOptions = boletoFieldOptions;
-		this.irfFieldOptions = irfFieldOptions;		
-		this.irfFieldOptions.forEach(opt -> this.frame.remove(opt));
-		this.boletoFieldOptions.forEach(opt -> this.frame.remove(opt));		
-		this.boletoFieldOptions.forEach(opt ->{ this.frame.add(opt);});
-		*/
+		this.comboBox = comboBox;	
 	}
 
 	@Override
@@ -51,18 +34,6 @@ public class DropdownChangeAction implements ActionListener {
 			previousType = comboBox.getSelectedItem();
 			updateTableCells();
 		}
-		
-		/*		
-		DocumentType selectedDoc = (DocumentType) this.comboBox.getSelectedItem();
-		System.out.println(selectedDoc);
-		
-		
-		if(selectedDoc.equals(DocumentType.DECLARACAO_IMPOSTO_DE_RENDA)) {
-			updateOptions(boletoFieldOptions, irfFieldOptions);
-		}else {
-			updateOptions(irfFieldOptions, boletoFieldOptions);
-		}
-		 */
 	}
 	
 	private void updateTableCells() {
@@ -86,47 +57,4 @@ public class DropdownChangeAction implements ActionListener {
 		TableManager.setLineValues(lines);
 		TableManager.setBoolValues(bools);	
 	}
-	
-	/*
-	private void updateOptions(ArrayList<JRadioButton> oldOpts, ArrayList<JRadioButton> newOpts) {
-		oldOpts.forEach(opt -> {
-			this.frame.remove(opt);
-		});
-		
-		newOpts.forEach(opt -> {
-			this.frame.add(opt);
-		});
-		
-		this.frame.repaint();
-	}
-	*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-

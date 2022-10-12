@@ -1,19 +1,12 @@
 package inpdf;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.EventListener;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DirectoryManager{
 	private static Path inputDirectoryPath;
@@ -100,7 +93,7 @@ public class DirectoryManager{
 	}
 	
 	private static void createIfDoesntExist(Path path) {
-		if (!Files.exists(path)){
+		if (path != null && !Files.exists(path)){
 			File directory = new File(path.toString());
 			directory.mkdir();
 		}

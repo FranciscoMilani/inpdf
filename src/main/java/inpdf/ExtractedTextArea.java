@@ -1,11 +1,9 @@
 package inpdf;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
  
-public class ExtractedTextArea extends JPanel implements ActionListener {
+public class ExtractedTextArea extends JPanel {
     private static JTextArea textArea = new JTextArea(55, 65);
  
     public ExtractedTextArea(String text) {
@@ -13,12 +11,6 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
         
         textArea.setEditable(false);
         add(textArea);
-        //JScrollPane scrollPane = new JScrollPane(textArea);
-        //add(scrollPane);
-    }
- 
-    public void actionPerformed(ActionEvent evt) {
-    	
     }
 
     public static void displayText(String text) {	

@@ -30,13 +30,34 @@ public class DocumentConfigurationManager {
 	private static Path filePath;
 	private static HashMap<DocumentType, DocumentConfiguration> configTypeMap = new HashMap<>();
 	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
-	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Nº do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora", "Outros Acréscimos", "Valor Cobrado", "Sacado" }; // serve p/ definir campos da UI
+	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Número do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora/Multa", "Outros Acréscimos", "Valor Cobrado", "Pagador" }; // serve p/ definir campos da UI
 	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
 	
-	/*
-	public static enum FieldEnum{
+	public static enum FieldEnum {
 		COMPE("Compe"),
-		LINHA_DIGITAVEL("Linha Digitável");
+		LINHA_DIGITAVEL("Linha Digitável"),
+		LOCAL_PAGAMENTO("Local de Pagamento"),
+		BENEFICIARIO("Beneficiário"),
+		DATA_DOCUMENTO("Data do Documento"),
+		NUMERO_DOCUMENTO("Número do Documento"),
+		ESPECIE_DOCUMENTO("Espécie Documento"),
+		ACEITA("Aceite"),
+		DATA_PROCESSAMENTO("Data do Processamento"),
+		USO_BANCO("Uso do Banco"),
+		CARTEIRA("Carteira"),
+		MOEDA("Moeda"),
+		QUANTIDADE("Quantidade"),
+		VALOR("Valor"),
+		VENCIMENTO("Vencimento"),
+		AGENCIA("Agência"),
+		NOSSO_NUMERO("Nosso Número"),
+		VALOR_DOCUMENTO("Valor do Documento"),
+		DESCONTO("Desconto"),
+		OUTRAS_DEDUCOES("Outras Deduções"),
+		MORA_MULTA("Mora/Multa"),
+		OUTROS_ACRESCIMOS("Outros Acréscimos"),
+		VALOR_COBRADO("Valor Cobrado"),
+		PAGADOR("Pagador");
 		
 		public final String name;
 			
@@ -44,14 +65,14 @@ public class DocumentConfigurationManager {
 			this.name = name;
 		}	
 	}
-	*/
+	
 	
 	static {
 		// TODO: a inicialização no momento está excluindo os arquivos se ja existem e recriando-os, corrigir se implementarmos o salvamento
 		for (int i = 0; i < boletoFieldNames.length; i++) {
 			boletoCodeFieldMap.put(boletoFieldNames[i], i);
 		}
-		
+
 		initAllConfigurations();	
 	}
 		
@@ -180,32 +201,34 @@ public class DocumentConfigurationManager {
 		}
 	}
 	
+	public static DocumentConfiguration getConfigurationFromType(DocumentType configType) {
+		return configTypeMap.get(configType);
+	}
+	
 	public static void updateConfigurationValues(DocumentConfiguration config, List<Triplet<String, Integer, Boolean>> values) {
-		if (config.fields != null) {
+		if (config.fields != null) {			
+			// TODO: pra cada string do enumerador, se for igual à alguma string da lista de campos, atribuir
+			
 			for (int i = 0; i < config.fields.size(); i++) {
 				config.fields.get(i).setLineLocated(values.get(i).getValue1());
 				config.fields.get(i).setShouldRead(values.get(i).getValue2());
 			}	
 		}
-		
 	}
 	
-	public static DocumentConfiguration getConfigurationFromType(DocumentType configType) {
-		return configTypeMap.get(configType);
-	}
 	
-	public static List<DocumentField> getSelectedFieldsFromConfig(DocumentType configType) {
-		DocumentConfiguration c = configTypeMap.get(configType);
-		if (c == null) {	
-			System.out.println("Nenhuma configuração com " + configType + " foi criada, ou o valor é nulo.");
-		}
-		
-		return c.selectedFields;
-	}
+//	public static List<DocumentField> getSelectedFieldsFromConfig(DocumentType configType) {
+//		DocumentConfiguration c = configTypeMap.get(configType);
+//		if (c == null) {	
+//			System.out.println("Nenhuma configuração com " + configType + " foi criada, ou o valor é nulo.");
+//		}
+//		
+//		return c.selectedFields;
+//	}
 	
-	public static void setConfigSelectedFields(DocumentType configType, ArrayList<String> selected) {
-		System.out.println("Atualizando configurações do tipo " + configType);
-		DocumentConfiguration c = configTypeMap.get(configType);
-		c.selectedFieldsString = selected;
-	}
+//	public static void setConfigSelectedFields(DocumentType configType, ArrayList<String> selected) {
+//		System.out.println("Atualizando configurações do tipo " + configType);
+//		DocumentConfiguration c = configTypeMap.get(configType);
+//		c.selectedFieldsString = selected;
+//	}
 }

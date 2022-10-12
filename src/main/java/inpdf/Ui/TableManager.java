@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import inpdf.DocumentConfigurationManager;
+
 public class TableManager {
 	public static JTable table;
 	
@@ -27,12 +26,15 @@ public class TableManager {
 	
 	public TableManager(JTable nTable) {
 		table = nTable;	
-		//initBooleanValues();	
+		setupTable();
+	}
+	
+	private static void setupTable() {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.getTableHeader().setReorderingAllowed(false);
-				
+		
 		setNameValues(DocumentConfigurationManager.boletoFieldNames);
 		DefaultTableColumnModel tcm = (DefaultTableColumnModel) TableManager.table.getColumnModel();
 		TableColumn tc;
@@ -63,12 +65,6 @@ public class TableManager {
 	public static void setBoolValues(Boolean[] values) {
 		for (int i = 0; i < values.length; i++) {
 			table.setValueAt(values[i], i, 2);
-		}
-	}
-	
-	public static void initBooleanValues() {
-		for (int i = 0; i < DocumentConfigurationManager.boletoFieldNames.length; i++) {
-			//table.setValueAt(false, i, 2);
 		}
 	}
 	

@@ -3,20 +3,15 @@ package inpdf.Ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JComboBox;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
 
 import org.javatuples.Triplet;
 
-import inpdf.DirectoryManager;
 import inpdf.DocumentConfiguration;
 import inpdf.DocumentConfigurationManager;
-import inpdf.DocumentField;
 import inpdf.DocumentType;
 
 public class ButtonActionSaveBoleto implements ActionListener{
@@ -29,8 +24,6 @@ public class ButtonActionSaveBoleto implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		ArrayList<Integer> lineColumnValues = TableManager.getColumnValues(1);
-//		ArrayList<Boolean> selectedColumnValues = TableManager.getColumnValues(2);
 		if (!passValueChecks()) {
 			// TODO: DAR FEEDBACK PQ ALGUM VALOR NAO SE ADEQUOU AOS REQUISITOS
 			System.err.println("NÃO PASSOU, MOSTRAR FEEDBACK NA TELA");
