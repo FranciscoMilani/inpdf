@@ -1,7 +1,14 @@
 package inpdf;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,21 +27,25 @@ import inpdf.Ui.ButtonActionExtract;
 import inpdf.Ui.ButtonActionReadFile;
 import inpdf.Ui.ButtonActionReadToDisplay;
 import inpdf.Ui.ButtonActionSaveBoleto;
+import inpdf.Ui.ButtonActionWatcher;
 import inpdf.Ui.ButtonChangeConfigStateAction;
 import inpdf.Ui.DropdownChangeAction;
 import inpdf.Ui.LabelManager;
-import inpdf.Ui.TableManager;  
+import inpdf.Ui.TableManager;
+import inpdf.watcher.WatcherService;  
 
 public class Main {
-	
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception{		
+		WatcherService watcherRunnable = new WatcherService();
+		Thread thread = new Thread(watcherRunnable, "Watcher");
+		thread.start();
+		
 		//interface
 		JFrame frame = new JFrame();
 		frame.setTitle("InPDF");
 		frame.setSize(1000, 700);
 		frame.setLocation(500, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	    frame.setLayout(null);	
 		
@@ -54,7 +65,12 @@ public class Main {
 		ButtonActionClear cancelAction = new ButtonActionClear(directory, labelManager);
 		clearButton.setBounds(80, 580, 100, 50);  
 		clearButton.addActionListener(cancelAction);
-	
+		
+		//Watcher button
+		JButton watcherButton = new JButton("WATCHER");
+		ButtonActionWatcher watcherAction = new ButtonActionWatcher(watcherRunnable, thread);
+		watcherButton.setBounds(200, 580, 100, 50);  
+		watcherButton.addActionListener(watcherAction);
 		
 		//Confirm button: temporário pois vai ser automático
 		JButton extractButton = new JButton("EXTRAIR");
@@ -80,6 +96,7 @@ public class Main {
 //		frame.add(optionsButton);
 		frame.add(extractButton);
 		frame.add(clearButton);
+		frame.add(watcherButton);
 		
 		JPanel dropdown = new JPanel();
 		JLabel dropdownLabel = new JLabel("Tipo de Documento");
@@ -187,6 +204,10 @@ public class Main {
 
 		frame3.add(tabPane);
 		frame3.pack();
+		frame3.setLocationRelativeTo(null);
 		frame3.setVisible(true);
+		frame.toFront();
+		frame.setVisible(true);
+
 	}
 }

@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import inpdf.watcher.WatcherService;
+
 public class Reader extends PDFTextStripper  {
 	
 	private static float startX, startY;
@@ -88,7 +90,8 @@ public class Reader extends PDFTextStripper  {
 			}
 			
 			String fileName = FilenameUtils.removeExtension(readPath.toFile().getName());
-			DirectoryManager.saveJsonToOutputPath(jText, fileName);
+			DirectoryManager.saveJsonToOutputPath(jText, fileName);		
+			DirectoryManager.moveToProcessedFolder(readPath);
 
 			doc.close();
 		} 
@@ -96,13 +99,13 @@ public class Reader extends PDFTextStripper  {
 			System.out.println("Não foi possível extrair. O arquivo \"" + readPath + "\" é criptografado com senha.");
 		} 
 		catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 		finally {
 			try {
 				doc.close();
 			} catch (IOException e){
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

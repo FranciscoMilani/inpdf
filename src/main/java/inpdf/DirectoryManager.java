@@ -2,11 +2,18 @@ package inpdf;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.sql.Time;
+import java.util.Date;
+
+import org.apache.commons.io.FilenameUtils;
 
 public class DirectoryManager{
 	private static Path inputDirectoryPath;
@@ -17,7 +24,7 @@ public class DirectoryManager{
 	static {
 		inputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "entrada");
 		outputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "saida");
-		processedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "processados");
+		processedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "processados" + File.separator);
 		rejectedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "rejeitados");
 		createIfDoesntExist(inputDirectoryPath);
 		createIfDoesntExist(outputDirectoryPath);
@@ -44,6 +51,31 @@ public class DirectoryManager{
 				throw new RuntimeException();
 			}
 		}	
+	}
+	
+	public static void moveToProcessedFolder(Path filePath) {
+		moveToFolder(filePath, processedDirectoryPath);
+	}
+	
+	public static void moveToRejectedFolder(Path filePath) {
+		moveToFolder(filePath, rejectedDirectoryPath);
+	}
+	
+	private static void moveToFolder(Path filePath, Path destination) {
+		Path nPath = destination.resolve(filePath.getFileName());
+		
+		try {
+			if (Files.exists(nPath, LinkOption.NOFOLLOW_LINKS)) {
+				String fileExt = FilenameUtils.getExtension(filePath.getFileName().toString());
+				String fileNameWithOutExt = FilenameUtils.removeExtension(filePath.getFileName().toString());
+				nPath = destination.resolve(fileNameWithOutExt + " (" + String.valueOf(System.currentTimeMillis() + ")." + fileExt));
+				Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
+			} else {
+				Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void saveJsonToOutputPath(String jsonText, String fileName) {	
