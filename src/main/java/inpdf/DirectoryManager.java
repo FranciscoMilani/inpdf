@@ -69,10 +69,10 @@ public class DirectoryManager{
 				String fileExt = FilenameUtils.getExtension(filePath.getFileName().toString());
 				String fileNameWithOutExt = FilenameUtils.removeExtension(filePath.getFileName().toString());
 				nPath = destination.resolve(fileNameWithOutExt + " (" + String.valueOf(System.currentTimeMillis() + ")." + fileExt));
-				Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
-			} else {
-				Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
 			}
+			
+			Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

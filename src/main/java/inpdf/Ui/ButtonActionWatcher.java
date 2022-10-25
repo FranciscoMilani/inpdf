@@ -25,12 +25,12 @@ public class ButtonActionWatcher implements ActionListener {
 		String btnName = actionState ? "DESLIGAR" : "LIGAR";
 		btn.setText(btnName);
 		
-		Queue<Path> queue = watcher.getFilePathsQueue();
-		
-		if (!queue.isEmpty()) {
-			Path polledPath = queue.poll();
-			System.out.println(polledPath);
-		}
+//		Queue<Path> queue = watcher.getFilePathsQueue();
+//		
+//		if (!queue.isEmpty()) {
+//			Path polledPath = queue.poll();
+//			System.out.println(polledPath);
+//		}
 	}
 	
 	public synchronized boolean switchAction() {
