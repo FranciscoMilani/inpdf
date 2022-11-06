@@ -10,6 +10,7 @@ import javax.print.attribute.standard.MediaSize.Engineering;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
 
 import org.javatuples.Pair;
 
@@ -30,6 +31,12 @@ public class DropdownChangeAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JTable t = TableManager.table;
+		
+		if (t.isEditing()) {
+			t.getCellEditor().stopCellEditing();
+		}
+
 		if (!previousType.equals(comboBox.getSelectedItem())) {
 			previousType = comboBox.getSelectedItem();
 			updateTableCells();
@@ -40,7 +47,7 @@ public class DropdownChangeAction implements ActionListener {
 		DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType((DocumentType) comboBox.getSelectedItem());
 		List<DocumentField> fields = config.fields;	
 		
-		TableManager.resetValuesToNull();	
+		TableManager.resetValuesToNullAndFalse();
 		
 		if(fields == null) {
 			return;

@@ -5,14 +5,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.module.ModuleDescriptor.Exports.Modifier;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -23,13 +26,12 @@ import java.util.Map;
 import org.javatuples.Triplet;
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 
 public class DocumentConfigurationManager {
-	private static final String CONFIG_DIRECTORY_NAME = "configuracoes";
-	private static final Path DEFAULT_CONFIG_PATH = Paths.get(System.getProperty("user.dir") + File.separator + CONFIG_DIRECTORY_NAME);
 	private static Path filePath;
-	private static HashMap<DocumentType, DocumentConfiguration> configTypeMap = new HashMap<>();
-	public static String[] irfFieldNames = {"A definir"}; // serve p/ definir campos da UI
+	public static LinkedHashMap<DocumentType, DocumentConfiguration> configTypeMap = new LinkedHashMap<>();
+	public static String[] irfFieldNames = {"A definir"};
 	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Número do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora/Multa", "Outros Acréscimos", "Valor Cobrado", "Pagador" }; // serve p/ definir campos da UI
 	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
 	
@@ -72,57 +74,36 @@ public class DocumentConfigurationManager {
 		for (int i = 0; i < boletoFieldNames.length; i++) {
 			boletoCodeFieldMap.put(boletoFieldNames[i], i);
 		}
-
-		initAllConfigurations();	
-	}
 		
-	private static void initAllConfigurations() {
-		DocumentType[] types = DocumentType.values();
-		for (DocumentType t : types) {
-			if (t.toString().contains("BOLETO_BANCARIO")) {
-				createConfiguration(t);
-			}
+		
+//		createConfigurations();
+		if (Files.exists(DirectoryManager.getConfigDirectoryPath())) { 
+			loadConfigurations();
+		} else {
+			System.out.println("Arquivo de config não existe, criando configs");
+			createConfigurations();
 		}
 	}
 	
-	public static DocumentConfiguration createConfiguration(DocumentType type) {		
-		DocumentConfiguration config = new DocumentConfiguration(type);
-		setupDefaultFields(config);		
-		configTypeMap.put(config.type, config);
-		return config;
-
-//		String dir = DEFAULT_CONFIG_PATH + 
-//				File.separator + 
-//				type.toString().toLowerCase() + 
-//				".json"; 
-//		
-//		GsonBuilder gb = new GsonBuilder().
-//				setPrettyPrinting().
-//				excludeFieldsWithoutExposeAnnotation();
-//		
-//		Gson gson = gb.create();
-//		String jsonText = gson.toJson(config);
-//
-//		try {	
-//			filePath = Paths.get(dir);		
-//			Files.deleteIfExists(filePath);
-//			Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);				
-//		} 
-//		catch (NoSuchFileException e) {
-//			new File(DEFAULT_CONFIG_PATH.toString()).mkdir();
-//			
-//			try {
-//				Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
-//			}
-//			catch (Exception er) {
-//				er.printStackTrace();
-//				throw new RuntimeException(e);
-//			}
-//		} 
-//		catch (Exception e) {
-//			e.printStackTrace();
-//			throw new RuntimeException(e);
-//		}
+	private static void loadConfigurations() {
+		for (DocumentType type : DocumentType.values()) {
+			if (type.toString().contains("BOLETO_BANCARIO")) {
+				DocumentConfiguration config = DirectoryManager.getConfigFromJson(type);
+				configTypeMap.put(config.type, config);
+			}
+		}
+	}
+		
+	private static void createConfigurations() {
+		for (DocumentType type : DocumentType.values()) {
+			if (type.toString().contains("BOLETO_BANCARIO")) {
+				DocumentConfiguration config = new DocumentConfiguration(type);
+				setupDefaultFields(config);
+				configTypeMap.put(config.type, config);
+			}
+		}
+		
+		allConfigsToJson(configTypeMap.values());
 	}
 	
 	@SuppressWarnings("incomplete-switch")
@@ -189,6 +170,33 @@ public class DocumentConfigurationManager {
 				config.fields = list;
 				break;
 			case BOLETO_BANCARIO_BANRISUL:
+				list = Arrays.asList (
+						new DocumentField(0, "Compe", null),
+						new DocumentField(1, "Linha Digitável", null),
+						new DocumentField(2, "Local de Pagamento", null),
+						new DocumentField(3, "Beneficiário", "Cedente", null),
+						new DocumentField(4, "Data do Documento", null),
+						new DocumentField(5, "Nº do Documento", null),
+						new DocumentField(6, "Espécie Documento", null),
+						new DocumentField(7, "Aceite", null),
+						new DocumentField(8, "Data do Processamento", null),
+						new DocumentField(9, "Uso do Banco", null),
+						new DocumentField(10, "Carteira", null),
+						new DocumentField(11, "Moeda", null),
+						new DocumentField(12, "Quantidade", null),
+						new DocumentField(13, "Valor", null),
+						new DocumentField(14, "Vencimento", null),
+						new DocumentField(15, "Agência", "Código Beneficiário", null),
+						new DocumentField(16, "Nosso Número", null),
+						new DocumentField(17, "Valor do Documento", null),
+						new DocumentField(18, "Desconto", "Abatimento", null),
+						new DocumentField(19, "Outras Deduções", null),
+						new DocumentField(20, "Mora","Multa", null),
+						new DocumentField(21, "Outros Acréscimos", null),
+						new DocumentField(22, "Valor Cobrado", null),
+						new DocumentField(23, "Sacado", "Pagador", null)
+						);
+				config.fields = list;
 				break;
 			case BOLETO_BANCARIO_BRADESCO:
 				break;
@@ -214,6 +222,22 @@ public class DocumentConfigurationManager {
 				config.fields.get(i).setShouldRead(values.get(i).getValue2());
 			}	
 		}
+	}
+	
+	public static void allConfigsToJson(Collection<DocumentConfiguration> collection) {	
+		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+		JsonArray jArr = new JsonArray();
+		JsonObject jObj = new JsonObject();
+		JsonElement jEle = null;
+		
+		for (DocumentConfiguration dc : collection) {
+			jEle = gson.toJsonTree(dc);
+			jObj.add(dc.type.toString(), jEle);
+		}
+		
+		jArr.add(jObj);
+		String text = gson.toJson(jArr);	
+		DirectoryManager.saveConfigJson(text, DirectoryManager.getConfigDirectoryPath());	
 	}
 	
 	

@@ -1,9 +1,12 @@
 package inpdf.Ui;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.plaf.basic.BasicTableUI.FocusHandler;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
@@ -34,7 +37,8 @@ public class TableManager {
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.getTableHeader().setReorderingAllowed(false);
-		
+		table.getTableHeader().getColumnModel().getColumn(table.getTableHeader().getColumnModel().getColumnCount() - 1).setResizable(false);
+
 		setNameValues(DocumentConfigurationManager.boletoFieldNames);
 		DefaultTableColumnModel tcm = (DefaultTableColumnModel) TableManager.table.getColumnModel();
 		TableColumn tc;
@@ -42,12 +46,12 @@ public class TableManager {
 		tc = tcm.getColumn(1);
 		tc.setMaxWidth(125);
 		tc.setMinWidth(75);
-		tc.setPreferredWidth(125);	
+		tc.setPreferredWidth(50);	
 		
 		tc = tcm.getColumn(2);
 		tc.setMaxWidth(125);
 		tc.setMinWidth(75);
-		tc.setPreferredWidth(125);
+		tc.setPreferredWidth(50);
 	}
 	
 	public static void setNameValues(String[] values) {
@@ -68,7 +72,7 @@ public class TableManager {
 		}
 	}
 	
-	public static void resetValuesToNull() {
+	public static void resetValuesToNullAndFalse() {
 		for (int i = 0; i < table.getRowCount(); i++) {
 			for(int j = 1; j < table.getColumnCount(); j++) {
 				table.setValueAt(null, i, j);

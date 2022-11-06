@@ -10,8 +10,8 @@ import inpdf.watcher.WatcherService;
 
 public class ButtonActionWatcher implements ActionListener {
 
-	WatcherService watcher;
-	Thread t;
+	public WatcherService watcher;
+	public Thread t;
 	
 	public ButtonActionWatcher(WatcherService watcher, Thread t){
 		this.watcher = watcher;
@@ -22,7 +22,7 @@ public class ButtonActionWatcher implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		boolean actionState = switchAction();
 		JButton btn = (JButton) e.getSource();
-		String btnName = actionState ? "DESLIGAR" : "LIGAR";
+		String btnName = actionState ? "Interromper" : "Escanear";
 		btn.setText(btnName);
 		
 //		Queue<Path> queue = watcher.getFilePathsQueue();

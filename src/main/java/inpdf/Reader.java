@@ -2,6 +2,7 @@ package inpdf;
 
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -9,10 +10,13 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -32,15 +36,15 @@ public class Reader extends PDFTextStripper  {
 	
 	private static float startX, startY;
 	private static final String[] compeCodes = {"001-9", "041-8", "237-2", "341-7", "033-7", "748-X"};
-	private static Map<DocumentType, String> compeMap = new HashMap<>(6);
+	private static Map<DocumentType, List<String>> compeMap = new HashMap<>(6);
 	
 	static {
-		compeMap.put(DocumentType.BOLETO_BANCARIO_BANCO_DO_BRASIL, compeCodes[0]);
-		compeMap.put(DocumentType.BOLETO_BANCARIO_BANRISUL, compeCodes[1]);
-		compeMap.put(DocumentType.BOLETO_BANCARIO_BRADESCO, compeCodes[2]);
-		compeMap.put(DocumentType.BOLETO_BANCARIO_ITAU, compeCodes[3]);
-		compeMap.put(DocumentType.BOLETO_BANCARIO_SANTANDER, compeCodes[4]);
-		compeMap.put(DocumentType.BOLETO_BANCARIO_SICREDI, compeCodes[5]);
+		compeMap.put(DocumentType.BOLETO_BANCARIO_BANCO_DO_BRASIL, Arrays.asList(compeCodes[0], "BANCO DO BRASIL"));
+		compeMap.put(DocumentType.BOLETO_BANCARIO_BANRISUL, Arrays.asList(compeCodes[1], "BANRISUL"));
+		compeMap.put(DocumentType.BOLETO_BANCARIO_BRADESCO, Arrays.asList(compeCodes[2], "BRADESCO"));
+		compeMap.put(DocumentType.BOLETO_BANCARIO_ITAU, Arrays.asList(compeCodes[3], "ITAÚ", "ITAU"));
+		compeMap.put(DocumentType.BOLETO_BANCARIO_SANTANDER, Arrays.asList(compeCodes[4], "SANTANDER"));
+		compeMap.put(DocumentType.BOLETO_BANCARIO_SICREDI, Arrays.asList(compeCodes[5], "SICREDI"));
 	}
 	
 	
@@ -75,27 +79,25 @@ public class Reader extends PDFTextStripper  {
 				throw new Exception("JSON de saída ignorado. Não há campos marcados para esse tipo de documento");
 			
 			String fileName = FilenameUtils.removeExtension(readPath.toFile().getName());
-			DirectoryManager.saveJsonToOutputPath(jsonTxt, fileName);		
+			DirectoryManager.saveJsonToPath(jsonTxt, fileName, DirectoryManager.getOutputDirectoryPath());
 			DirectoryManager.moveToProcessedFolder(readPath);
-
+			
 			doc.close();
 		} 
-		catch (InvalidPasswordException e) {
+		catch (InvalidPasswordException e) {	
 			System.out.println("Não foi possível extrair. O arquivo \"" + readPath + "\" é criptografado com senha.");
-			//e.printStackTrace();
-		} 
+		}
 		catch (IOException e) {
 			System.out.println("ERRO: " + e.getMessage());
-			//e.printStackTrace();
 		}
-		catch (Exception e) {		
+		catch (Exception e) {
+			DirectoryManager.moveToRejectedFolder(readPath);
 			System.out.println("ERRO: " + e.getMessage());
-			//e.printStackTrace();
 		}
 		finally {
 			try {
 				if (doc != null) {
-					doc.close();		
+					doc.close();	
 					System.out.println("Limpou os recursos");
 				}	
 			} catch (IOException e){
@@ -166,6 +168,10 @@ public class Reader extends PDFTextStripper  {
 	
 	public static boolean checkFileConformity(Path readPath) throws IOException {
 		// TODO: INFORMAR QUE ARQUIVO NAO É PDF NO LOG
+		if (!readPath.toFile().canWrite()) {
+			throw new IOException("Arquivo não pode ser lido. Está aberto?");
+		}
+		
 		byte[] bytes = Files.readAllBytes(readPath);
 		
 		if ((bytes != null && bytes.length > 4) && (
@@ -187,47 +193,23 @@ public class Reader extends PDFTextStripper  {
 	
 	public static DocumentType determineDocumentType(String documentText) {
 		// TODO: Determinar o tipo de documento do arquivo sendo lido. Descartar se não for possivel identificar.
+		documentText.toLowerCase();
+		
 		if (documentText.contains("IMPOSTO SOBRE A RENDA")) {
 			return DocumentType.DECLARACAO_IMPOSTO_DE_RENDA;
 		} 
 		
-		for (Map.Entry<DocumentType, String> entry : compeMap.entrySet()) {
-			if (documentText.contains(entry.getValue())) {
-				return entry.getKey();
+		for (Entry<DocumentType, List<String>> entry : compeMap.entrySet()) {
+			for (String s : entry.getValue()) {
+				if (documentText.contains(s)) {
+					System.out.println("CHAVE: " + entry.getKey());
+					return entry.getKey();
+				}		
 			}
 		}	
 		
 		return DocumentType.UNKNOWN;
 	}
-	
-	// extrai os campos em formato String do PDF, e mapeia os campos selecionados que estão na config
-	/*
-	private LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
-		String[] outputLines = strippedText.split(System.lineSeparator());
-		LinkedHashMap<DocumentField, String> dataMap = new LinkedHashMap<DocumentField, String>();
-		
-		// debuga as linhas
-		for (int l = 1; l <= outputLines.length; l++) {
-			System.out.println(l + " " + outputLines[l-1]);
-		}
-
-		List<DocumentField> fields = config.fields;
-		List<String> selectedFields = config.selectedFieldsString;
-		
-		for (String s : selectedFields) {
-			int code = DocumentConfigurationManager.boletoCodeFieldMap.get(s);
-			for (DocumentField f : fields) {
-				if (f.getId() == code) {
-					int line = f.getLineLocated();
-					dataMap.put(f, outputLines[line - 1]);
-					//System.out.println(f.getFieldName().get(0) + " : " + outputLines[line - 1]);  // printa NOME_DO_CAMPO : STRING
-				}
-			}
-		}
-		
-		return dataMap;
-	}
-	*/
 	
 	// extrai os campos em formato String do PDF, e mapeia os campos selecionados que estão na config
 	private LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
@@ -270,6 +252,23 @@ public class Reader extends PDFTextStripper  {
 		return txt;
 	}
 	
+	
+	private PDDocument loadDocument(Path readPath) throws Exception {
+		// carrega o documento com o PDFBox
+		File file = readPath.toFile();
+		FileInputStream inputStream = new FileInputStream(file);	
+		
+		try {
+			PDDocument doc = PDDocument.load(inputStream);
+			inputStream.close();
+			canReadFile(doc);
+			return doc;
+		} catch (Exception e) {
+			inputStream.close();
+			throw new Exception(e);
+		}
+	}
+	
 	private void canReadFile(PDDocument doc) throws Exception {
 		// checa se arquivo está com senha ou não há permissão de leitura
 		AccessPermission ap = doc.getCurrentAccessPermission();
@@ -277,24 +276,15 @@ public class Reader extends PDFTextStripper  {
 			throw new Exception("Não há permissão para ler o documento.");
 		}
 	}
-	
-	private PDDocument loadDocument(Path readPath) throws Exception {
-		// carrega o documento com o PDFBox
-		FileInputStream inputStream = new FileInputStream(readPath.toFile());		
-		PDDocument doc = PDDocument.load(inputStream);
-		inputStream.close();
 		
-		canReadFile(doc);
-		return doc;
-	}
-	
 	private String extractBasicText(PDDocument doc) throws Exception {
 		// extrai texto do arquivo
 		PDFTextStripper str = new PDFTextStripper();
 		str.setSortByPosition(false);
 		str.setWordSeparator(System.lineSeparator());
-		String text = str.getText(doc);
-		return text;
+		String text = str.getText(doc);	
+	
+		return text;	
 	}
 	
 	private void extractGeneralBoletoPosition(PDDocument doc) throws Exception {
@@ -302,7 +292,13 @@ public class Reader extends PDFTextStripper  {
 		PDFTextStripper stripper = new Reader();
 		stripper.setSortByPosition(false);
 		Writer dummy = new OutputStreamWriter(new ByteArrayOutputStream());
-		stripper.writeText(doc, dummy);
+
+		try {
+			stripper.writeText(doc, dummy);
+		} catch (IOException e) {
+			dummy.close();
+			throw new Exception(e);
+		}
 		
 		debugStartPositions();
 	}

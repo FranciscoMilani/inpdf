@@ -8,17 +8,14 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import inpdf.DirectoryManager;
 import inpdf.DocumentType;
 import inpdf.Reader;
 
 public class ButtonActionReadToDisplay implements ActionListener {
-	private LabelManager labelManager;
 	private JComboBox comboBox;
 
-	public ButtonActionReadToDisplay(DirectoryManager directory, LabelManager labelManager, JComboBox comboBox) {
+	public ButtonActionReadToDisplay(JComboBox comboBox) {
 		this.comboBox = comboBox;
-		this.labelManager = labelManager;
 	}
 
 	@Override
@@ -29,8 +26,6 @@ public class ButtonActionReadToDisplay implements ActionListener {
 		int res = fileChooser.showSaveDialog(null);
 		if(res == JFileChooser.APPROVE_OPTION) {
 			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-			DirectoryManager.setInputDirectoryPath(file.toPath().toAbsolutePath());
-			this.labelManager.addText(DirectoryManager.getInputDirectoryPath().toString());
 			
 			try {
 				Reader r = new Reader();
@@ -41,7 +36,6 @@ public class ButtonActionReadToDisplay implements ActionListener {
 				}
 			} catch (Exception err) {
 				err.printStackTrace();
-				labelManager.addText("Arquivo inválido");
 			}
 		}
 	}

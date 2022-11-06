@@ -17,6 +17,6 @@ public class ButtonActionBack implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		frame1.setVisible(true);
-		frame2.setVisible(false);
+		frame2.dispose();
 	}
 }

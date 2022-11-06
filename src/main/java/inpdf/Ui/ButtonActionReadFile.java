@@ -12,7 +12,7 @@ import inpdf.DirectoryManager;
 public class ButtonActionReadFile implements ActionListener{
 	private LabelManager labelManager;
 
-	public ButtonActionReadFile(DirectoryManager directory, LabelManager labelManager) {
+	public ButtonActionReadFile(LabelManager labelManager) {
 		this.labelManager = labelManager;
 	}
 

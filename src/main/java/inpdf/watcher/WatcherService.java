@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.RunnableFuture;
 
+import inpdf.DirectoryManager;
 import inpdf.Reader;
 
 public class WatcherService implements Runnable {
@@ -19,9 +20,12 @@ public class WatcherService implements Runnable {
 	private static volatile boolean suspended = false;
     private final Object pauseLock = new Object();
     private final int interval = 1000;
+    
+    private WatchService watchService;
+    private WatchKey watchKey;
 	
 	public WatcherService() {
-		directory = Paths.get(System.getProperty("user.dir") + File.separator + "entrada");
+		directory = DirectoryManager.getInputDirectoryPath();
 	}
 	
 	public WatcherService(Path dir) {
@@ -31,11 +35,11 @@ public class WatcherService implements Runnable {
 	@Override
 	public void run() {		
 		try {
-			WatchService watchService = FileSystems.getDefault().newWatchService();
-			WatchKey watchKey = directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
+			watchService = FileSystems.getDefault().newWatchService();
+			watchKey = directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
 
 			while (true) {
-				System.out.println("Procurando arquivos...");
+				System.out.println("Procurando arquivos em '" + directory + "' ...");
 				Thread.sleep(interval);
 				
 				synchronized (pauseLock) {
@@ -53,6 +57,8 @@ public class WatcherService implements Runnable {
 						boolean pass = Reader.checkFileConformity(path);
 						if (pass) {
 							new Reader().ReadPDF(path);
+						} else {
+							DirectoryManager.moveToRejectedFolder(path);
 						}
 					}
 				}
@@ -80,6 +86,17 @@ public class WatcherService implements Runnable {
         	suspended = false;
             pauseLock.notifyAll();
         }
+    }
+    
+    public void change(Path newDir) {
+    	watchKey.cancel();
+    	directory = newDir;
+    	
+    	try {
+			watchKey = directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 	
 	public Queue<Path> getFilePathsQueue() {

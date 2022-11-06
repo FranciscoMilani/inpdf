@@ -14,7 +14,7 @@ public class ButtonActionConfirm implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			DirectoryManager.saveDirectories();
+			DirectoryManager.execute();
 		} catch (Exception err) {
 			labelManager.addText("Arquivo inválido");
 		}

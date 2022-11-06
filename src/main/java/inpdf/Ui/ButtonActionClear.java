@@ -15,7 +15,6 @@ public class ButtonActionClear implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(DirectoryManager.getInputDirectoryPath() != null) {
-			DirectoryManager.clearInputDirectoryPath();
 			labelManager.clearText();	
 		}
 	}

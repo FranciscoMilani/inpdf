@@ -1,38 +1,115 @@
 package inpdf;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.sql.Time;
-import java.util.Date;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class DirectoryManager{
-	private static Path inputDirectoryPath;
-	private static Path outputDirectoryPath;
-	private static Path processedDirectoryPath;
-	private static Path rejectedDirectoryPath;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonReader;
+
+import inpdf.Ui.DirectoryConfigPanel;
+
+public class DirectoryManager {
+	private static final Path userDirPath = Paths.get(System.getProperty("user.dir"));
+	private static final Path configPath = Paths.get(userDirPath + "/config.json");
+	private static final Path dirConfigPath = Paths.get(userDirPath + "/diretorios.json");
+	
+	private static final Path defaultInputDirectoryPath = userDirPath.resolve("entrada");
+	private static final Path defaultOutputDirectoryPath = userDirPath.resolve("saida");
+	private static final Path defaultProcessedDirectoryPath = userDirPath.resolve("processados");
+	private static final Path defaultRejectedDirectoryPath = userDirPath.resolve("rejeitados");
+	
+	private static Path inputDirectoryPath = defaultInputDirectoryPath;
+	private static Path outputDirectoryPath = defaultOutputDirectoryPath;
+	private static Path processedDirectoryPath = defaultProcessedDirectoryPath;
+	private static Path rejectedDirectoryPath = defaultRejectedDirectoryPath;
 	
 	static {
-		inputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "entrada");
-		outputDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "saida");
-		processedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "processados" + File.separator);
-		rejectedDirectoryPath = Paths.get(System.getProperty("user.dir") + File.separator + "rejeitados");
-		createIfDoesntExist(inputDirectoryPath);
-		createIfDoesntExist(outputDirectoryPath);
-		createIfDoesntExist(processedDirectoryPath);
-		createIfDoesntExist(rejectedDirectoryPath);
+		loadDirectories();
 	}
 	
-	public static void saveDirectories() {
+	public static void saveDirectories(DirectoryConfigPanel[] panels) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+		JsonObject obj = new JsonObject();
+		
+		for (DirectoryConfigPanel panel : panels) {
+			obj.addProperty(panel.id.toLowerCase(), panel.getPathString());
+		}
+		
+		String jText = gson.toJson(obj);
+		
+		try {
+			Files.write(dirConfigPath, jText.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		loadDirectories();
+	}
+	
+	public static void loadDirectories() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		
+		try (BufferedReader br = Files.newBufferedReader(dirConfigPath)){
+			JsonReader reader = gson.newJsonReader(br);
+			JsonElement tree = JsonParser.parseReader(reader);
+			JsonObject obj = tree.getAsJsonObject();
+			
+			assignDir(obj, "entrada");
+			assignDir(obj, "saída");
+			assignDir(obj, "processados");
+			assignDir(obj, "rejeitados");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	private static void assignDir(JsonObject obj, String primitiveKey) {
+		JsonPrimitive primitive = obj.getAsJsonPrimitive(primitiveKey);
+		String value = primitive.getAsString();
+		
+		if (value.isBlank()) {
+			if (primitiveKey.equals("entrada")) {
+				setInputDirectoryPath(defaultInputDirectoryPath);
+			} else if (primitiveKey.equals("saída")) {
+				setOutputDirectoryPath(defaultOutputDirectoryPath);
+			} else if (primitiveKey.equals("processados")) {
+				setProcessedDirectoryPath(defaultProcessedDirectoryPath);
+			} else if (primitiveKey.equals("rejeitados")) {
+				setRejectedDirectoryPath(defaultRejectedDirectoryPath);
+			}
+			return;
+		} else {
+			Path path = Paths.get(value);
+			
+			if (primitiveKey.equals("entrada")) {
+				setInputDirectoryPath(path);
+			} else if (primitiveKey.equals("saída")) {
+				setOutputDirectoryPath(path);
+			} else if (primitiveKey.equals("processados")) {
+				setProcessedDirectoryPath(path);
+			} else if (primitiveKey.equals("rejeitados")) {
+				setRejectedDirectoryPath(path);
+			}
+		}
+	}
+
+	public static void execute() {
 		if(getInputDirectoryPath() != null) {
 			try {
 				String projectDir = System.getProperty("user.dir");
@@ -54,11 +131,11 @@ public class DirectoryManager{
 	}
 	
 	public static void moveToProcessedFolder(Path filePath) {
-		moveToFolder(filePath, processedDirectoryPath);
+		moveToFolder(filePath, getProcessedDirectoryPath());
 	}
 	
 	public static void moveToRejectedFolder(Path filePath) {
-		moveToFolder(filePath, rejectedDirectoryPath);
+		moveToFolder(filePath, getRejectedDirectoryPath());
 	}
 	
 	private static void moveToFolder(Path filePath, Path destination) {
@@ -78,22 +155,57 @@ public class DirectoryManager{
 		}
 	}
 	
-	public static void saveJsonToOutputPath(String jsonText, String fileName) {	
-		String newName = getNewFileName(fileName);
+	public static void saveJsonToPath(String jsonText, String fileName, Path path) {	
+		Path filePath = path.resolve(fileName + ".json");
+		fileName = getNewFileName(fileName);		
 		
-		Path filePath = Paths.get(outputDirectoryPath + 
-				File.separator + 
-				newName +
-				".json" );
-
 		try {
-			Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
-		} 
-		catch (NoSuchFileException e) {
-			new File(outputDirectoryPath.toString()).mkdir();
+			Files.write(filePath, jsonText.getBytes());	
+		} catch (NoSuchFileException e) {
+			path.toFile().mkdir();
 			
 			try {
-				Files.write(filePath, jsonText.getBytes(), StandardOpenOption.CREATE);
+				Files.write(filePath, jsonText.getBytes());
+			} catch (Exception er) {
+				er.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static DocumentConfiguration getConfigFromJson(DocumentType type) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getConfigDirectoryPath())) {
+			JsonElement jElement = JsonParser.parseReader(gson.newJsonReader(br));
+			JsonObject obj = new JsonObject();
+			JsonArray arr = jElement.getAsJsonArray();
+			
+			DocumentConfiguration dc = gson.fromJson( arr.get(0)
+					  								.getAsJsonObject()
+					  								.get(type.toString()), 
+					  								DocumentConfiguration.class );
+			
+			return dc;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static void saveConfigJson(String jsonText, Path path) {	
+		try {
+			Files.write(path, jsonText.getBytes());		
+		} 
+		catch (NoSuchFileException e) {
+			path.toFile().mkdir();
+			
+			try {
+				Files.write(path, jsonText.getBytes());
 			}
 			catch (Exception er) {
 				er.printStackTrace();
@@ -107,7 +219,7 @@ public class DirectoryManager{
 	}
 	
 	private static String getNewFileName(String fileName) {
-		File file = new File(outputDirectoryPath + File.separator + fileName + ".json");
+		File file = getOutputDirectoryPath().resolve(fileName + ".json").toFile();
 		int number = 0;
 		String fName = "";
 		
@@ -115,7 +227,7 @@ public class DirectoryManager{
 			while(file.exists()) {
 				number++;
 				fName = fileName + "("+ number +")";
-				file = new File(outputDirectoryPath + File.separator + fName + ".json");
+				file = getOutputDirectoryPath().resolve(fName + ".json").toFile();
 			}
 		} else if(!file.exists()) {
 			fName = fileName;
@@ -167,7 +279,7 @@ public class DirectoryManager{
 		rejectedDirectoryPath = newRejectedDirectoryPath;
 	}
 	
-	public static void clearInputDirectoryPath() {
-		setInputDirectoryPath(null);
+	public static Path getConfigDirectoryPath() {
+		return configPath;
 	}
 }

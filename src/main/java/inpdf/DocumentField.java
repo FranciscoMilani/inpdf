@@ -12,7 +12,7 @@ public class DocumentField {
 	@Expose
 	private ArrayList<String> names = new ArrayList<String>();
 	@Expose
-	private Integer lineLocated;
+	private Integer lineLocated = null;
 	@Expose
 	private Boolean shouldRead = false;
 	

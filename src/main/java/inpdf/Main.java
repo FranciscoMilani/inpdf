@@ -1,15 +1,32 @@
 package inpdf;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.lang.management.GarbageCollectorMXBean;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Arrays;
 
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,85 +35,120 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.FlowView.FlowStrategy;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
+import inpdf.Ui.ButtonActionBack;
 import inpdf.Ui.ButtonActionClear;
 import inpdf.Ui.ButtonActionConfirm;
 import inpdf.Ui.ButtonActionExtract;
 import inpdf.Ui.ButtonActionReadFile;
 import inpdf.Ui.ButtonActionReadToDisplay;
 import inpdf.Ui.ButtonActionSaveBoleto;
+import inpdf.Ui.ButtonActionSaveGeneralConfig;
+import inpdf.Ui.ButtonActionSwitchFrame;
 import inpdf.Ui.ButtonActionWatcher;
 import inpdf.Ui.ButtonChangeConfigStateAction;
+import inpdf.Ui.DirectoryConfigPanel;
 import inpdf.Ui.DropdownChangeAction;
 import inpdf.Ui.LabelManager;
+import inpdf.Ui.SpringUtilities;
 import inpdf.Ui.TableManager;
 import inpdf.watcher.WatcherService;  
 
 public class Main {
-	public static void main(String[] args) throws Exception{		
+	public static void main(String[] args) throws Exception {	
+		
+		// WatchService
 		WatcherService watcherRunnable = new WatcherService();
 		Thread thread = new Thread(watcherRunnable, "Watcher");
 		thread.start();
 		
-		//interface
+		// Interface
+		// ========= FRAME 1 ==========
 		JFrame frame = new JFrame();
 		frame.setTitle("InPDF");
-		frame.setSize(1000, 700);
-		frame.setLocation(500, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		frame.setSize(640, 480);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-	    frame.setLayout(null);	
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JLabel label = new JLabel();	
-		DirectoryManager directory = new DirectoryManager();
-		LabelManager labelManager = new LabelManager(frame);
 		
-		//File button
-		JButton selectFileButton = new JButton("Selecione um arquivo...");
-		ButtonActionReadFile readFileAction = new ButtonActionReadFile(directory, labelManager);
-		selectFileButton.setBounds(400 ,280, 200, 100);  
-		selectFileButton.addActionListener(readFileAction);
-	
+		// ========= FRAME 3 ==========
+		JFrame frame3 = new JFrame("Configurador de Documentos");
+		frame3.setSize(1280, 960);
+		frame3.setLocationRelativeTo(null);
+		frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//Clear button
-		JButton clearButton = new JButton("LIMPAR");
-		ButtonActionClear cancelAction = new ButtonActionClear(directory, labelManager);
-		clearButton.setBounds(80, 580, 100, 50);  
-		clearButton.addActionListener(cancelAction);
+		
+		// ========= FRAME 4 ==========
+		JFrame frame4 = new JFrame("Configurador do InPDF");
+		frame4.setLayout(new BorderLayout());
+		frame4.setSize(640, 480);
+		frame4.setResizable(false);
+		frame4.setBackground(Color.LIGHT_GRAY);
+		frame4.setLayout(new BorderLayout());
+		frame4.setLocationRelativeTo(null);
+		frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		// ========= FRAME 1 COMPONENTS ==========
+//		JLabel label = new JLabel();	
+//		DirectoryManager directory = new DirectoryManager();
+//		LabelManager labelManager = new LabelManager(frame);
+//		
+//		//File button
+//		JButton selectFileButton = new JButton("Selecione um arquivo...");
+//		ButtonActionReadFile readFileAction = new ButtonActionReadFile(labelManager);
+//		selectFileButton.setBounds(400 ,280, 200, 100);  
+//		selectFileButton.addActionListener(readFileAction);
+//	
+//		
+//		//Clear button
+//		JButton clearButton = new JButton("LIMPAR");
+//		ButtonActionClear cancelAction = new ButtonActionClear(directory, labelManager);
+//		clearButton.setBounds(80, 580, 100, 50);  
+//		clearButton.addActionListener(cancelAction);
 		
 		//Watcher button
-		JButton watcherButton = new JButton("WATCHER");
-		ButtonActionWatcher watcherAction = new ButtonActionWatcher(watcherRunnable, thread);
-		watcherButton.setBounds(200, 580, 100, 50);  
+		JButton watcherButton = new JButton("Interromper");
+		ButtonActionWatcher watcherAction = new ButtonActionWatcher(watcherRunnable, thread); 
+		watcherButton.setPreferredSize(new Dimension(150, 25));
 		watcherButton.addActionListener(watcherAction);
 		
-		//Confirm button: temporário pois vai ser automático
-		JButton extractButton = new JButton("EXTRAIR");
-		ButtonActionExtract extractAction = new ButtonActionExtract(labelManager);
-		//ButtonActionConfirm confirmAction = new ButtonActionConfirm(directory, labelManager);
-		extractButton.setBounds(820 ,580, 100, 50);  
-		extractButton.addActionListener(extractAction);
-		//extractButton.addActionListener(extractAction);
+		//Options button
+		JButton docConfigButton = new JButton("Configurador de documentos");
+		ButtonActionSwitchFrame switchAction = new ButtonActionSwitchFrame(frame, frame3);
+		docConfigButton.addActionListener(switchAction);
 		
 		//Options button
-//		JButton optionsButton = new JButton("OPÇÕES");
-//		ButtonActionOptions optionsAction = new ButtonActionOptions(frame, frame2);
-//		optionsButton.setBounds(620 ,580, 100, 50);  
-//		optionsButton.addActionListener(optionsAction);
+		JButton programConfigButton = new JButton("Configurador do programa");
+		switchAction = new ButtonActionSwitchFrame(frame, frame4); 
+		programConfigButton.addActionListener(switchAction);
 		
-		//Back button
-//		JButton backButton = new JButton("VOLTAR");
-//		ButtonActionBack backAction = new ButtonActionBack(frame, frame2);
-//		backButton.setBounds(620 ,580, 100, 50);  
-//		backButton.addActionListener(backAction);
+		JPanel centerP = new JPanel(); 
+		JPanel bottomP = new JPanel();
+		centerP.add(docConfigButton);
+		centerP.add(programConfigButton);
+		bottomP.add(watcherButton);
 		
-		frame.add(selectFileButton);
-//		frame.add(optionsButton);
-		frame.add(extractButton);
-		frame.add(clearButton);
-		frame.add(watcherButton);
+		frame.add(centerP, BorderLayout.CENTER);
+		frame.add(bottomP, BorderLayout.SOUTH);
+	
+//		frame.add(docConfigButton);
+//		frame.add(programConfigButton);	
+//		frame.add(selectFileButton);
+//		frame.add(clearButton);
+//		frame.add(watcherButton);
 		
 		JPanel dropdown = new JPanel();
 		JLabel dropdownLabel = new JLabel("Tipo de Documento");
@@ -118,20 +170,29 @@ public class Main {
 		dropdown.add(comboBox);
 		
 		comboBox.addActionListener(new DropdownChangeAction(comboBox));
-			
-		JFrame frame3 = new JFrame("Configurador do InPDF");
-		//frame3.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame3.setSize(640, 480);
+		
+		
+		
+		
+		
+		// ========= FRAME 3 COMPONENTS ==========
 		
 		JTabbedPane tabPane = new JTabbedPane();
 		JPanel mainBoletoPanel = new JPanel(new BorderLayout());
 		JPanel mainIRPFPanel = new JPanel();
+		
 		JPanel textAreaMainPanel = new JPanel(new BorderLayout());
 		JPanel textAreaPanel = new JPanel(new BorderLayout());
 		JPanel textAreaBottomPanel = new JPanel();
-		JPanel tablePanel = new JPanel(new BorderLayout());
-		JScrollPane tableScrollPane = new JScrollPane(tablePanel);
 		ExtractedTextArea extractedTextArea = new ExtractedTextArea(null);
+		
+		JPanel tableMainPanel = new JPanel(new BorderLayout());
+		JPanel tablePanel = new JPanel(new BorderLayout());
+		JPanel tableBottomPanel = new JPanel(new FlowLayout());
+		
+		// PANES
+		tabPane.addTab("Boletos", mainBoletoPanel);
+		tabPane.addTab("IRPF", mainIRPFPanel);
 		
 		String[] columnHeaders = new String[] {"Campo", "Linha", "Selecionar"};
 		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 24) {
@@ -157,16 +218,21 @@ public class Main {
 			    }
 		    }
 		};
-
-		JTable configTable = new JTable(tableModel);
-		new TableManager(configTable);
 		
-		textAreaPanel.setBorder(new TitledBorder("Texto Extraído"));
+		// ================ MAIN AREA ================
+		GridLayout grid = new GridLayout(1,2);
+		grid.setHgap(10);
+		grid.setVgap(10);
+		mainBoletoPanel.setLayout(grid);
+		
+		
+		// ================ TEXT AREA ================
+		textAreaMainPanel.setBorder(new TitledBorder("Texto Extraído"));
         JScrollPane textAreaScrollPane = new JScrollPane(textAreaPanel);
         textAreaPanel.add(extractedTextArea, BorderLayout.CENTER);
-        
+
         JButton jbtnSearch = new JButton("Procurar");
-        ButtonActionReadToDisplay readFileToDisplayAction = new ButtonActionReadToDisplay(directory, labelManager, comboBox);
+        ButtonActionReadToDisplay readFileToDisplayAction = new ButtonActionReadToDisplay(comboBox);
         jbtnSearch.addActionListener(readFileToDisplayAction);
         
         JButton jbtnClear = new JButton("Limpar");
@@ -177,37 +243,115 @@ public class Main {
         textAreaMainPanel.add(textAreaBottomPanel, BorderLayout.SOUTH);
         textAreaBottomPanel.add(jbtnSearch);
         textAreaBottomPanel.add(jbtnClear);
+        
+        
+		// ================ TABLE AREA ================
+        JScrollPane tableScrollPane = new JScrollPane(tablePanel);
+		JTable table = new JTable(tableModel);
+		new TableManager(table);
 		
-		tablePanel.setBorder(new TitledBorder("Configurações"));		
-		tablePanel.add(configTable, BorderLayout.CENTER);
-		tablePanel.add(configTable.getTableHeader(), BorderLayout.NORTH);
-
-		GridLayout grid = new GridLayout(1,2);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		mainBoletoPanel.setLayout(grid);
-		mainBoletoPanel.add(textAreaMainPanel);
-		mainBoletoPanel.add(tableScrollPane);
-
-		tabPane.addTab("Boletos", mainBoletoPanel);
-		tabPane.addTab("IRPF", mainIRPFPanel);
+		tablePanel.add(table.getTableHeader(), BorderLayout.NORTH);
+		tablePanel.add(table, BorderLayout.CENTER);
 		
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		tableMainPanel.setBorder(new TitledBorder("Configurações"));
+		tableMainPanel.add(tableScrollPane, BorderLayout.CENTER);	
+		tableMainPanel.add(tableBottomPanel, BorderLayout.SOUTH);
+			
+		// BOTTOM BUTTONS
 		JButton jbtnSave = new JButton("Salvar");
-		JButton jbtnBack = new JButton("Voltar");
 		jbtnSave.addActionListener(new ButtonActionSaveBoleto(comboBox));
+		JButton jbtnBack = new JButton("Voltar");
+		jbtnBack.addActionListener(new ButtonActionSwitchFrame(frame3, frame));
+		//jbtnBack.addActionListener(new ButtonActionSaveBoleto(comboBox));
+	
+		tableBottomPanel.add(jbtnSave);
+		tableBottomPanel.add(jbtnBack);
+		tableBottomPanel.add(dropdown);
 		
-		buttonPanel.add(jbtnSave);
-		buttonPanel.add(jbtnBack);
-		buttonPanel.add(dropdown);
-		tablePanel.add(buttonPanel, BorderLayout.PAGE_END);
-
+		// MAIN PANEL ADDITIONS	
+		mainBoletoPanel.add(textAreaMainPanel);
+		mainBoletoPanel.add(tableMainPanel);
+			
 		frame3.add(tabPane);
-		frame3.pack();
-		frame3.setLocationRelativeTo(null);
-		frame3.setVisible(true);
-		frame.toFront();
-		frame.setVisible(true);
+		
+		
+		
+		// ========= FRAME 4 COMPONENTS ==========
+		frame.addComponentListener(new ComponentAdapter() {
+			public void componentHidden(ComponentEvent e) {
+				System.out.println("hidden");
+			}
+			   
+			@Override
+			public void componentShown(ComponentEvent e) {
+				System.out.println("shown");
+			}
 
+		});
+		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+	        @Override
+	        public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+				System.out.println("closed");
+	        }      
+	    });
+		
+		JTextPane titlePane = new JTextPane();
+		JPanel middlePanel = new JPanel(new GridBagLayout());
+		JPanel bottomPanel = new JPanel();
+		JPanel innerMiddlePanel = new JPanel(new SpringLayout());
+
+		
+		// titlePane
+		StyledDocument doc = titlePane.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		StyleConstants.setFontFamily(center, "Roboto");
+		StyleConstants.setFontSize(center, 25);
+		StyleConstants.setSpaceAbove(center, 20);
+		StyleConstants.setSpaceBelow(center, 20);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		
+		titlePane.setDisabledTextColor(Color.BLACK);
+		titlePane.setText("Configurador do Programa");
+		titlePane.setEnabled(false);
+		
+		
+		// middlePanel
+
+		//pBtn.setPreferredSize(new Dimension(250, 75));
+		
+		DirectoryConfigPanel panelI = new DirectoryConfigPanel("Entrada");
+		DirectoryConfigPanel panelO = new DirectoryConfigPanel("Saída");
+		DirectoryConfigPanel panelP = new DirectoryConfigPanel("Processados");
+		DirectoryConfigPanel panelR = new DirectoryConfigPanel("Rejeitados");
+		innerMiddlePanel.add(panelI);
+		innerMiddlePanel.add(panelO);
+		innerMiddlePanel.add(panelP);
+		innerMiddlePanel.add(panelR);
+		
+		middlePanel.add(innerMiddlePanel);
+		
+		SpringUtilities.makeCompactGrid(innerMiddlePanel, 4, 1, 0, 0, 0, 20);
+		
+		// bottomPanel
+		bottomPanel.setBackground(Color.WHITE);
+		
+		JButton save = new JButton("Salvar");
+		save.addActionListener(new ButtonActionSaveGeneralConfig(watcherAction, new DirectoryConfigPanel[] { panelI, panelO, panelP, panelR }));
+		bottomPanel.add(save);
+		
+		JButton back = new JButton("Voltar");
+		back.addActionListener(new ButtonActionSwitchFrame(frame4, frame));
+		bottomPanel.add(back);
+		
+		
+		// ADD
+		frame4.add(titlePane, BorderLayout.NORTH);
+		frame4.add(middlePanel, BorderLayout.CENTER);
+		frame4.add(bottomPanel, BorderLayout.SOUTH);
+	
+		
+		frame.setVisible(true);
 	}
 }
