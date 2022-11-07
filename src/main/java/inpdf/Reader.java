@@ -106,7 +106,7 @@ public class Reader extends PDFTextStripper  {
 		}
 	}
 	
-	public DocumentType readAndShowPDFText(Path readPath) {		
+	public DocumentType readAndShowPDFText(Path readPath, ExtractedTextArea extractedArea) {		
 		DocumentType docType = null;
 		PDDocument doc = null;
 		String txt;
@@ -128,7 +128,7 @@ public class Reader extends PDFTextStripper  {
 			docConfig = DocumentConfigurationManager.getConfigurationFromType(docType);	
 			txtFromArea = extractBoletoArea(doc);
 			dataMap = extractFieldsFromText(docConfig, txtFromArea);
-			ExtractedTextArea.displayText(txtFromArea);
+			extractedArea.displayText(txtFromArea);
 		
 			doc.close();
 			

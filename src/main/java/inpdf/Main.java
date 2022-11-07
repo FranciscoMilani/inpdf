@@ -59,6 +59,7 @@ import inpdf.Ui.ButtonActionWatcher;
 import inpdf.Ui.ButtonChangeConfigStateAction;
 import inpdf.Ui.DirectoryConfigPanel;
 import inpdf.Ui.DropdownChangeAction;
+import inpdf.Ui.IRScreen;
 import inpdf.Ui.LabelManager;
 import inpdf.Ui.SpringUtilities;
 import inpdf.Ui.TableManager;
@@ -101,36 +102,19 @@ public class Main {
 		frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		// ========= FRAME 1 COMPONENTS ==========
-//		JLabel label = new JLabel();	
-//		DirectoryManager directory = new DirectoryManager();
-//		LabelManager labelManager = new LabelManager(frame);
-//		
-//		//File button
-//		JButton selectFileButton = new JButton("Selecione um arquivo...");
-//		ButtonActionReadFile readFileAction = new ButtonActionReadFile(labelManager);
-//		selectFileButton.setBounds(400 ,280, 200, 100);  
-//		selectFileButton.addActionListener(readFileAction);
-//	
-//		
-//		//Clear button
-//		JButton clearButton = new JButton("LIMPAR");
-//		ButtonActionClear cancelAction = new ButtonActionClear(directory, labelManager);
-//		clearButton.setBounds(80, 580, 100, 50);  
-//		clearButton.addActionListener(cancelAction);
-		
+		// ========= FRAME 1 COMPONENTS ==========	
 		//Watcher button
 		JButton watcherButton = new JButton("Interromper");
 		ButtonActionWatcher watcherAction = new ButtonActionWatcher(watcherRunnable, thread); 
 		watcherButton.setPreferredSize(new Dimension(150, 25));
 		watcherButton.addActionListener(watcherAction);
 		
-		//Options button
+		//Document config button
 		JButton docConfigButton = new JButton("Configurador de documentos");
 		ButtonActionSwitchFrame switchAction = new ButtonActionSwitchFrame(frame, frame3);
 		docConfigButton.addActionListener(switchAction);
 		
-		//Options button
+		//InPDF config button
 		JButton programConfigButton = new JButton("Configurador do programa");
 		switchAction = new ButtonActionSwitchFrame(frame, frame4); 
 		programConfigButton.addActionListener(switchAction);
@@ -143,12 +127,6 @@ public class Main {
 		
 		frame.add(centerP, BorderLayout.CENTER);
 		frame.add(bottomP, BorderLayout.SOUTH);
-	
-//		frame.add(docConfigButton);
-//		frame.add(programConfigButton);	
-//		frame.add(selectFileButton);
-//		frame.add(clearButton);
-//		frame.add(watcherButton);
 		
 		JPanel dropdown = new JPanel();
 		JLabel dropdownLabel = new JLabel("Tipo de Documento");
@@ -184,13 +162,14 @@ public class Main {
 		JPanel textAreaMainPanel = new JPanel(new BorderLayout());
 		JPanel textAreaPanel = new JPanel(new BorderLayout());
 		JPanel textAreaBottomPanel = new JPanel();
-		ExtractedTextArea extractedTextArea = new ExtractedTextArea(null);
+		ExtractedTextArea extractedTextArea = new ExtractedTextArea();
 		
 		JPanel tableMainPanel = new JPanel(new BorderLayout());
 		JPanel tablePanel = new JPanel(new BorderLayout());
 		JPanel tableBottomPanel = new JPanel(new FlowLayout());
 		
 		// PANES
+		new IRScreen(mainIRPFPanel);
 		tabPane.addTab("Boletos", mainBoletoPanel);
 		tabPane.addTab("IRPF", mainIRPFPanel);
 		
@@ -232,11 +211,11 @@ public class Main {
         textAreaPanel.add(extractedTextArea, BorderLayout.CENTER);
 
         JButton jbtnSearch = new JButton("Procurar");
-        ButtonActionReadToDisplay readFileToDisplayAction = new ButtonActionReadToDisplay(comboBox);
+        ButtonActionReadToDisplay readFileToDisplayAction = new ButtonActionReadToDisplay(comboBox, extractedTextArea);
         jbtnSearch.addActionListener(readFileToDisplayAction);
         
         JButton jbtnClear = new JButton("Limpar");
-        ButtonChangeConfigStateAction clearTextAction = new ButtonChangeConfigStateAction(comboBox);
+        ButtonChangeConfigStateAction clearTextAction = new ButtonChangeConfigStateAction(comboBox, extractedTextArea);
         jbtnClear.addActionListener(clearTextAction);
         
         textAreaMainPanel.add(textAreaScrollPane, BorderLayout.CENTER);

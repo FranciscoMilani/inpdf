@@ -9,13 +9,16 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import inpdf.DocumentType;
+import inpdf.ExtractedTextArea;
 import inpdf.Reader;
 
 public class ButtonActionReadToDisplay implements ActionListener {
 	private JComboBox comboBox;
+	private ExtractedTextArea extractedArea;
 
-	public ButtonActionReadToDisplay(JComboBox comboBox) {
+	public ButtonActionReadToDisplay(JComboBox comboBox, ExtractedTextArea extractedArea) {
 		this.comboBox = comboBox;
+		this.extractedArea = extractedArea;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class ButtonActionReadToDisplay implements ActionListener {
 			
 			try {
 				Reader r = new Reader();
-				DocumentType type =  r.readAndShowPDFText(file.toPath().toAbsolutePath());
+				DocumentType type =  r.readAndShowPDFText(file.toPath().toAbsolutePath(), extractedArea);
 				if (type != null) {
 					comboBox.setEnabled(false);
 					comboBox.setSelectedItem(type);				
