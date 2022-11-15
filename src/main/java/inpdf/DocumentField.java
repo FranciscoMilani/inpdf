@@ -15,9 +15,7 @@ public class DocumentField {
 	private Integer lineLocated = null;
 	@Expose
 	private Boolean shouldRead = false;
-	
-	//private Rectangle2D coordinates;
-	
+
 	public DocumentField(Integer id, String name, Integer lineLocated) {
 		names.add(name);
 		this.setLineLocated(lineLocated);
@@ -49,14 +47,6 @@ public class DocumentField {
 	public void setFieldName(ArrayList<String> fieldName) {
 		this.names = fieldName;
 	}
-	
-//	public Rectangle2D getCoordinates() {
-//		return coordinates;
-//	}
-//	
-//	public void setCoordinates(Rectangle2D coordinates) {
-//		this.coordinates = coordinates;
-//	}
 
 	public Boolean getShouldRead() {
 		return shouldRead;

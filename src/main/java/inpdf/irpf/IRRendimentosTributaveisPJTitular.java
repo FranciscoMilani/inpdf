@@ -1,60 +1,66 @@
 package inpdf.irpf;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.gson.annotations.Expose;
-
-public class IRRendimentosTributaveisPJTitular {
+public class IRRendimentosTributaveisPJTitular extends IRSection implements IAddable {
+	public final IRSectionsEnum type = IRSectionsEnum.RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR;
 	public ArrayList<Integer> pages;
-	public final String TYPE = "Rendimentos Tributáveis PJ Titular";
-	private List<Item> items = new ArrayList<Item>();
+	private List<IRItem> items = new ArrayList<IRItem>();
+	private List<String> fieldNames = Arrays.asList("Nome",
+													"Data de Nascimento",
+													"CPF",
+													"Título Eleitoral",
+													"Possui cônjuge ou companheiro(a)",
+													"CPF do cônjuge ou companheiro(a)",
+													"Endereço");
 	
 	public IRRendimentosTributaveisPJTitular() {
 		
 	}
 	
-	public void createItem() {
-		Item item = new Item(items.size());
-		items.add(item);
-	}
-	
-	public List<Item> getItems() {
+	public List<IRItem> getItems() {
 		return items;
 	}
 	
-	public Item getItemByIndex(int index) {
+	public IRItem getItemByIndex(int index) {
 		return items.get(index);
 	}
 	
-	public Item getItemByID(int id) {
+	public IRItem getItemByID(int id) {
 		return items.get(id - 1);
 	}
 	
-	public class Item {
-		private final int itemID;
-		private List<IRField> fields;
-		
-		public Item(int index) {
-			this.itemID = index + 1;
+	@Override
+	public IRItem createItem() {
+		IRItem item = new IRItem(items.size(), this, this.getFields());
+		items.add(item);
+		return item;
+	}
+	
+	@Override
+	public List<List<IRField>> getItemsList() {
+		List<List<IRField>> list = new ArrayList<List<IRField>>();
+		for (IRItem item : items) {
+			list.add(item.getFields());
 		}
 		
-		public int getID() {
-			return itemID;
-		}
-		
-		public List<IRField> getFields() {
-			return fields;
-		}
-		
-		private void addFields() {
-			this.fields = Arrays.asList(
-					new IRField(""),
-					new IRField(""),
-					new IRField("")
-					);
-		}
+		return list;
+	}
+	
+	@Override
+	public List<String> getFieldNames() {
+		return fieldNames;
+	}
+
+	@Override
+	public List<IRField> getFields() {
+		return null;
+	}
+
+	@Override
+	public IRSectionsEnum getType() {
+		return type;
 	}
 }

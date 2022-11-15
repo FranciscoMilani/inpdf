@@ -1,20 +1,17 @@
 package inpdf.Ui;
 
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.CellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.plaf.basic.BasicTreeUI.CellEditorHandler;
-import javax.swing.table.TableCellEditor;
 
 import org.javatuples.Triplet;
 
-import inpdf.DirectoryManager;
 import inpdf.DocumentConfiguration;
 import inpdf.DocumentConfigurationManager;
 import inpdf.DocumentType;
@@ -33,9 +30,12 @@ public class ButtonActionSaveBoleto implements ActionListener{
 			table.getCellEditor().stopCellEditing();
 		}
 		
-		if (!passValueChecks()) {
-			// TODO: DAR FEEDBACK PQ ALGUM VALOR NAO SE ADEQUOU AOS REQUISITOS
-			System.err.println("NÃO PASSOU, MOSTRAR FEEDBACK NA TELA");
+		if (!passValueChecks()) {			
+			JOptionPane.showMessageDialog(null, 
+										"Valores igual a zero ou negativos encontados. Corrija para salvar", 
+										"Valores inválidos encontrados",
+										MessageType.INFO.ordinal());
+			
 			return;
 		}
 		

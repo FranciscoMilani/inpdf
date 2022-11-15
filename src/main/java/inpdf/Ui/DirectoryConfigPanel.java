@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import inpdf.DirectoryManager;
+
 public class DirectoryConfigPanel extends JPanel implements ActionListener {
 	public final String id;
 	private JTextField pathField = new JTextField("", 25);
@@ -33,6 +35,8 @@ public class DirectoryConfigPanel extends JPanel implements ActionListener {
 		
 		ButtonActionSelectDir btnAction = new ButtonActionSelectDir(this);
 		button.addActionListener(btnAction);
+		
+		setInitialPath();
 	}
 	
 	public void setPath(String newPath) {
@@ -48,10 +52,23 @@ public class DirectoryConfigPanel extends JPanel implements ActionListener {
 	public String getPathString() {	
 		return (path == null) ? "" : path.normalize().toString();
 	}
+	
+	public void setInitialPath() {
+		if (id == "Entrada") {
+			setPath(DirectoryManager.getInputDirectoryPath().toString());
+		} else if(id == "Saída") {
+			setPath(DirectoryManager.getOutputDirectoryPath().toString());
+		} else if (id == "Processados") {
+			setPath(DirectoryManager.getProcessedDirectoryPath().toString());
+		} else if (id == "Rejeitados") {
+			setPath(DirectoryManager.getRejectedDirectoryPath().toString());
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "clear") {
+			this.path = null;
 			this.setPath("");
 		}
 	}

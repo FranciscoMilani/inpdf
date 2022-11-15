@@ -31,9 +31,8 @@ public class ButtonActionReadToDisplay implements ActionListener {
 			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 			
 			try {
-				Reader r = new Reader();
-				DocumentType type =  r.readAndShowPDFText(file.toPath().toAbsolutePath(), extractedArea);
-				if (type != null) {
+				DocumentType type =  Reader.readAndShowPDFText(file.toPath().toAbsolutePath(), extractedArea);
+				if (type != null && type != DocumentType.DECLARACAO_IMPOSTO_DE_RENDA) {
 					comboBox.setEnabled(false);
 					comboBox.setSelectedItem(type);				
 				}

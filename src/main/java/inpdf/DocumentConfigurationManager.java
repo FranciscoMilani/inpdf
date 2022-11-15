@@ -29,11 +29,9 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 
 public class DocumentConfigurationManager {
-	private static Path filePath;
-	public static LinkedHashMap<DocumentType, DocumentConfiguration> configTypeMap = new LinkedHashMap<>();
-	public static String[] irfFieldNames = {"A definir"};
-	public static String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Número do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora/Multa", "Outros Acréscimos", "Valor Cobrado", "Pagador" }; // serve p/ definir campos da UI
-	public static HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
+	public static final LinkedHashMap<DocumentType, DocumentConfiguration> configTypeMap = new LinkedHashMap<>();
+	public static final String[] boletoFieldNames = {"Compe", "Linha Digitável", "Local de Pagamento", "Beneficiário", "Data do Documento", "Número do Documento", "Espécie Documento", "Aceite", "Data do Processamento", "Uso do Banco", "Carteira", "Moeda", "Quantidade", "Valor", "Vencimento", "Agência", "Nosso Número", "Valor do Documento", "Desconto", "Outras Deduções", "Mora/Multa", "Outros Acréscimos", "Valor Cobrado", "Pagador" }; // serve p/ definir campos da UI
+	public static final HashMap<String, Integer> boletoCodeFieldMap = new HashMap<String, Integer>();
 	
 	public static enum FieldEnum {
 		COMPE("Compe"),
@@ -70,13 +68,10 @@ public class DocumentConfigurationManager {
 	
 	
 	static {
-		// TODO: a inicialização no momento está excluindo os arquivos se ja existem e recriando-os, corrigir se implementarmos o salvamento
 		for (int i = 0; i < boletoFieldNames.length; i++) {
 			boletoCodeFieldMap.put(boletoFieldNames[i], i);
 		}
-		
-		
-//		createConfigurations();
+
 		if (Files.exists(DirectoryManager.getConfigDirectoryPath())) { 
 			loadConfigurations();
 		} else {

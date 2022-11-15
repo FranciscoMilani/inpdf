@@ -1,5 +1,19 @@
 package inpdf.irpf;
 
-public class IRResumoDeclaracao {
+import java.util.List;
+
+public class IRResumoDeclaracao extends IRSection {
+
+	@Override
+	void addFields() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	List<IRField> getFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

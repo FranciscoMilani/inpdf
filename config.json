@@ -534,7 +534,7 @@
             "Vencimento"
           ],
           "lineLocated": 6,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 15,
@@ -600,7 +600,7 @@
           "names": [
             "Valor Cobrado"
           ],
-          "lineLocated": null,
+          "lineLocated": 51,
           "shouldRead": false
         },
         {
@@ -609,8 +609,8 @@
             "Sacado",
             "Pagador"
           ],
-          "lineLocated": 49,
-          "shouldRead": true
+          "lineLocated": 52,
+          "shouldRead": false
         }
       ]
     },

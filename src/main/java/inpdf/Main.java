@@ -1,4 +1,5 @@
 package inpdf;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +17,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.GarbageCollectorMXBean;
 import java.nio.file.FileSystems;
@@ -26,6 +28,8 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Arrays;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -63,6 +67,7 @@ import inpdf.Ui.IRScreen;
 import inpdf.Ui.LabelManager;
 import inpdf.Ui.SpringUtilities;
 import inpdf.Ui.TableManager;
+import inpdf.irpf.IRDocumentManager;
 import inpdf.watcher.WatcherService;  
 
 public class Main {
@@ -113,16 +118,25 @@ public class Main {
 		JButton docConfigButton = new JButton("Configurador de documentos");
 		ButtonActionSwitchFrame switchAction = new ButtonActionSwitchFrame(frame, frame3);
 		docConfigButton.addActionListener(switchAction);
+		docConfigButton.setPreferredSize(new Dimension(200, 40));
 		
 		//InPDF config button
 		JButton programConfigButton = new JButton("Configurador do programa");
 		switchAction = new ButtonActionSwitchFrame(frame, frame4); 
 		programConfigButton.addActionListener(switchAction);
+		programConfigButton.setPreferredSize(new Dimension(200, 40));
 		
-		JPanel centerP = new JPanel(); 
+		
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 0, 0);
+		
+		JPanel centerP = new JPanel(new GridBagLayout());
 		JPanel bottomP = new JPanel();
-		centerP.add(docConfigButton);
-		centerP.add(programConfigButton);
+		centerP.add(docConfigButton, gbc);
+		centerP.add(programConfigButton, gbc);
 		bottomP.add(watcherButton);
 		
 		frame.add(centerP, BorderLayout.CENTER);
@@ -169,9 +183,9 @@ public class Main {
 		JPanel tableBottomPanel = new JPanel(new FlowLayout());
 		
 		// PANES
-		new IRScreen(mainIRPFPanel);
+		IRScreen irScreen = new IRScreen(frame, frame3);
 		tabPane.addTab("Boletos", mainBoletoPanel);
-		tabPane.addTab("IRPF", mainIRPFPanel);
+		tabPane.addTab("IRPF", irScreen);
 		
 		String[] columnHeaders = new String[] {"Campo", "Linha", "Selecionar"};
 		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 24) {
@@ -255,37 +269,16 @@ public class Main {
 		
 		
 		
-		// ========= FRAME 4 COMPONENTS ==========
-		frame.addComponentListener(new ComponentAdapter() {
-			public void componentHidden(ComponentEvent e) {
-				System.out.println("hidden");
-			}
-			   
-			@Override
-			public void componentShown(ComponentEvent e) {
-				System.out.println("shown");
-			}
-
-		});
-		
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-	        @Override
-	        public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-				System.out.println("closed");
-	        }      
-	    });
-		
+		// ========= FRAME 4 COMPONENTS ==========		
 		JTextPane titlePane = new JTextPane();
 		JPanel middlePanel = new JPanel(new GridBagLayout());
 		JPanel bottomPanel = new JPanel();
 		JPanel innerMiddlePanel = new JPanel(new SpringLayout());
-
 		
 		// titlePane
 		StyledDocument doc = titlePane.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		StyleConstants.setFontFamily(center, "Roboto");
 		StyleConstants.setFontSize(center, 25);
 		StyleConstants.setSpaceAbove(center, 20);
 		StyleConstants.setSpaceBelow(center, 20);
@@ -299,11 +292,12 @@ public class Main {
 		// middlePanel
 
 		//pBtn.setPreferredSize(new Dimension(250, 75));
-		
 		DirectoryConfigPanel panelI = new DirectoryConfigPanel("Entrada");
 		DirectoryConfigPanel panelO = new DirectoryConfigPanel("Saída");
 		DirectoryConfigPanel panelP = new DirectoryConfigPanel("Processados");
 		DirectoryConfigPanel panelR = new DirectoryConfigPanel("Rejeitados");
+		DirectoryConfigPanel[] dirConfigPanels = new DirectoryConfigPanel[] {panelI, panelO, panelP, panelR};
+		
 		innerMiddlePanel.add(panelI);
 		innerMiddlePanel.add(panelO);
 		innerMiddlePanel.add(panelP);
@@ -314,14 +308,19 @@ public class Main {
 		SpringUtilities.makeCompactGrid(innerMiddlePanel, 4, 1, 0, 0, 0, 20);
 		
 		// bottomPanel
+		FlowLayout fl = new FlowLayout();
+		fl.setHgap(25);
+		bottomPanel.setLayout(fl);
 		bottomPanel.setBackground(Color.WHITE);
 		
 		JButton save = new JButton("Salvar");
 		save.addActionListener(new ButtonActionSaveGeneralConfig(watcherAction, new DirectoryConfigPanel[] { panelI, panelO, panelP, panelR }));
+		save.setPreferredSize(new Dimension(100, 30));
 		bottomPanel.add(save);
 		
 		JButton back = new JButton("Voltar");
 		back.addActionListener(new ButtonActionSwitchFrame(frame4, frame));
+		back.setPreferredSize(new Dimension(100, 30));
 		bottomPanel.add(back);
 		
 		
@@ -331,6 +330,24 @@ public class Main {
 		frame4.add(bottomPanel, BorderLayout.SOUTH);
 	
 		
+		// EVENTS
+		frame4.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				Arrays.asList(dirConfigPanels).forEach(p -> {
+					p.setInitialPath();
+				});
+			}
+		});
+		
+		frame4.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosed(WindowEvent e) {
+				System.out.println("closed");
+	        }      
+	    });
+		
 		frame.setVisible(true);
+		new IRDocumentManager(irScreen.table);
 	}
 }

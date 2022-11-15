@@ -17,23 +17,23 @@ public class ButtonActionExtract implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(DirectoryManager.getInputDirectoryPath() != null) {
-			try {
-				Path documentDir = DirectoryManager.getInputDirectoryPath();
-				
-				if (Reader.checkFileConformity(documentDir)) {
-					Reader reader = new Reader();
-					reader.ReadPDF(documentDir);
-				} 
-				else {
-					System.out.println("Arquivo não é formato PDF");
-				}			
-			} 
-			catch (IOException er) {
-				label.addText("Houve um erro");
-				er.printStackTrace();
-				throw new RuntimeException();
-			}
-		}	
+//		if(DirectoryManager.getInputDirectoryPath() != null) {
+//			try {
+//				Path documentDir = DirectoryManager.getInputDirectoryPath();
+//				
+//				if (Reader.checkFileConformity(documentDir)) {
+//					Reader reader = new Reader();
+//					reader.ReadPDF(documentDir);
+//				} 
+//				else {
+//					System.out.println("Arquivo não é formato PDF");
+//				}			
+//			} 
+//			catch (IOException er) {
+//				label.addText("Houve um erro");
+//				er.printStackTrace();
+//				throw new RuntimeException();
+//			}
+//		}	
 	}
 }

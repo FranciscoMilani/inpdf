@@ -11,7 +11,10 @@ import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.RunnableFuture;
 
+import inpdf.BoletoReader;
 import inpdf.DirectoryManager;
+import inpdf.DocumentType;
+import inpdf.IRPFReader;
 import inpdf.Reader;
 
 public class WatcherService implements Runnable {
@@ -53,10 +56,16 @@ public class WatcherService implements Runnable {
 					if (!filePaths.contains((Path) event.context())) {
 						Path path = directory.resolve((Path) event.context());
 						System.out.println("PATH: " + path);
-						//filePaths.add(path);
+						
 						boolean pass = Reader.checkFileConformity(path);
 						if (pass) {
-							new Reader().ReadPDF(path);
+							DocumentType docType = Reader.determineDocumentType(path);
+							if (docType != null && docType != DocumentType.UNKNOWN) {
+								convert(path, docType);
+							} else {
+								System.out.println("Não foi possível ler o tipo de documento");
+								DirectoryManager.moveToRejectedFolder(path);
+							}
 						} else {
 							DirectoryManager.moveToRejectedFolder(path);
 						}
@@ -75,9 +84,21 @@ public class WatcherService implements Runnable {
 			Thread.currentThread().interrupt();
 		}
 	}
+	
+	private <T> void convert(Path path, DocumentType docType) throws IOException {
+		T type = (T) Reader.createReaderFromType(path, docType);
+		
+		if (type instanceof IRPFReader) {
+			IRPFReader reader = (IRPFReader) type;
+			reader.readPDF(path);
+		} else if (type instanceof BoletoReader) {
+			BoletoReader reader = (BoletoReader) type;
+			reader.readPDF(path, docType);
+		}
+	}
 
     public void suspend() {
-        // you may want to throw an IllegalStateException if !running
+        // may want to throw an IllegalStateException if running == false
     	suspended = true;
     }
 

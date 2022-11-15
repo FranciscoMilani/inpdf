@@ -109,26 +109,26 @@ public class DirectoryManager {
 		}
 	}
 
-	public static void execute() {
-		if(getInputDirectoryPath() != null) {
-			try {
-				String projectDir = System.getProperty("user.dir");
-				Path documentDir = getInputDirectoryPath(); // está retornando o caminho do arquivo selecionado, temporariamente
-				
-				if (Reader.checkFileConformity(documentDir)) {
-					Reader reader = new Reader();
-					reader.ReadPDF(documentDir);
-				} 
-				else {
-					System.out.println("Arquivo não é formato PDF");
-				}			
-			} 
-			catch (IOException e) {
-				e.printStackTrace();
-				throw new RuntimeException();
-			}
-		}	
-	}
+//	public static void execute() {
+//		if(getInputDirectoryPath() != null) {
+//			try {
+//				String projectDir = System.getProperty("user.dir");
+//				Path documentDir = getInputDirectoryPath();
+//				
+//				if (Reader.checkFileConformity(documentDir)) {				
+//					Reader reader = new Reader();
+//					reader.ReadPDF(documentDir);
+//				} 
+//				else {
+//					System.out.println("Arquivo não é formato PDF");
+//				}			
+//			} 
+//			catch (IOException e) {
+//				e.printStackTrace();
+//				throw new RuntimeException();
+//			}
+//		}	
+//	}
 	
 	public static void moveToProcessedFolder(Path filePath) {
 		moveToFolder(filePath, getProcessedDirectoryPath());
@@ -156,16 +156,16 @@ public class DirectoryManager {
 	}
 	
 	public static void saveJsonToPath(String jsonText, String fileName, Path path) {	
-		Path filePath = path.resolve(fileName + ".json");
-		fileName = getNewFileName(fileName);		
+		fileName = getNewFileName(fileName);
+		Path newPath = path.resolve(fileName + ".json");
 		
 		try {
-			Files.write(filePath, jsonText.getBytes());	
+			Files.write(newPath, jsonText.getBytes());	
 		} catch (NoSuchFileException e) {
 			path.toFile().mkdir();
 			
 			try {
-				Files.write(filePath, jsonText.getBytes());
+				Files.write(newPath, jsonText.getBytes());
 			} catch (Exception er) {
 				er.printStackTrace();
 				throw new RuntimeException(e);
