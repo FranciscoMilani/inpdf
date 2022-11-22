@@ -1,15 +1,14 @@
 package inpdf.watcher;
 
-import java.awt.AWTEvent;
-import java.awt.Desktop.Action;
-import java.awt.desktop.ScreenSleepEvent;
-import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.RunnableFuture;
 
 import inpdf.BoletoReader;
 import inpdf.DirectoryManager;
@@ -22,7 +21,7 @@ public class WatcherService implements Runnable {
 	private static Queue<Path> filePaths = new PriorityBlockingQueue<Path>();
 	private static volatile boolean suspended = false;
     private final Object pauseLock = new Object();
-    private final int interval = 1000;
+    private static int interval = 1000;
     
     private WatchService watchService;
     private WatchKey watchKey;
@@ -98,7 +97,6 @@ public class WatcherService implements Runnable {
 	}
 
     public void suspend() {
-        // may want to throw an IllegalStateException if running == false
     	suspended = true;
     }
 
@@ -126,5 +124,13 @@ public class WatcherService implements Runnable {
 	
 	public boolean getState() {
 		return suspended;
+	}
+
+	public static void setInterval(int interval) {
+		WatcherService.interval = interval;
+	}
+	
+	public static int getInterval() {
+		return WatcherService.interval;
 	}
 }

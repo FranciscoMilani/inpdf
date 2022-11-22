@@ -47,8 +47,6 @@ public class ButtonActionSaveBoleto implements ActionListener{
 			Integer integer = (Integer) table.getValueAt(i, 1);
 			Boolean bool = (Boolean) table.getValueAt(i, 2);
 			
-			//System.out.println(str + " : " + integer + " : " + bool);
-			
 			if (integer == null) {
 				tripletList.add(new Triplet<String, Integer, Boolean>(str, integer, false));	
 				continue;

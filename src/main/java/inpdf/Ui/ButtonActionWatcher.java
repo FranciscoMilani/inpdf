@@ -23,14 +23,7 @@ public class ButtonActionWatcher implements ActionListener {
 		boolean actionState = switchAction();
 		JButton btn = (JButton) e.getSource();
 		String btnName = actionState ? "Interromper" : "Escanear";
-		btn.setText(btnName);
-		
-//		Queue<Path> queue = watcher.getFilePathsQueue();
-//		
-//		if (!queue.isEmpty()) {
-//			Path polledPath = queue.poll();
-//			System.out.println(polledPath);
-//		}
+		btn.setText(btnName);	
 	}
 	
 	public synchronized boolean switchAction() {

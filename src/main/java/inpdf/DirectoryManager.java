@@ -2,6 +2,7 @@ package inpdf;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -19,14 +20,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonStreamParser;
 import com.google.gson.stream.JsonReader;
 
 import inpdf.Ui.DirectoryConfigPanel;
+import inpdf.irpf.IRDocument;
+import inpdf.irpf.IRSectionsEnum;
+import inpdf.watcher.WatcherService;
 
 public class DirectoryManager {
 	private static final Path userDirPath = Paths.get(System.getProperty("user.dir"));
-	private static final Path configPath = Paths.get(userDirPath + "/config.json");
-	private static final Path dirConfigPath = Paths.get(userDirPath + "/diretorios.json");
+	private static final Path generalConfigPath = Paths.get(userDirPath + "/config_geral.json");
+	private static final Path boletoConfigPath = Paths.get(userDirPath + "/boleto_config.json");
+	private static final Path irpfConfigPath = Paths.get(userDirPath + "/irpf_config.json");
 	
 	private static final Path defaultInputDirectoryPath = userDirPath.resolve("entrada");
 	private static final Path defaultOutputDirectoryPath = userDirPath.resolve("saida");
@@ -42,9 +48,11 @@ public class DirectoryManager {
 		loadDirectories();
 	}
 	
-	public static void saveDirectories(DirectoryConfigPanel[] panels) {
+	public static void saveDirectories(DirectoryConfigPanel[] panels, Integer configInterval) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 		JsonObject obj = new JsonObject();
+		
+		obj.addProperty("intervalo", configInterval);
 		
 		for (DirectoryConfigPanel panel : panels) {
 			obj.addProperty(panel.id.toLowerCase(), panel.getPathString());
@@ -53,7 +61,7 @@ public class DirectoryManager {
 		String jText = gson.toJson(obj);
 		
 		try {
-			Files.write(dirConfigPath, jText.getBytes());
+			Files.write(generalConfigPath, jText.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,10 +72,12 @@ public class DirectoryManager {
 	public static void loadDirectories() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		
-		try (BufferedReader br = Files.newBufferedReader(dirConfigPath)){
+		try (BufferedReader br = Files.newBufferedReader(generalConfigPath)) {
 			JsonReader reader = gson.newJsonReader(br);
 			JsonElement tree = JsonParser.parseReader(reader);
 			JsonObject obj = tree.getAsJsonObject();
+			
+			WatcherService.setInterval(obj.get("intervalo").getAsInt() * 1000);
 			
 			assignDir(obj, "entrada");
 			assignDir(obj, "saída");
@@ -108,27 +118,6 @@ public class DirectoryManager {
 			}
 		}
 	}
-
-//	public static void execute() {
-//		if(getInputDirectoryPath() != null) {
-//			try {
-//				String projectDir = System.getProperty("user.dir");
-//				Path documentDir = getInputDirectoryPath();
-//				
-//				if (Reader.checkFileConformity(documentDir)) {				
-//					Reader reader = new Reader();
-//					reader.ReadPDF(documentDir);
-//				} 
-//				else {
-//					System.out.println("Arquivo não é formato PDF");
-//				}			
-//			} 
-//			catch (IOException e) {
-//				e.printStackTrace();
-//				throw new RuntimeException();
-//			}
-//		}	
-//	}
 	
 	public static void moveToProcessedFolder(Path filePath) {
 		moveToFolder(filePath, getProcessedDirectoryPath());
@@ -176,9 +165,32 @@ public class DirectoryManager {
 		}
 	}
 	
+	public static IRDocument getIRConfigFromJson() {
+		if (!getIRConfigPath().toFile().exists()) {
+			System.out.println("Configuração de IRPF não existe, retornando nulo");
+			return null;
+		}
+		
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(getIRConfigPath().toString()));
+			JsonElement jElement = JsonParser.parseReader(gson.newJsonReader(br));
+			System.out.println(jElement);
+			IRDocument newDoc = new IRDocument();
+			newDoc = gson.fromJson(jElement, IRDocument.class);
+			System.out.println(newDoc.cid.getFieldAtIndex(1).getRead());
+			
+			return newDoc;	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public static DocumentConfiguration getConfigFromJson(DocumentType type) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getConfigDirectoryPath())) {
+		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getBoletoConfigPath())) {
 			JsonElement jElement = JsonParser.parseReader(gson.newJsonReader(br));
 			JsonObject obj = new JsonObject();
 			JsonArray arr = jElement.getAsJsonArray();
@@ -279,7 +291,16 @@ public class DirectoryManager {
 		rejectedDirectoryPath = newRejectedDirectoryPath;
 	}
 	
-	public static Path getConfigDirectoryPath() {
-		return configPath;
+	public static Path getBoletoConfigPath() {
+		return boletoConfigPath;
 	}
+	
+	public static Path getIRConfigPath() {
+		return irpfConfigPath;
+	}
+	
+	public static Path getGeneralConfigPath() {
+		return generalConfigPath;
+	}
+	
 }

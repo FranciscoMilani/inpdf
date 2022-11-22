@@ -39,29 +39,30 @@ public class DropdownChangeAction implements ActionListener {
 
 		if (!previousType.equals(comboBox.getSelectedItem())) {
 			previousType = comboBox.getSelectedItem();
-			updateTableCells();
+			TableManager.updateTableCells((DocumentType) comboBox.getSelectedItem());
+			//updateTableCells();
 		}
 	}
 	
-	private void updateTableCells() {
-		DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType((DocumentType) comboBox.getSelectedItem());
-		List<DocumentField> fields = config.fields;	
-		
-		TableManager.resetValuesToNullAndFalse();
-		
-		if(fields == null) {
-			return;
-		}
-		
-		Integer[] lines = new Integer[fields.size()];
-		Boolean[] bools = new Boolean[fields.size()];
-			
-		for (int i = 0; i < fields.size(); i++) {
-			lines[i] = fields.get(i).getLineLocated();
-			bools[i] = fields.get(i).getShouldRead();
-		}
-
-		TableManager.setLineValues(lines);
-		TableManager.setBoolValues(bools);	
-	}
+//	private void updateTableCells() {
+//		DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType((DocumentType) comboBox.getSelectedItem());
+//		List<DocumentField> fields = config.fields;	
+//		
+//		TableManager.resetValuesToNullAndFalse();
+//		
+//		if(fields == null) {
+//			return;
+//		}
+//		
+//		Integer[] lines = new Integer[fields.size()];
+//		Boolean[] bools = new Boolean[fields.size()];
+//			
+//		for (int i = 0; i < fields.size(); i++) {
+//			lines[i] = fields.get(i).getLineLocated();
+//			bools[i] = fields.get(i).getShouldRead();
+//		}
+//
+//		TableManager.setLineValues(lines);
+//		TableManager.setBoolValues(bools);	
+//	}
 }

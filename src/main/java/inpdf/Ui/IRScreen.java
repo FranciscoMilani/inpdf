@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
@@ -24,7 +25,7 @@ import inpdf.irpf.ConfigTable;
 import inpdf.irpf.IRDocumentManager;
 import inpdf.irpf.IRSectionsEnum;
 
-public class IRScreen extends JPanel implements ActionListener {
+public class IRScreen extends JPanel {
 	private JFrame baseFrame;
 	private JFrame thisFrame;
 	
@@ -35,10 +36,11 @@ public class IRScreen extends JPanel implements ActionListener {
 	private JPanel bottomAreaPanel = new JPanel();
 	private JScrollPane scrollArea = new JScrollPane(extractedTextArea);
 	
-	private JButton prevBtn = new JButton();
-	private JButton nextBtn = new JButton();
+	private JButton prevBtn = new JButton("<");
+	private JButton nextBtn = new JButton(">");
 	private JLabel pageLabel = new JLabel();
-	private JButton findBtn = new JButton();
+	private JButton findBtn = new JButton("Procurar");
+	private JButton clearBtn = new JButton("Limpar");
 	private JComboBox<Object> comboBox = new JComboBox(IRSectionsEnum.values());
 	
 	private JPanel mainTablePanel = new JPanel(new BorderLayout());
@@ -49,15 +51,12 @@ public class IRScreen extends JPanel implements ActionListener {
 	private JButton saveBtn = new JButton("Salvar");
 	
 	private JPanel buttonsBottomPanel = new JPanel();
-	private JButton addBtn = new JButton("+");
-	private JButton rmvBtn = new JButton("-");
-	private JButton lftBtn = new JButton("<");
-	private JButton rightBtn = new JButton(">");
+	private JButton addBtn = new JButton("[+] Item");
+	private JButton rmvBtn = new JButton("Resetar Seção");
 	
 	public ConfigTable table = new ConfigTable(buttonsBottomPanel);
 	
-	
-	private ButtonActionReadToDisplay readAction = new ButtonActionReadToDisplay(comboBox, extractedTextArea);
+	private ButtonActionReadToDisplay readAction = new ButtonActionReadToDisplay(null, extractedTextArea);
 	
 	public IRScreen(JFrame baseFrame, JFrame thisFrame) {
 		super();
@@ -74,10 +73,6 @@ public class IRScreen extends JPanel implements ActionListener {
 	private void init() {			
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(1280, 960));
-		
-		prevBtn.setText("<");
-		nextBtn.setText(">");
-		findBtn.setText("Procurar");	
 		
 		pageLabel.setPreferredSize(new Dimension(30, 20));
 		pageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,11 +91,16 @@ public class IRScreen extends JPanel implements ActionListener {
 		nextBtn.addActionListener(extractedTextArea);
 		
 		comboBox.addActionListener(table);
-		
+
 		saveBtn.addActionListener(new ButtonActionSaveIR(comboBox, table));
 		backBtn.addActionListener(new ButtonActionSwitchFrame(thisFrame, baseFrame));
 		
-		addBtn.addActionListener(new ButtonActionAddItem(table));
+		addBtn.addActionListener(new ButtonActionAddItem(table, saveBtn));
+		
+		clearBtn.addActionListener(a -> {
+			extractedTextArea.clear();
+			pageLabel.setText(Integer.toString(extractedTextArea.getCurrentPage()));
+		});
 	}
 	
 	private void add() {
@@ -109,8 +109,6 @@ public class IRScreen extends JPanel implements ActionListener {
 		
 		buttonsBottomPanel.add(addBtn);
 		buttonsBottomPanel.add(rmvBtn);
-		buttonsBottomPanel.add(lftBtn);
-		buttonsBottomPanel.add(rightBtn);
 		
 		tablePanel.add(table.getTableHeader(), BorderLayout.NORTH);
 		tablePanel.add(table, BorderLayout.CENTER);
@@ -126,16 +124,12 @@ public class IRScreen extends JPanel implements ActionListener {
 		bottomAreaPanel.add(pageLabel);
 		bottomAreaPanel.add(nextBtn);	
 		bottomAreaPanel.add(findBtn);
+		bottomAreaPanel.add(clearBtn);
 		
 		bottomTablePanel.add(saveBtn);
 		bottomTablePanel.add(backBtn);
 		bottomTablePanel.add(comboBox);
 		
 		add(splitPane, BorderLayout.CENTER);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
 	}
 }

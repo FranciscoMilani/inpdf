@@ -406,11 +406,407 @@
     },
     "BOLETO_BANCARIO_BRADESCO": {
       "type": "BOLETO_BANCARIO_BRADESCO",
-      "fields": null
+      "fields": [
+        {
+          "id": 0,
+          "names": [
+            "Compe"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 1,
+          "names": [
+            "Linha Digitável"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 2,
+          "names": [
+            "Local de Pagamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 3,
+          "names": [
+            "Beneficiário",
+            "Cedente"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 4,
+          "names": [
+            "Data do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 5,
+          "names": [
+            "Nº do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 6,
+          "names": [
+            "Espécie Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 7,
+          "names": [
+            "Aceite"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 8,
+          "names": [
+            "Data do Processamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 9,
+          "names": [
+            "Uso do Banco"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 10,
+          "names": [
+            "Carteira"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 11,
+          "names": [
+            "Moeda"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 12,
+          "names": [
+            "Quantidade"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 13,
+          "names": [
+            "Valor"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 14,
+          "names": [
+            "Vencimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 15,
+          "names": [
+            "Agência",
+            "Código Beneficiário"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 16,
+          "names": [
+            "Nosso Número"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 17,
+          "names": [
+            "Valor do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 18,
+          "names": [
+            "Desconto",
+            "Abatimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 19,
+          "names": [
+            "Outras Deduções"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 20,
+          "names": [
+            "Mora",
+            "Multa"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 21,
+          "names": [
+            "Outros Acréscimos"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 22,
+          "names": [
+            "Valor Cobrado"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 23,
+          "names": [
+            "Sacado",
+            "Pagador"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        }
+      ]
     },
     "BOLETO_BANCARIO_ITAU": {
       "type": "BOLETO_BANCARIO_ITAU",
-      "fields": null
+      "fields": [
+        {
+          "id": 0,
+          "names": [
+            "Compe"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 1,
+          "names": [
+            "Linha Digitável"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 2,
+          "names": [
+            "Local de Pagamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 3,
+          "names": [
+            "Beneficiário",
+            "Cedente"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 4,
+          "names": [
+            "Data do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 5,
+          "names": [
+            "Nº do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 6,
+          "names": [
+            "Espécie Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 7,
+          "names": [
+            "Aceite"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 8,
+          "names": [
+            "Data do Processamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 9,
+          "names": [
+            "Uso do Banco"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 10,
+          "names": [
+            "Carteira"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 11,
+          "names": [
+            "Moeda"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 12,
+          "names": [
+            "Quantidade"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 13,
+          "names": [
+            "Valor"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 14,
+          "names": [
+            "Vencimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 15,
+          "names": [
+            "Agência",
+            "Código Beneficiário"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 16,
+          "names": [
+            "Nosso Número"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 17,
+          "names": [
+            "Valor do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 18,
+          "names": [
+            "Desconto",
+            "Abatimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 19,
+          "names": [
+            "Outras Deduções"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 20,
+          "names": [
+            "Mora",
+            "Multa"
+          ],
+          "lineLocated": 5,
+          "shouldRead": true
+        },
+        {
+          "id": 21,
+          "names": [
+            "Outros Acréscimos"
+          ],
+          "lineLocated": 4,
+          "shouldRead": true
+        },
+        {
+          "id": 22,
+          "names": [
+            "Valor Cobrado"
+          ],
+          "lineLocated": 2,
+          "shouldRead": true
+        },
+        {
+          "id": 23,
+          "names": [
+            "Sacado",
+            "Pagador"
+          ],
+          "lineLocated": 3,
+          "shouldRead": true
+        }
+      ]
     },
     "BOLETO_BANCARIO_SANTANDER": {
       "type": "BOLETO_BANCARIO_SANTANDER",
@@ -454,7 +850,7 @@
             "Data do Documento"
           ],
           "lineLocated": 17,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 5,
@@ -462,7 +858,7 @@
             "Nº do Documento"
           ],
           "lineLocated": 18,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 6,
@@ -534,7 +930,7 @@
             "Vencimento"
           ],
           "lineLocated": 6,
-          "shouldRead": true
+          "shouldRead": false
         },
         {
           "id": 15,
@@ -551,7 +947,7 @@
             "Nosso Número"
           ],
           "lineLocated": 20,
-          "shouldRead": true
+          "shouldRead": false
         },
         {
           "id": 17,
@@ -559,7 +955,7 @@
             "Valor do Documento"
           ],
           "lineLocated": 30,
-          "shouldRead": true
+          "shouldRead": false
         },
         {
           "id": 18,
@@ -600,7 +996,7 @@
           "names": [
             "Valor Cobrado"
           ],
-          "lineLocated": 51,
+          "lineLocated": null,
           "shouldRead": false
         },
         {
@@ -609,14 +1005,212 @@
             "Sacado",
             "Pagador"
           ],
-          "lineLocated": 52,
+          "lineLocated": 49,
           "shouldRead": false
         }
       ]
     },
     "BOLETO_BANCARIO_SICREDI": {
       "type": "BOLETO_BANCARIO_SICREDI",
-      "fields": null
+      "fields": [
+        {
+          "id": 0,
+          "names": [
+            "Compe"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 1,
+          "names": [
+            "Linha Digitável"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 2,
+          "names": [
+            "Local de Pagamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 3,
+          "names": [
+            "Beneficiário",
+            "Cedente"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 4,
+          "names": [
+            "Data do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 5,
+          "names": [
+            "Nº do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 6,
+          "names": [
+            "Espécie Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 7,
+          "names": [
+            "Aceite"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 8,
+          "names": [
+            "Data do Processamento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 9,
+          "names": [
+            "Uso do Banco"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 10,
+          "names": [
+            "Carteira"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 11,
+          "names": [
+            "Moeda"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 12,
+          "names": [
+            "Quantidade"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 13,
+          "names": [
+            "Valor"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 14,
+          "names": [
+            "Vencimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 15,
+          "names": [
+            "Agência",
+            "Código Beneficiário"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 16,
+          "names": [
+            "Nosso Número"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 17,
+          "names": [
+            "Valor do Documento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 18,
+          "names": [
+            "Desconto",
+            "Abatimento"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 19,
+          "names": [
+            "Outras Deduções"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 20,
+          "names": [
+            "Mora",
+            "Multa"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 21,
+          "names": [
+            "Outros Acréscimos"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 22,
+          "names": [
+            "Valor Cobrado"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        },
+        {
+          "id": 23,
+          "names": [
+            "Sacado",
+            "Pagador"
+          ],
+          "lineLocated": null,
+          "shouldRead": false
+        }
+      ]
     }
   }
 ]

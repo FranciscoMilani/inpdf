@@ -64,40 +64,30 @@ public class ConfigTable extends JTable implements ActionListener {
 		setColumnSelectionAllowed(false);
 		setRowSelectionAllowed(true);
 		getTableHeader().setReorderingAllowed(false);
-			
+
 		//tableModel.addTableModelListener();
 		this.buttonsPanel = buttons;
 		
-		setup();	
+		//setup();	
 	}
 	
-	private void setup() {
+	public void setup() {
 		selectSection(defaultSection);
 	}
 	
 	public void selectSection(IRSectionsEnum section) {
 		selectedSection = section;
-		resetValuesToNull();
 		setValuesForSection(selectedSection);
 	}
 	
 	private void setValuesForSection(IRSectionsEnum section) {
-		List<String> names = IRDocumentManager.getFieldNames(section);
 		List<IRField> fields = IRDocumentManager.getSection(section).getFields();
-		tableModel.setRowCount(names.size());
-		
-		// preenche os nomes
-		for (int i = 0; i < names.size(); i++) {		
-			setValueAt(names.get(i), i, ColumnEnum.FIELD.getCol());
-		}
+		System.out.println(IRDocumentManager.getSection(section).getFields().get(0).getLine());
+		tableModel.setRowCount(fields.size());
 
-		if (fields == null) {
-			System.out.println("Não tem campos");
-			return;
-		}
-		
 		// preenche os outros campos
 		for (int i = 0; i < fields.size(); i++) {
+			setValueAt(fields.get(i).getName(), i, ColumnEnum.FIELD.getCol());
 			setValueAt(fields.get(i).getLine(), i, ColumnEnum.LINE.getCol());	
 			setValueAt(fields.get(i).getRead(), i, ColumnEnum.CHECK.getCol());
 		}	
@@ -130,17 +120,15 @@ public class ConfigTable extends JTable implements ActionListener {
 			if (IRDocumentManager.getSection(selected) instanceof IAddable) {
 				buttonsPanel.setEnabled(true);
 				buttonsPanel.setVisible(true);
-				//Arrays.asList(buttons).forEach(b -> setEnabled(true));
 			} else {
 				buttonsPanel.setEnabled(false);
 				buttonsPanel.setVisible(false);
-				//Arrays.asList(buttons).forEach(b -> setEnabled(false));
 			}
 			
 			selectSection(selected);
 		}
 	}
-	
+
 //	private void updateFields(JComboBox box) {
 //		IRSectionsEnum selected = (IRSectionsEnum) box.getSelectedItem();
 //		

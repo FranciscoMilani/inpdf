@@ -3,11 +3,15 @@ package inpdf.irpf;
 import java.util.List;
 
 public abstract class IRSection {	
-	//public abstract void addFields();
 	public abstract IRSectionsEnum getType();
+	
 	public abstract List<IRField> getFields();
-	public abstract List<String> getFieldNames();
-	public void setFieldsValues(List<IRField> newFields) {
+	
+	public IRField getFieldAtIndex(int i) {
+		return getFields().get(i);
+	}
+	
+	protected void setFieldsValues(List<IRField> newFields) {
 		List<IRField> oldFields = getFields();
 		
 		if (oldFields != null) {

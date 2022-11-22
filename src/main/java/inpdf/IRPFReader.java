@@ -1,12 +1,8 @@
 package inpdf;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
-import java.text.Normalizer;
-import java.text.DateFormat.Field;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,25 +11,23 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.output.AppendableWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 
 import com.google.gson.FieldNamingPolicy;
-import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonWriter;
 
+import inpdf.irpf.IAddable;
 import inpdf.irpf.IRDocument;
 import inpdf.irpf.IRDocumentManager;
 import inpdf.irpf.IRField;
+import inpdf.irpf.IRItem;
 import inpdf.irpf.IRSection;
 import inpdf.irpf.IRSectionsEnum;
 
@@ -52,17 +46,17 @@ public class IRPFReader extends Reader {
 		LinkedHashMap<String, LinkedHashMap<String, String>> dataMap;
 		
 		try {
+		
 			doc = loadDocument(readPath);	
 			txt = extractAllText(doc);	
-			//jsonTxt = generateJsonString(IRDocumentManager.irDocument);
-			dataMap = extractFieldsFromText(txt);
-			jsonTxt = generateJson(dataMap);
+			//dataMap = extractFieldsFromText(txt);
+			jsonTxt = extractFieldsToJson(txt);
 //			
 //			if (jsonTxt == null)
 //				throw new Exception("JSON de saída ignorado. Não há campos marcados para esse tipo de documento");
 //			
-//			String fileName = FilenameUtils.removeExtension(readPath.toFile().getName());
-			DirectoryManager.saveJsonToPath(jsonTxt, readPath.getFileName().toString(), DirectoryManager.getOutputDirectoryPath());
+			String fileName = FilenameUtils.removeExtension(readPath.getFileName().toString());
+			DirectoryManager.saveJsonToPath(jsonTxt, fileName, DirectoryManager.getOutputDirectoryPath());
 			DirectoryManager.moveToProcessedFolder(readPath);
 			
 			doc.close();
@@ -89,104 +83,123 @@ public class IRPFReader extends Reader {
 		}
 	}
 	
-	private String generateJsonConfig(IRDocument document) {
-		Gson gson = new GsonBuilder().
-				setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).
-				setPrettyPrinting().
-				serializeNulls().
-				create();
-		
-		return gson.toJson(document);
-	}
-	
-	LinkedHashMap<String, LinkedHashMap<String, String>> extractFieldsFromText(String strippedText) {
+	private String extractFieldsToJson(String strippedText) {
 		IRDocument doc = IRDocumentManager.irDocument;
 		String[] outputLines = strippedText.split(System.lineSeparator());
+		
+		// [Seção / (Nome / Categoria)]
 		LinkedHashMap<String, LinkedHashMap<String, String>> map = new LinkedHashMap<>();
-		
-		// debuga as linhas
-//		for (int l = 1; l <= outputLines.length; l++) {
-//			System.out.println(l + " " + outputLines[l-1]);
-//		}
-		
-		for (Entry<IRSectionsEnum, IRSection> entry : doc.sections.entrySet()) {
+		// [Seção / {Item / (Nome / Categoria)}]
+		LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> itemMap = new LinkedHashMap<>();
+
+		for (Entry<IRSectionsEnum, IRSection> entry : doc.sections.entrySet()) {		
 			IRSection section = entry.getValue();
-			LinkedHashMap<String, String> innerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, LinkedHashMap<String, String>> innerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> innermostMap = new LinkedHashMap<>();
 			
-			if (section.getFields() != null) {
-				for (IRField field : section.getFields()) {
-					if (field.getRead()) {	
-						if (field.getLine() > outputLines.length || field.getLine() <= 0) {
-							continue;
+			if (section instanceof IAddable) {
+				IAddable addable = (IAddable) section;
+				
+				int size = addable.getItems().size();
+				for (int i = 0; i < size; i++) {
+					IRItem item = addable.getItemByIndex(i);
+					
+					for (IRField field : item.getFields()) {
+						if (field.getRead()) {	
+							if (field.getLine() > outputLines.length || field.getLine() <= 0) {
+								continue;
+							}
+							
+							innermostMap.put(field.getName(), outputLines[field.getLine() - 1]);
 						}
 						
-						innerMap.put(field.getName(), outputLines[field.getLine() - 1]);
-						field.setValue(outputLines[field.getLine() - 1]); // REMOVER ISSO?
+						innerMap.put(Integer.toString(item.getId()), innermostMap);
+					}
+					
+					itemMap.put(section.getType().toString(), innerMap);
+					innermostMap = new LinkedHashMap<>();
+				}
+			} else {
+				if (section.getFields() != null) {
+					System.out.println(section.getType());
+					for (IRField field : section.getFields()) {
+						if (field.getRead() != null && field.getRead()) {	
+							if (field.getLine() > outputLines.length || field.getLine() <= 0) {
+								continue;
+							}
+							
+							innermostMap.put(field.getName(), outputLines[field.getLine() - 1]);
+							//field.setValue(outputLines[field.getLine() - 1]); // REMOVER ISSO?
+						}
 					}
 				}
+				
+				map.put(section.getType().toString(), innermostMap);
 			}
 			
-			map.put(section.getType().toString(), innerMap);
 		}
-//
-//		List<IRField> fields = ;	
-//		for (IRField f : fields) {
-//			if (f.getShouldRead()) {
-//				if (f.getLineLocated() > outputLines.length) {
-//					continue;
-//				}
-//				
-//				dataMap.put(f, outputLines[f.getLineLocated() - 1]);	
-//			}
-//		}
 		
-		return map;
+		return generateJson(map, itemMap);
 	}
 	
-	private String generateJson(LinkedHashMap<String, LinkedHashMap<String, String>> fields) {
+
+	private String generateJson(LinkedHashMap<String, LinkedHashMap<String, String>> fields, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> itemsFields) {
 		if (fields.isEmpty()) {
 			return null;
 		}
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+		JsonObject obj = gson.toJsonTree(fields).getAsJsonObject();
+		JsonObject obj2 = gson.toJsonTree(itemsFields).getAsJsonObject();
+		JsonObject newObj = new JsonObject();
 		
-		JsonObject base = new JsonObject();
-		for (Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()) {
-			JsonObject inner = new JsonObject();
-			
-			entry.getValue().forEach((name, value) -> {
-				if (value != null) {
-					inner.add(name, new JsonPrimitive(value));
-				} else {
-					inner.add(name, new JsonPrimitive(""));
-				}
-			});
-			
-			base.add(entry.getKey(), inner);
+		for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
+			newObj.add(entry.getKey(), entry.getValue());
 		}
 		
-		String txt = gson.toJson(base);
+		for (Map.Entry<String, JsonElement> entry : obj2.entrySet()) {
+			newObj.add(entry.getKey(), entry.getValue());
+		}
 		
+		String outText = gson.toJson(newObj);	
+		System.err.println(outText);
+
 		
-		System.err.println(txt);
+//		JsonObject base = new JsonObject();
+//		for (Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()) {
+//			JsonObject inner = new JsonObject();
+//			
+//			entry.getValue().forEach((name, value) -> {
+//				if (value != null) {
+//					inner.add(name, new JsonPrimitive(value));
+//				} else {
+//					inner.add(name, new JsonPrimitive(""));
+//				}
+//			});
+//			
+//			base.add(entry.getKey(), inner);
+//		}
 		
-		Type typeOfHashMap = new TypeToken<LinkedHashMap<String, LinkedHashMap<String, String>>>() { }.getType();
-		LinkedHashMap<IRSection, LinkedHashMap<String, String>> newMap = gson.fromJson(txt, typeOfHashMap);
-		//JsonObject obj = new JsonObject();
-		fields.forEach((section, data) -> {
-			data.forEach((field, value) -> {
-				
-			});
-//			List<IRField> fList = field.getFields();
-//			if (fList != null) {
+		//String txt = gson.toJson(base);
+		
+//		Type typeOfHashMap = new TypeToken<LinkedHashMap<String, LinkedHashMap<String, String>>>() { }.getType();
+//		LinkedHashMap<IRSection, LinkedHashMap<String, String>> newMap = gson.fromJson(outText, typeOfHashMap);
+//		//JsonObject obj = new JsonObject();
+//		fields.forEach((section, data) -> {
+//			data.forEach((field, value) -> {
 //				
-//			}
-//			String str = field.toLowerCase().replace(" ", "_");
-//			str = Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-//			obj.addProperty(str, data);
-		});
+//			});
+////			List<IRField> fList = field.getFields();
+////			if (fList != null) {
+////				
+////			}
+////			String str = field.toLowerCase().replace(" ", "_");
+////			str = Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+////			obj.addProperty(str, data);
+//		});
 		
 		//String txt = gson.toJson(obj);
-		return txt;
+		return outText;
 	}
 }

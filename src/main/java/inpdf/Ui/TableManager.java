@@ -3,6 +3,7 @@ package inpdf.Ui;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -10,10 +11,14 @@ import javax.swing.plaf.basic.BasicTableUI.FocusHandler;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import inpdf.DocumentConfiguration;
 import inpdf.DocumentConfigurationManager;
+import inpdf.DocumentField;
+import inpdf.DocumentType;
 
 public class TableManager {
 	public static JTable table;
+	public static final DocumentType defaultBoleto = DocumentType.BOLETO_BANCARIO_BRADESCO;
 	
 	public static enum Column {
 		NAME(0),
@@ -52,6 +57,28 @@ public class TableManager {
 		tc.setMaxWidth(125);
 		tc.setMinWidth(75);
 		tc.setPreferredWidth(50);
+	}
+	
+	public static void updateTableCells(DocumentType newType) {
+		DocumentConfiguration config = DocumentConfigurationManager.getConfigurationFromType(newType);
+		List<DocumentField> fields = config.fields;
+		
+		TableManager.resetValuesToNullAndFalse();
+		
+		if(fields == null) {
+			return;
+		}
+		
+		Integer[] lines = new Integer[fields.size()];
+		Boolean[] bools = new Boolean[fields.size()];
+			
+		for (int i = 0; i < fields.size(); i++) {
+			lines[i] = fields.get(i).getLineLocated();
+			bools[i] = fields.get(i).getShouldRead();
+		}
+
+		TableManager.setLineValues(lines);
+		TableManager.setBoolValues(bools);	
 	}
 	
 	public static void setNameValues(String[] values) {

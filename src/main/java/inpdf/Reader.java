@@ -30,6 +30,7 @@ public abstract class Reader {
 			docType = determineDocumentType(txt);
 
 			if (docType == DocumentType.UNKNOWN) {
+				// TODO: LOG
 				throw new Exception("Não foi possível ler o tipo de documento");
 			}
 			

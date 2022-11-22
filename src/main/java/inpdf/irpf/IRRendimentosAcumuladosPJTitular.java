@@ -6,25 +6,25 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 
-public class IRRendimentosTributaveisPJTitular extends IRSection implements IAddable {
+public class IRRendimentosAcumuladosPJTitular extends IRSection implements IAddable {
 	@Expose
-	private final IRSectionsEnum type = IRSectionsEnum.RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR;
+	private final IRSectionsEnum type = IRSectionsEnum.RENDIMENTOS_ACUMULADOS_PJ_TITULAR;	
 	@Expose
 	private final List<IRItem> items = new ArrayList<IRItem>();
 	@Expose
 	private final List<IRField> fields = Arrays.asList(
 			new IRField("Nome da Fonte Pagadora"),
 			new IRField("CNPJ/CPF Fonte Pagadora"),
-			new IRField("Rend. Recebidos de Pes. Jurídica"),
-			new IRField("Contr. Previd. Oficial"),
-			new IRField("Imposto Retido Na Fonte"),
-			new IRField("13º Salário"),
-			new IRField("IRPF Sobre 13º Salário"));
+			new IRField("Rendimentos Recebidos"),
+			new IRField("Contr. Prev. Oficial"),
+			new IRField("Pensão Alimentícia"),
+			new IRField("Imposto Retido na Fonte"));
 	
-	public IRRendimentosTributaveisPJTitular() {
+	
+	public IRRendimentosAcumuladosPJTitular() {
 
 	}
-	
+
 	public List<IRItem> getItems() {
 		return items;
 	}

@@ -2,35 +2,19 @@ package inpdf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.management.GarbageCollectorMXBean;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
+import java.awt.event.WindowListener;
 import java.util.Arrays;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -41,20 +25,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
-import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.FlowView.FlowStrategy;
-import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import inpdf.Ui.ButtonActionBack;
-import inpdf.Ui.ButtonActionClear;
-import inpdf.Ui.ButtonActionConfirm;
-import inpdf.Ui.ButtonActionExtract;
-import inpdf.Ui.ButtonActionReadFile;
 import inpdf.Ui.ButtonActionReadToDisplay;
 import inpdf.Ui.ButtonActionSaveBoleto;
 import inpdf.Ui.ButtonActionSaveGeneralConfig;
@@ -64,7 +40,6 @@ import inpdf.Ui.ButtonChangeConfigStateAction;
 import inpdf.Ui.DirectoryConfigPanel;
 import inpdf.Ui.DropdownChangeAction;
 import inpdf.Ui.IRScreen;
-import inpdf.Ui.LabelManager;
 import inpdf.Ui.SpringUtilities;
 import inpdf.Ui.TableManager;
 import inpdf.irpf.IRDocumentManager;
@@ -290,8 +265,13 @@ public class Main {
 		
 		
 		// middlePanel
+		JPanel timePanel = new JPanel();
+		JLabel timeLabel = new JLabel("Intervalo de procura: ");
+		JComboBox timeBox = new JComboBox(new Integer[] {1, 5, 15, 30, 60});
 
-		//pBtn.setPreferredSize(new Dimension(250, 75));
+		timePanel.add(timeLabel);
+		timePanel.add(timeBox);
+		
 		DirectoryConfigPanel panelI = new DirectoryConfigPanel("Entrada");
 		DirectoryConfigPanel panelO = new DirectoryConfigPanel("Saída");
 		DirectoryConfigPanel panelP = new DirectoryConfigPanel("Processados");
@@ -302,10 +282,12 @@ public class Main {
 		innerMiddlePanel.add(panelO);
 		innerMiddlePanel.add(panelP);
 		innerMiddlePanel.add(panelR);
+		innerMiddlePanel.add(timePanel);
 		
 		middlePanel.add(innerMiddlePanel);
+//		middlePanel.add(timePanel);
 		
-		SpringUtilities.makeCompactGrid(innerMiddlePanel, 4, 1, 0, 0, 0, 20);
+		SpringUtilities.makeCompactGrid(innerMiddlePanel, 5, 1, 0, 0, 0, 20);
 		
 		// bottomPanel
 		FlowLayout fl = new FlowLayout();
@@ -314,7 +296,7 @@ public class Main {
 		bottomPanel.setBackground(Color.WHITE);
 		
 		JButton save = new JButton("Salvar");
-		save.addActionListener(new ButtonActionSaveGeneralConfig(watcherAction, new DirectoryConfigPanel[] { panelI, panelO, panelP, panelR }));
+		save.addActionListener(new ButtonActionSaveGeneralConfig(watcherAction, new DirectoryConfigPanel[] { panelI, panelO, panelP, panelR }, timeBox));
 		save.setPreferredSize(new Dimension(100, 30));
 		bottomPanel.add(save);
 		
@@ -334,18 +316,15 @@ public class Main {
 		frame4.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
+				
 				Arrays.asList(dirConfigPanels).forEach(p -> {
 					p.setInitialPath();
 				});
+				
+				timeBox.setSelectedItem( WatcherService.getInterval() / 1000);
 			}
 		});
-		
-		frame4.addWindowListener(new WindowAdapter() {
-	        @Override
-	        public void windowClosed(WindowEvent e) {
-				System.out.println("closed");
-	        }      
-	    });
 		
 		frame.setVisible(true);
 		new IRDocumentManager(irScreen.table);

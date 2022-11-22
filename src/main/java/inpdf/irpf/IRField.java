@@ -1,25 +1,21 @@
 package inpdf.irpf;
 
+import com.google.gson.annotations.Expose;
+
 public class IRField {
+	@Expose
 	private final String name;
-	private String value;
+	@Expose
 	private Integer line;
+	@Expose
 	private Boolean read;
 	
 	public IRField(String name) {
 		this.name = name;
 	}
 	
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
 	public String getName() {
 		return name;
-	}
-	
-	public String getValue() {
-		return value;
 	}
 	
 	public Integer getLine() {

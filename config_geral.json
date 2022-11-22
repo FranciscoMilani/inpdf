@@ -1,0 +1,7 @@
+{
+  "intervalo": 1,
+  "entrada": "C:\\dev\\Java\\InPDF\\inpdf\\entrada",
+  "saída": "C:\\dev\\Java\\InPDF\\inpdf\\saida",
+  "processados": "C:\\dev\\Java\\InPDF\\inpdf\\processados",
+  "rejeitados": "C:\\dev\\Java\\InPDF\\inpdf\\rejeitados"
+}

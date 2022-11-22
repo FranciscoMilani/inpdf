@@ -1,9 +1,7 @@
 package inpdf;
 
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +9,6 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
-import org.apache.commons.io.input.CharSequenceInputStream;
  
 public class ExtractedTextArea extends JPanel implements ActionListener {
     private JTextArea textArea = new JTextArea(55, 65);
@@ -20,6 +16,7 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
     private int currentPage = 1;
     private JLabel pageLabel;
     private String fullText;
+	List<String> formattedStrings = new ArrayList<String>();
 
     public ExtractedTextArea() {
         super();
@@ -27,22 +24,30 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
         textArea.setEditable(false);
         add(textArea);
     }
-
-    private void displayText(String text) {	
-		String[] outputLines = text.split(System.lineSeparator());
-		StringBuilder newStr = new StringBuilder();
-		int digits = (int) Math.log10(outputLines.length) + 1;
-
-		for (int l = 1; l <= outputLines.length; l++) {
-			String formatted = String.format("%0" + digits + "d", l);
-			StringBuilder sb = new StringBuilder(outputLines[l-1]);
-			sb.insert(0, formatted + " : ");
-			sb.append(System.lineSeparator());
-			newStr.append(sb);
-		}
-		
-		textArea.setText(newStr.toString());
+    
+    private void displayText(int i) {
+		textArea.setText(formattedStrings.get(i - 1));
     	textArea.setCaretPosition(0);
+    }
+    
+    private void displayTextBefore(int i) {
+    	int start = 0;
+    	
+		for (String page : pages) {
+			String[] outputLines = page.split(System.lineSeparator());
+			StringBuilder newStr = new StringBuilder();
+			int digits = (int) Math.log10(outputLines.length) + 1;
+			for (int l = 1; l <= outputLines.length; l++) {
+				String formatted = String.format("%0" + digits + "d", l + start);
+				StringBuilder sb = new StringBuilder(outputLines[l-1]);
+				sb.insert(0, formatted + " : ");
+				sb.append(System.lineSeparator());
+				newStr.append(sb);
+			}
+			
+			formattedStrings.add(newStr.toString());		
+			start += outputLines.length;
+		}
     }
     
     private void displayAllText() {	
@@ -75,6 +80,7 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
     	fullText = "";
     	currentPage = 1;
     	pages = new ArrayList<String>();
+    	formattedStrings = new ArrayList<String>();
     }
     
     public void setLabel(JLabel label) {
@@ -102,7 +108,9 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
     
     public void displayFirst(int firstPage) {
     	currentPage = firstPage;
-    	displayAllText();
+    	displayTextBefore(currentPage);
+    	displayText(currentPage);
+    	//displayAllText();
     	
 		if (pageLabel != null) {
 			pageLabel.setText(Integer.toString(currentPage));
@@ -111,40 +119,28 @@ public class ExtractedTextArea extends JPanel implements ActionListener {
     
     public void displayNext() {
     	currentPage = currentPage % pages.size() + 1;
-    	//displayText(currentPage);
+    	displayText(currentPage);
     }
     
     public void displayPrev() {
     	currentPage = currentPage == 1 ? currentPage = getPageAmount() : currentPage - 1;
-    	//displayText(currentPage);
+    	displayText(currentPage);
     }
-    
-//    public void displayNext() {
-//    	currentPage = currentPage % pages.size() + 1;
-//    	String text = pages.get(currentPage - 1);
-//    	displayText(text, currentPage);
-//    }
-//    
-//    public void displayPrev() {
-//    	currentPage = currentPage == 1 ? currentPage = getPageAmount() : currentPage - 1;
-//    	String text = pages.get(currentPage - 1);
-//    	displayText(text, currentPage);
-//    }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		if (pages.isEmpty()) {
-//			return;
-//		}
-//		
-//		if (e.getActionCommand() == "next") {
-//			displayNext();
-//		} else if (e.getActionCommand() == "prev") {
-//			displayPrev();
-//		}
-//		
-//		if (pageLabel != null) {
-//			pageLabel.setText(Integer.toString(currentPage));
-//		}
+		if (pages.isEmpty() || pages.size() == 1) {
+			return;
+		}
+		
+		if (e.getActionCommand() == "next") {
+			displayNext();
+		} else if (e.getActionCommand() == "prev") {
+			displayPrev();
+		}
+		
+		if (pageLabel != null) {
+			pageLabel.setText(Integer.toString(currentPage));
+		}
 	}
 }

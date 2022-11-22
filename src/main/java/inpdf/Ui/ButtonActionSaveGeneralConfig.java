@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,10 +19,12 @@ public class ButtonActionSaveGeneralConfig implements ActionListener {
 
 	private DirectoryConfigPanel[] panels;
 	private ButtonActionWatcher watcherAction;
+	private JComboBox interval;
 	
-	public ButtonActionSaveGeneralConfig(ButtonActionWatcher watcherAction, DirectoryConfigPanel[] panels) {
+	public ButtonActionSaveGeneralConfig(ButtonActionWatcher watcherAction, DirectoryConfigPanel[] panels, JComboBox intervalBox) {
 		this.watcherAction = watcherAction;
 		this.panels = panels;
+		this.interval = intervalBox;
 	}
 	
 	@Override
@@ -33,6 +36,7 @@ public class ButtonActionSaveGeneralConfig implements ActionListener {
 				blanks++;				
 			}
 		}
+
 		
 		if (blanks > 0) {
 			int ans = JOptionPane.showOptionDialog(null, 
@@ -53,7 +57,8 @@ public class ButtonActionSaveGeneralConfig implements ActionListener {
 			
 		}
 		
-		DirectoryManager.saveDirectories(panels);	
+		int val = (Integer) interval.getSelectedItem();
+		DirectoryManager.saveDirectories(panels, val);
 		watcherAction.watcher.change(DirectoryManager.getInputDirectoryPath());
 	}
 }

@@ -1,0 +1,1098 @@
+{
+  "cid": {
+    "type": "IDENTIFICACAO_CONTRIBUINTE",
+    "fields": [
+      {
+        "name": "Nome",
+        "line": 1,
+        "read": false
+      },
+      {
+        "name": "Data de Nascimento",
+        "line": 2,
+        "read": true
+      },
+      {
+        "name": "CPF",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Título Eleitoral",
+        "line": 3,
+        "read": false
+      },
+      {
+        "name": "Possui cônjuge ou companheiro(a)",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "CPF do cônjuge ou companheiro(a)",
+        "line": 4,
+        "read": false
+      },
+      {
+        "name": "Endereço",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Número",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Complemento",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Bairro/Distrito",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Município",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "UF",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "CEP",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "DDD/Telefone",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "DDD/Celular",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "E-mail",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Natureza da Ocupação",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Ocupação Principal",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Tipo de declaração",
+        "line": null,
+        "read": false
+      }
+    ]
+  },
+  "rtpt": {
+    "type": "RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR",
+    "items": [],
+    "fields": [
+      {
+        "name": "Nome da Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "CNPJ/CPF Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Rend. Recebidos de Pes. Jurídica",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Contr. Previd. Oficial",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto Retido Na Fonte",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "13º Salário",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "IRPF Sobre 13º Salário",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "ri": {
+    "type": "RENDIMENTOS_ISENTOS_NAO_TRIBUTAVEIS",
+    "items": [],
+    "fields": [
+      {
+        "name": "Tipo de Rendimento",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Beneficiário",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Valor (R$)",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "re": {
+    "type": "RENDIMENTOS_TRIBUTACAO_EXCLUSIVA",
+    "items": [],
+    "fields": [
+      {
+        "name": "Tipo de Rendimento",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Beneficiário",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Valor (R$)",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "rapjt": {
+    "type": "RENDIMENTOS_ACUMULADOS_PJ_TITULAR",
+    "items": [],
+    "fields": [
+      {
+        "name": "Nome da Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "CNPJ/CPF Fonte Pagadora",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Rendimentos Recebidos",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Contr. Prev. Oficial",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Pensão Alimentícia",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto Retido na Fonte",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "iper": {
+    "type": "IMPOSTO_PAGO_RETIDO",
+    "fields": [
+      {
+        "name": "Imposto complementar",
+        "line": 1,
+        "read": true
+      },
+      {
+        "name": "Imposto pago no exterior pelo titular e pelos dependentes",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Imposto devido com os rendimentos no exterior",
+        "line": 3,
+        "read": true
+      },
+      {
+        "name": "Imposto devido sem os rendimentos no exterior",
+        "line": 2,
+        "read": true
+      },
+      {
+        "name": "Diferença a ser considerada para cálculo do imposto (limite legal)",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Imposto sobre a renda na fonte (Lei 11.033/2004)",
+        "line": 1,
+        "read": true
+      },
+      {
+        "name": "Imposto retido na fonte do titular",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Imposto retido na fonte dos dependentes",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Carnê-Leão do titular",
+        "line": null,
+        "read": false
+      },
+      {
+        "name": "Carnê-Leão dos dependentes",
+        "line": null,
+        "read": false
+      }
+    ]
+  },
+  "pe": {
+    "type": "PAGAMENTOS_EFETUADOS",
+    "items": [],
+    "fields": [
+      {
+        "name": "Código",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Nome Beneficiário",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "CPF/CNPJ do Beneficiário",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Despesa Realizada Com (Tit/Dep/Ali)",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Valor Pago",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Parc. Não Dedutível",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "bd": {
+    "type": "BENS_DIREITOS",
+    "items": [],
+    "fields": [
+      {
+        "name": "Grupo",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Cód.",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Localização",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Discriminação",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Situação em 31/12/2020 R$",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Situação em 31/12/2021 R$",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "irdo": {
+    "type": "DIVIDAS_ONUS",
+    "items": [],
+    "fields": [
+      {
+        "name": "Código",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Discriminação",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Situação em 31/12/2020",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Situação em 31/12/2021",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Valor pago em 2021 R$",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "rd": {
+    "type": "RESUMO_DECLARACAO",
+    "fields": [
+      {
+        "name": "Rendimentos Tributáveis",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Deduções",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto devido",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto pago",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto a pagar",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto a restituir",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Saldo de imposto a pagar",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Valor da quota",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Número de quotas",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Débito automático",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Banco",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Agência (sem DV)",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Conta para débito",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Bens e direitos em 31/12/2020",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Bens e direitos em 31/12/2021",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Dívidas e ônus reais em 31/12/2020",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Dívidas e ônus reais em 31/12/2021",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Rendimentos isentos e não tributáveis",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Rendimentos sujeitos à tributação exclusiva/definitiva",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Rendimentos tributáveis - imposto com exigibilidade suspensa",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Depósitos judiciais do imposto",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto pago sobre Ganhos de Capital",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto pago Ganhos de Capital Moeda Estrangeira - Bens, direitos e Aplicações Financeiras",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Total do imposto retido na fonte (Lei n°11.033/2004), conforme dados informados pelo contribuinte",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto pago sobre Renda Variável",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Doações a Partidos Políticos e Candidatos a Cargos Eletivos",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto a pagar sobre o Ganho de Capital - Moeda Estrangeira em Espécie",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto diferido dos Ganhos de Capital",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto devido sobre Ganhos de Capital",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto devido sobre ganhos liquidos em Renda Variável",
+        "line": null,
+        "read": null
+      },
+      {
+        "name": "Imposto devido sobre Ganhos de Capital Moeda Estrangeira - Bens, direitos e aplic, financeiras",
+        "line": null,
+        "read": null
+      }
+    ]
+  },
+  "sections": {
+    "IDENTIFICACAO_CONTRIBUINTE": {
+      "type": "IDENTIFICACAO_CONTRIBUINTE",
+      "fields": [
+        {
+          "name": "Nome",
+          "line": 1,
+          "read": false
+        },
+        {
+          "name": "Data de Nascimento",
+          "line": 2,
+          "read": true
+        },
+        {
+          "name": "CPF",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Título Eleitoral",
+          "line": 3,
+          "read": false
+        },
+        {
+          "name": "Possui cônjuge ou companheiro(a)",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "CPF do cônjuge ou companheiro(a)",
+          "line": 4,
+          "read": false
+        },
+        {
+          "name": "Endereço",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Número",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Complemento",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Bairro/Distrito",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Município",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "UF",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "CEP",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "DDD/Telefone",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "DDD/Celular",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "E-mail",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Natureza da Ocupação",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Ocupação Principal",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Tipo de declaração",
+          "line": null,
+          "read": false
+        }
+      ]
+    },
+    "RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR": {
+      "type": "RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR",
+      "items": [],
+      "fields": [
+        {
+          "name": "Nome da Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "CNPJ/CPF Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Rend. Recebidos de Pes. Jurídica",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Contr. Previd. Oficial",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto Retido Na Fonte",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "13º Salário",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "IRPF Sobre 13º Salário",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "RENDIMENTOS_ISENTOS_NAO_TRIBUTAVEIS": {
+      "type": "RENDIMENTOS_ISENTOS_NAO_TRIBUTAVEIS",
+      "items": [],
+      "fields": [
+        {
+          "name": "Tipo de Rendimento",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Beneficiário",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Valor (R$)",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "RENDIMENTOS_TRIBUTACAO_EXCLUSIVA": {
+      "type": "RENDIMENTOS_TRIBUTACAO_EXCLUSIVA",
+      "items": [],
+      "fields": [
+        {
+          "name": "Tipo de Rendimento",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Beneficiário",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Valor (R$)",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "RENDIMENTOS_ACUMULADOS_PJ_TITULAR": {
+      "type": "RENDIMENTOS_ACUMULADOS_PJ_TITULAR",
+      "items": [],
+      "fields": [
+        {
+          "name": "Nome da Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "CNPJ/CPF Fonte Pagadora",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Rendimentos Recebidos",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Contr. Prev. Oficial",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Pensão Alimentícia",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto Retido na Fonte",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "IMPOSTO_PAGO_RETIDO": {
+      "type": "IMPOSTO_PAGO_RETIDO",
+      "fields": [
+        {
+          "name": "Imposto complementar",
+          "line": 1,
+          "read": true
+        },
+        {
+          "name": "Imposto pago no exterior pelo titular e pelos dependentes",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Imposto devido com os rendimentos no exterior",
+          "line": 3,
+          "read": true
+        },
+        {
+          "name": "Imposto devido sem os rendimentos no exterior",
+          "line": 2,
+          "read": true
+        },
+        {
+          "name": "Diferença a ser considerada para cálculo do imposto (limite legal)",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Imposto sobre a renda na fonte (Lei 11.033/2004)",
+          "line": 1,
+          "read": true
+        },
+        {
+          "name": "Imposto retido na fonte do titular",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Imposto retido na fonte dos dependentes",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Carnê-Leão do titular",
+          "line": null,
+          "read": false
+        },
+        {
+          "name": "Carnê-Leão dos dependentes",
+          "line": null,
+          "read": false
+        }
+      ]
+    },
+    "PAGAMENTOS_EFETUADOS": {
+      "type": "PAGAMENTOS_EFETUADOS",
+      "items": [],
+      "fields": [
+        {
+          "name": "Código",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Nome Beneficiário",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "CPF/CNPJ do Beneficiário",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Despesa Realizada Com (Tit/Dep/Ali)",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Valor Pago",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Parc. Não Dedutível",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "BENS_DIREITOS": {
+      "type": "BENS_DIREITOS",
+      "items": [],
+      "fields": [
+        {
+          "name": "Grupo",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Cód.",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Localização",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Discriminação",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Situação em 31/12/2020 R$",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Situação em 31/12/2021 R$",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "DIVIDAS_ONUS": {
+      "type": "DIVIDAS_ONUS",
+      "items": [],
+      "fields": [
+        {
+          "name": "Código",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Discriminação",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Situação em 31/12/2020",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Situação em 31/12/2021",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Valor pago em 2021 R$",
+          "line": null,
+          "read": null
+        }
+      ]
+    },
+    "RESUMO_DECLARACAO": {
+      "type": "RESUMO_DECLARACAO",
+      "fields": [
+        {
+          "name": "Rendimentos Tributáveis",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Deduções",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto devido",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto pago",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto a pagar",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto a restituir",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Saldo de imposto a pagar",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Valor da quota",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Número de quotas",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Débito automático",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Banco",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Agência (sem DV)",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Conta para débito",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Bens e direitos em 31/12/2020",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Bens e direitos em 31/12/2021",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Dívidas e ônus reais em 31/12/2020",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Dívidas e ônus reais em 31/12/2021",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Rendimentos isentos e não tributáveis",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Rendimentos sujeitos à tributação exclusiva/definitiva",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Rendimentos tributáveis - imposto com exigibilidade suspensa",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Depósitos judiciais do imposto",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto pago sobre Ganhos de Capital",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto pago Ganhos de Capital Moeda Estrangeira - Bens, direitos e Aplicações Financeiras",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Total do imposto retido na fonte (Lei n°11.033/2004), conforme dados informados pelo contribuinte",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto pago sobre Renda Variável",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Doações a Partidos Políticos e Candidatos a Cargos Eletivos",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto a pagar sobre o Ganho de Capital - Moeda Estrangeira em Espécie",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto diferido dos Ganhos de Capital",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto devido sobre Ganhos de Capital",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto devido sobre ganhos liquidos em Renda Variável",
+          "line": null,
+          "read": null
+        },
+        {
+          "name": "Imposto devido sobre Ganhos de Capital Moeda Estrangeira - Bens, direitos e aplic, financeiras",
+          "line": null,
+          "read": null
+        }
+      ]
+    }
+  }
+}
