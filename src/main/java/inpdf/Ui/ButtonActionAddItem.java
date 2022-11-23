@@ -1,5 +1,6 @@
 package inpdf.Ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,6 +30,7 @@ public class ButtonActionAddItem implements ActionListener {
 		if (res == 0) {
 			table.resetValuesToNullExcept(0);
 			saveBtn.setEnabled(true);
+			table.setEnabled(true);
 			//section.createItem(IRDocumentManager.getSection(s).getFields());		
 		}	
 	}

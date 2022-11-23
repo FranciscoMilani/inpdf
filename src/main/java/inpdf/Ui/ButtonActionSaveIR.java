@@ -47,10 +47,10 @@ public class ButtonActionSaveIR implements ActionListener{
 		
 		// TODO: Gson entra em loop, corrigir
 		if (!(section instanceof IAddable)) {
-			saveBtn.setEnabled(true);
 			IRDocumentManager.createJsonConfig();
 		} else {
 			saveBtn.setEnabled(false);
+			table.setEnabled(false);
 		}
 	}
 	

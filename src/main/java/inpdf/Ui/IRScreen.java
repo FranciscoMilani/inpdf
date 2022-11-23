@@ -91,11 +91,20 @@ public class IRScreen extends JPanel {
 		nextBtn.addActionListener(extractedTextArea);
 		
 		comboBox.addActionListener(table);
+		comboBox.addActionListener(e -> {
+			saveBtn.setEnabled(true);
+			table.setEnabled(true);
+		});
 
 		saveBtn.addActionListener(new ButtonActionSaveIR(comboBox, table));
 		backBtn.addActionListener(new ButtonActionSwitchFrame(thisFrame, baseFrame));
 		
 		addBtn.addActionListener(new ButtonActionAddItem(table, saveBtn));
+		rmvBtn.addActionListener(new ButtonActionResetSection(table));
+		rmvBtn.addActionListener(e -> {
+			saveBtn.setEnabled(true);
+			table.setEnabled(true);
+		});
 		
 		clearBtn.addActionListener(a -> {
 			extractedTextArea.clear();

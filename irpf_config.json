@@ -4,98 +4,98 @@
     "fields": [
       {
         "name": "Nome",
-        "line": 1,
-        "read": false
+        "line": null,
+        "read": null
       },
       {
         "name": "Data de Nascimento",
-        "line": 2,
-        "read": true
+        "line": null,
+        "read": null
       },
       {
         "name": "CPF",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Título Eleitoral",
-        "line": 3,
-        "read": false
+        "line": null,
+        "read": null
       },
       {
         "name": "Possui cônjuge ou companheiro(a)",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "CPF do cônjuge ou companheiro(a)",
-        "line": 4,
-        "read": false
+        "line": null,
+        "read": null
       },
       {
         "name": "Endereço",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Número",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Complemento",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Bairro/Distrito",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Município",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "UF",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "CEP",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "DDD/Telefone",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "DDD/Celular",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "E-mail",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Natureza da Ocupação",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Ocupação Principal",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Tipo de declaração",
         "line": null,
-        "read": false
+        "read": null
       }
     ]
   },
@@ -233,53 +233,53 @@
     "fields": [
       {
         "name": "Imposto complementar",
-        "line": 1,
-        "read": true
+        "line": null,
+        "read": null
       },
       {
         "name": "Imposto pago no exterior pelo titular e pelos dependentes",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Imposto devido com os rendimentos no exterior",
-        "line": 3,
-        "read": true
+        "line": null,
+        "read": null
       },
       {
         "name": "Imposto devido sem os rendimentos no exterior",
-        "line": 2,
-        "read": true
+        "line": null,
+        "read": null
       },
       {
         "name": "Diferença a ser considerada para cálculo do imposto (limite legal)",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Imposto sobre a renda na fonte (Lei 11.033/2004)",
-        "line": 1,
-        "read": true
+        "line": null,
+        "read": null
       },
       {
         "name": "Imposto retido na fonte do titular",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Imposto retido na fonte dos dependentes",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Carnê-Leão do titular",
         "line": null,
-        "read": false
+        "read": null
       },
       {
         "name": "Carnê-Leão dos dependentes",
         "line": null,
-        "read": false
+        "read": null
       }
     ]
   },
@@ -552,98 +552,98 @@
       "fields": [
         {
           "name": "Nome",
-          "line": 1,
-          "read": false
+          "line": null,
+          "read": null
         },
         {
           "name": "Data de Nascimento",
-          "line": 2,
-          "read": true
+          "line": null,
+          "read": null
         },
         {
           "name": "CPF",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Título Eleitoral",
-          "line": 3,
-          "read": false
+          "line": null,
+          "read": null
         },
         {
           "name": "Possui cônjuge ou companheiro(a)",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "CPF do cônjuge ou companheiro(a)",
-          "line": 4,
-          "read": false
+          "line": null,
+          "read": null
         },
         {
           "name": "Endereço",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Número",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Complemento",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Bairro/Distrito",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Município",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "UF",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "CEP",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "DDD/Telefone",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "DDD/Celular",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "E-mail",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Natureza da Ocupação",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Ocupação Principal",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Tipo de declaração",
           "line": null,
-          "read": false
+          "read": null
         }
       ]
     },
@@ -781,53 +781,53 @@
       "fields": [
         {
           "name": "Imposto complementar",
-          "line": 1,
-          "read": true
+          "line": null,
+          "read": null
         },
         {
           "name": "Imposto pago no exterior pelo titular e pelos dependentes",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Imposto devido com os rendimentos no exterior",
-          "line": 3,
-          "read": true
+          "line": null,
+          "read": null
         },
         {
           "name": "Imposto devido sem os rendimentos no exterior",
-          "line": 2,
-          "read": true
+          "line": null,
+          "read": null
         },
         {
           "name": "Diferença a ser considerada para cálculo do imposto (limite legal)",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Imposto sobre a renda na fonte (Lei 11.033/2004)",
-          "line": 1,
-          "read": true
+          "line": null,
+          "read": null
         },
         {
           "name": "Imposto retido na fonte do titular",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Imposto retido na fonte dos dependentes",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Carnê-Leão do titular",
           "line": null,
-          "read": false
+          "read": null
         },
         {
           "name": "Carnê-Leão dos dependentes",
           "line": null,
-          "read": false
+          "read": null
         }
       ]
     },

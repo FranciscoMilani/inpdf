@@ -82,7 +82,6 @@ public class ConfigTable extends JTable implements ActionListener {
 	
 	private void setValuesForSection(IRSectionsEnum section) {
 		List<IRField> fields = IRDocumentManager.getSection(section).getFields();
-		System.out.println(IRDocumentManager.getSection(section).getFields().get(0).getLine());
 		tableModel.setRowCount(fields.size());
 
 		// preenche os outros campos

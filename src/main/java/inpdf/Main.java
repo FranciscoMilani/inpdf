@@ -110,6 +110,8 @@ public class Main {
 		
 		JPanel centerP = new JPanel(new GridBagLayout());
 		JPanel bottomP = new JPanel();
+		JPanel innerLeftBottom = new JPanel();
+		JPanel innerRightBottom = new JPanel();
 		centerP.add(docConfigButton, gbc);
 		centerP.add(programConfigButton, gbc);
 		bottomP.add(watcherButton);
