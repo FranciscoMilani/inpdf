@@ -59,7 +59,6 @@ public class DocumentConfigurationManager {
 		}
 	}
 	
-	
 	static {
 		for (int i = 0; i < boletoFieldNames.length; i++) {
 			boletoCodeFieldMap.put(boletoFieldNames[i], i);

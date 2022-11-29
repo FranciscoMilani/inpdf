@@ -9,6 +9,10 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
 
 import inpdf.BoletoReader;
 import inpdf.DirectoryManager;
@@ -40,7 +44,7 @@ public class WatcherService implements Runnable {
 			watchService = FileSystems.getDefault().newWatchService();
 			watchKey = directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
 
-			while (true) {
+			while (true && !Thread.interrupted()) {
 				System.out.println("Procurando arquivos em '" + directory + "' ...");
 				Thread.sleep(interval);
 				
@@ -55,8 +59,15 @@ public class WatcherService implements Runnable {
 					if (!filePaths.contains((Path) event.context())) {
 						Path path = directory.resolve((Path) event.context());
 						System.out.println("PATH: " + path);
+						boolean pass;
 						
-						boolean pass = Reader.checkFileConformity(path);
+						try {
+							pass = Reader.checkFileConformity(path);				
+						} catch (Exception e) {
+							e.printStackTrace();
+							continue;
+						}
+						
 						if (pass) {
 							DocumentType docType = Reader.determineDocumentType(path);
 							if (docType != null && docType != DocumentType.UNKNOWN) {
@@ -80,7 +91,6 @@ public class WatcherService implements Runnable {
 			Thread.currentThread().interrupt();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			Thread.currentThread().interrupt();
 		}
 	}
 	

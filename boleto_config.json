@@ -778,24 +778,24 @@
             "Mora",
             "Multa"
           ],
-          "lineLocated": 5,
-          "shouldRead": true
+          "lineLocated": null,
+          "shouldRead": false
         },
         {
           "id": 21,
           "names": [
             "Outros Acréscimos"
           ],
-          "lineLocated": 4,
-          "shouldRead": true
+          "lineLocated": null,
+          "shouldRead": false
         },
         {
           "id": 22,
           "names": [
             "Valor Cobrado"
           ],
-          "lineLocated": 2,
-          "shouldRead": true
+          "lineLocated": null,
+          "shouldRead": false
         },
         {
           "id": 23,
@@ -803,8 +803,8 @@
             "Sacado",
             "Pagador"
           ],
-          "lineLocated": 3,
-          "shouldRead": true
+          "lineLocated": null,
+          "shouldRead": false
         }
       ]
     },
@@ -850,7 +850,7 @@
             "Data do Documento"
           ],
           "lineLocated": 17,
-          "shouldRead": true
+          "shouldRead": false
         },
         {
           "id": 5,
@@ -858,7 +858,7 @@
             "Nº do Documento"
           ],
           "lineLocated": 18,
-          "shouldRead": true
+          "shouldRead": false
         },
         {
           "id": 6,

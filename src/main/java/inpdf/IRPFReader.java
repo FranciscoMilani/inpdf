@@ -164,13 +164,8 @@ public class IRPFReader extends Reader {
 		JsonObject obj2 = gson.toJsonTree(itemsFields).getAsJsonObject();
 		JsonObject base = new JsonObject();
 		JsonObject section = new JsonObject();
-		JsonObject metaData = new JsonObject();
-		
-		String time = InpdfUtils.getTimeFormatted();
-		metaData.add("arquivo", new JsonPrimitive(FilenameUtils.getBaseName(readPath.toString())));
-		metaData.add("data", new JsonPrimitive(time));	
-		
-		base.add("metadados", metaData);
+	
+		base.add("metadados", getMetadata(readPath));
 		base.add("campos", section);
 			
 		for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {

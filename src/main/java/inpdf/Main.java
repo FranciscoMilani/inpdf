@@ -2,19 +2,25 @@ package inpdf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -31,6 +37,9 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import org.apache.fontbox.util.autodetect.WindowsFontDirFinder;
+
+import inpdf.Ui.ButtonActionOpenFolder;
 import inpdf.Ui.ButtonActionReadToDisplay;
 import inpdf.Ui.ButtonActionSaveBoleto;
 import inpdf.Ui.ButtonActionSaveGeneralConfig;
@@ -43,14 +52,23 @@ import inpdf.Ui.IRScreen;
 import inpdf.Ui.SpringUtilities;
 import inpdf.Ui.TableManager;
 import inpdf.irpf.IRDocumentManager;
+import inpdf.logger.LogWriter;
+import inpdf.utils.InpdfUtils;
 import inpdf.watcher.WatcherService;  
 
 public class Main {
+	static WatcherService watcherRunnable = new WatcherService();
+	static Thread thread = new Thread(watcherRunnable, "Watcher");
+	
+	public static void interruptWatcher() {
+		System.out.println("Interrupt");
+		thread.interrupt();
+	}
+	
 	public static void main(String[] args) throws Exception {	
+		new LogWriter();
 		
 		// WatchService
-		WatcherService watcherRunnable = new WatcherService();
-		Thread thread = new Thread(watcherRunnable, "Watcher");
 		thread.start();
 		
 		// Interface
@@ -109,18 +127,46 @@ public class Main {
         gbc.insets = new Insets(10, 0, 0, 0);
 		
 		JPanel centerP = new JPanel(new GridBagLayout());
-		JPanel bottomP = new JPanel();
+		JPanel bottomP = new JPanel(new BorderLayout(20, 20));
 		JPanel innerLeftBottom = new JPanel();
 		JPanel innerRightBottom = new JPanel();
+		JButton openEntry = new JButton();
+		JButton openExit = new JButton();
+		JButton openLog = new JButton();
+		innerRightBottom.add(openEntry);
+		innerRightBottom.add(openExit);
+		innerRightBottom.add(openLog);
+		
+		try {
+			openEntry.setIcon(InpdfUtils.getPngImage("folder-in", 20));
+			openExit.setIcon(InpdfUtils.getPngImage("folder-out", 20));
+			openLog.setIcon(InpdfUtils.getPngImage("log", 20));
+		} catch (Exception ex) {
+			openEntry.setText("IN");
+			openExit.setText("OUT");
+			openLog.setText("LOG");
+		}
+		openEntry.setActionCommand("0");
+		openExit.setActionCommand("1");
+		openLog.setActionCommand("2");
+		
+		ButtonActionOpenFolder openFolder = new ButtonActionOpenFolder();
+		openEntry.addActionListener(openFolder);
+		openExit.addActionListener(openFolder);
+		openLog.addActionListener(openFolder);
+		 
+		bottomP.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		bottomP.add(innerRightBottom, BorderLayout.EAST);
+		
 		centerP.add(docConfigButton, gbc);
 		centerP.add(programConfigButton, gbc);
-		bottomP.add(watcherButton);
+		bottomP.add(watcherButton, BorderLayout.WEST);
 		
 		frame.add(centerP, BorderLayout.CENTER);
 		frame.add(bottomP, BorderLayout.SOUTH);
 		
 		JPanel dropdown = new JPanel();
-		JLabel dropdownLabel = new JLabel("Tipo de Documento");
+		JLabel dropdownLabel = new JLabel("Tipo: ");
 		dropdownLabel.setVisible(true);
 		dropdown.add(dropdownLabel);
 		dropdown.setBounds(620, 200, 300, 50);
@@ -148,7 +194,7 @@ public class Main {
 		
 		JTabbedPane tabPane = new JTabbedPane();
 		JPanel mainBoletoPanel = new JPanel(new BorderLayout());
-		JPanel mainIRPFPanel = new JPanel();
+		IRScreen irScreen = new IRScreen(frame, frame3);
 		
 		JPanel textAreaMainPanel = new JPanel(new BorderLayout());
 		JPanel textAreaPanel = new JPanel(new BorderLayout());
@@ -160,7 +206,6 @@ public class Main {
 		JPanel tableBottomPanel = new JPanel(new FlowLayout());
 		
 		// PANES
-		IRScreen irScreen = new IRScreen(frame, frame3);
 		tabPane.addTab("Boletos", mainBoletoPanel);
 		tabPane.addTab("IRPF", irScreen);
 		

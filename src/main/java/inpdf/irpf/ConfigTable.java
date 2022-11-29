@@ -13,8 +13,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 public class ConfigTable extends JTable implements ActionListener {
-	
-	private final String[] columns = new String[] {"Campo", "Linha", "Marcar"};
+	private final String[] columns = new String[] {"Campo", "Linha", "Selecionar"};
 	private final IRSectionsEnum defaultSection = IRSectionsEnum.IDENTIFICACAO_CONTRIBUINTE;
 	public IRSectionsEnum selectedSection;
 	private JPanel buttonsPanel;

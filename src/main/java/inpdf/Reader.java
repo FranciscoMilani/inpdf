@@ -8,10 +8,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.text.PDFTextStripper;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import inpdf.logger.LogWriter;
+import inpdf.utils.InpdfUtils;
 
 public abstract class Reader {
 
@@ -72,9 +81,9 @@ public abstract class Reader {
 	}
 
 	public static boolean checkFileConformity(Path readPath) throws IOException {
-		// TODO: INFORMAR QUE ARQUIVO NAO É PDF NO LOG
 		if (!readPath.toFile().canWrite()) {
-			throw new IOException("Arquivo não pode ser lido. Está aberto?");
+			LogWriter.log("Arquivo não pode ser lido: \""+ FilenameUtils.getBaseName(readPath.toString()) +"\"", Level.INFO);
+			throw new IOException("Arquivo não pode ser lido. Está aberto ou foi deletado?");
 		}
 		
 		byte[] bytes = Files.readAllBytes(readPath);
@@ -92,7 +101,8 @@ public abstract class Reader {
 					return true; 
 				}
 		}
-
+		
+		LogWriter.log("Arquivo não é PDF: \""+ readPath.getFileName().toString() +"\"", Level.INFO);
 		return false;
 	}
 	
@@ -191,6 +201,18 @@ public abstract class Reader {
 		str.setSortByPosition(false);
 		str.setWordSeparator(System.lineSeparator());
 		return str.getText(doc);
+	}
+	
+	protected static JsonObject getMetadata(Path readPath) {
+		JsonObject metaData = new JsonObject();
+		
+		String time = InpdfUtils.getTimeFormatted();
+		String name = FilenameUtils.getBaseName(readPath.toString());
+		
+		metaData.add("arquivo", new JsonPrimitive(name));
+		metaData.add("data", new JsonPrimitive(time));	
+		
+		return metaData;
 	}
 	
 	public static <T extends Reader> T createReaderFromType(Path docPath, DocumentType docType) throws IOException {		

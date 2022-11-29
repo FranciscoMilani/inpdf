@@ -1,16 +1,27 @@
 package inpdf;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FilenameUtils;
 
 import com.google.gson.Gson;
@@ -21,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonStreamParser;
+import com.google.gson.internal.GsonBuildConfig;
 import com.google.gson.stream.JsonReader;
 
 import inpdf.Ui.DirectoryConfigPanel;
@@ -61,7 +73,7 @@ public class DirectoryManager {
 		String jText = gson.toJson(obj);
 		
 		try {
-			Files.write(generalConfigPath, jText.getBytes());
+			Files.write(generalConfigPath, jText.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,6 +84,23 @@ public class DirectoryManager {
 	public static void loadDirectories() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		
+		if (!Files.exists(generalConfigPath)) {
+			try {
+				JsonObject object = new JsonObject();
+				object.add("intervalo", new JsonPrimitive(5));
+				object.add("entrada", new JsonPrimitive(getInputDirectoryPath().toString()));
+				object.add("saída", new JsonPrimitive(getOutputDirectoryPath().toString()));
+				object.add("processados", new JsonPrimitive(getProcessedDirectoryPath().toString()));
+				object.add("rejeitados", new JsonPrimitive(getRejectedDirectoryPath().toString()));
+				String out = gson.toJson(object);
+				
+				Files.write(generalConfigPath, out.getBytes(StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				Main.interruptWatcher();
+				throw new RuntimeException(e);
+			}
+		}
+		
 		try (BufferedReader br = Files.newBufferedReader(generalConfigPath)) {
 			JsonReader reader = gson.newJsonReader(br);
 			JsonElement tree = JsonParser.parseReader(reader);
@@ -79,6 +108,7 @@ public class DirectoryManager {
 			
 			WatcherService.setInterval(obj.get("intervalo").getAsInt() * 1000);
 			
+			System.out.println(obj.toString());
 			assignDir(obj, "entrada");
 			assignDir(obj, "saída");
 			assignDir(obj, "processados");
@@ -86,6 +116,7 @@ public class DirectoryManager {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			Main.interruptWatcher();
 		}	
 	}
 	
@@ -138,7 +169,6 @@ public class DirectoryManager {
 			}
 			
 			Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -190,20 +220,20 @@ public class DirectoryManager {
 	
 	public static DocumentConfiguration getConfigFromJson(DocumentType type) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getBoletoConfigPath())) {
+
+		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getBoletoConfigPath(), StandardCharsets.ISO_8859_1)) {
 			JsonElement jElement = JsonParser.parseReader(gson.newJsonReader(br));
-			JsonObject obj = new JsonObject();
 			JsonArray arr = jElement.getAsJsonArray();
-			
 			DocumentConfiguration dc = gson.fromJson( arr.get(0)
 					  								.getAsJsonObject()
-					  								.get(type.toString()), 
+					  								.get(type.toString()),
 					  								DocumentConfiguration.class );
 			
 			return dc;
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			Main.interruptWatcher();
 		}
 		
 		return null;
@@ -290,7 +320,7 @@ public class DirectoryManager {
 	public static void setRejectedDirectoryPath(Path newRejectedDirectoryPath) {
 		rejectedDirectoryPath = newRejectedDirectoryPath;
 	}
-	
+
 	public static Path getBoletoConfigPath() {
 		return boletoConfigPath;
 	}

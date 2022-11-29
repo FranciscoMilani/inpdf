@@ -9,7 +9,7 @@ public class DocumentConfiguration {
 	@Expose
 	public DocumentType type;
 	@Expose
-	public List<DocumentField> fields;	
+	public List<DocumentField> fields;
 	
 	public DocumentConfiguration(DocumentType type){
 		this.type = type;

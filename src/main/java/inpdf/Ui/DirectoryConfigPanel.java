@@ -6,17 +6,19 @@ import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import inpdf.DirectoryManager;
+import inpdf.utils.InpdfUtils;
 
 public class DirectoryConfigPanel extends JPanel implements ActionListener {
 	public final String id;
 	private JTextField pathField = new JTextField("", 25);
 	private JButton button = new JButton("Procurar ");
-	private JButton clearButton = new JButton("X");
+	private JButton clearButton = new JButton();
 	private Path path;
 	
 	public DirectoryConfigPanel(String id) {
@@ -28,6 +30,14 @@ public class DirectoryConfigPanel extends JPanel implements ActionListener {
 		pathField.setEditable(false);
 		button.setText(button.getText() + id);
 		button.setActionCommand(id);
+		
+		Object icon = InpdfUtils.getPngImage("trash-bin", 16);
+		if (icon instanceof String) {
+			clearButton.setText("X");		
+		} 
+		else {
+			clearButton.setIcon((ImageIcon) icon);
+		}
 
 		this.add(pathField, BorderLayout.WEST);
 		this.add(button, BorderLayout.CENTER);

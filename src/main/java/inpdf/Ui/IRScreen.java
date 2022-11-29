@@ -18,6 +18,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 
 import inpdf.ExtractedTextArea;
@@ -80,6 +81,9 @@ public class IRScreen extends JPanel {
 		
 		buttonsBottomPanel.setEnabled(false);
 		buttonsBottomPanel.setVisible(false);
+		
+		textAreaPanel.setBorder(new TitledBorder("Texto Extraído"));
+		mainTablePanel.setBorder(new TitledBorder("Configurações"));
 	}
 	
 	private void events() {
@@ -128,6 +132,7 @@ public class IRScreen extends JPanel {
 		
 		splitPane.setLeftComponent(textAreaPanel);
 		splitPane.setRightComponent(mainTablePanel);
+		splitPane.setBorder(null);
 		
 		bottomAreaPanel.add(prevBtn);
 		bottomAreaPanel.add(pageLabel);

@@ -30,7 +30,6 @@ public class IRDocumentManager {
 	public IRDocumentManager(ConfigTable table) {
 		IRDocumentManager.table = table;
 		IRDocumentManager.table.setup();
-		//updateSectionValues(getSection(table.selectedSection));
 	}
 
 	public static IRSection getSection(IRSectionsEnum s) {

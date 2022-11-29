@@ -53,7 +53,7 @@ public class BoletoReader extends Reader {
 			
 			docConfig = DocumentConfigurationManager.getConfigurationFromType(docType);	
 			dataMap = extractFieldsFromText(docConfig, extractBoletoAreaFromLocation(doc, strippedLocation));		
-			jsonTxt = generateJson(dataMap);
+			jsonTxt = generateJson(dataMap, readPath);
 			
 			if (jsonTxt == null)
 				throw new Exception("JSON de saída ignorado. Não há campos marcados para esse tipo de documento");
@@ -87,7 +87,7 @@ public class BoletoReader extends Reader {
 	}
 
 	// extrai os campos em formato String do PDF, e mapeia os campos selecionados que estão na config
-	protected LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
+	private LinkedHashMap<DocumentField, String> extractFieldsFromText(DocumentConfiguration config, String strippedText) {
 		String[] outputLines = strippedText.split(System.lineSeparator());
 		LinkedHashMap<DocumentField, String> dataMap = new LinkedHashMap<DocumentField, String>();
 		
@@ -110,17 +110,22 @@ public class BoletoReader extends Reader {
 		return dataMap;
 	}
 	
-	protected String generateJson(LinkedHashMap<DocumentField, String> fields) {
+	private String generateJson(LinkedHashMap<DocumentField, String> fields, Path readPath) {
 		if (fields.isEmpty()) {
 			return null;
 		}
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		JsonObject obj = new JsonObject();
+		JsonObject section = new JsonObject();
+		
+		obj.add("metadados", getMetadata(readPath));
+		obj.add("campos", section);
+		
 		fields.forEach((field, data) -> {
 			String str = field.getFieldNameAtIndexOrFirst(0).toLowerCase().replace(" ", "_");
 			str = Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-			obj.addProperty(str, data);
+			section.addProperty(str, data);
 		});
 		
 		String txt = gson.toJson(obj);
