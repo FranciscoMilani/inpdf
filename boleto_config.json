@@ -898,7 +898,7 @@
             "Carteira"
           ],
           "lineLocated": 27,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 11,
@@ -947,7 +947,7 @@
             "Nosso Número"
           ],
           "lineLocated": 20,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 17,
@@ -955,7 +955,7 @@
             "Valor do Documento"
           ],
           "lineLocated": 30,
-          "shouldRead": false
+          "shouldRead": true
         },
         {
           "id": 18,
@@ -1006,7 +1006,7 @@
             "Pagador"
           ],
           "lineLocated": 49,
-          "shouldRead": false
+          "shouldRead": true
         }
       ]
     },

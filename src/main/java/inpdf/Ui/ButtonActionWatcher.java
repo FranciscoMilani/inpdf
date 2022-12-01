@@ -1,8 +1,6 @@
 package inpdf.Ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Path;
-import java.util.Queue;
 
 import javax.swing.JButton;
 

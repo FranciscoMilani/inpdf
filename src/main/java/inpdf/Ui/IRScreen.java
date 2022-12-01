@@ -2,11 +2,6 @@ package inpdf.Ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,16 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
 
 import inpdf.ExtractedTextArea;
 import inpdf.irpf.ConfigTable;
-import inpdf.irpf.IRDocumentManager;
 import inpdf.irpf.IRSectionsEnum;
+import inpdf.utils.InpdfUtils;
 
 public class IRScreen extends JPanel {
 	private JFrame baseFrame;
@@ -37,12 +29,12 @@ public class IRScreen extends JPanel {
 	private JPanel bottomAreaPanel = new JPanel();
 	private JScrollPane scrollArea = new JScrollPane(extractedTextArea);
 	
-	private JButton prevBtn = new JButton("<");
-	private JButton nextBtn = new JButton(">");
+	private JButton prevBtn = new JButton();
+	private JButton nextBtn = new JButton();
 	private JLabel pageLabel = new JLabel();
 	private JButton findBtn = new JButton("Procurar");
 	private JButton clearBtn = new JButton("Limpar");
-	private JComboBox<Object> comboBox = new JComboBox(IRSectionsEnum.values());
+	private JComboBox<Object> comboBox = new JComboBox<Object>(IRSectionsEnum.values());
 	
 	private JPanel mainTablePanel = new JPanel(new BorderLayout());
 	private JPanel tablePanel = new JPanel(new BorderLayout());
@@ -84,6 +76,9 @@ public class IRScreen extends JPanel {
 		
 		textAreaPanel.setBorder(new TitledBorder("Texto Extraído"));
 		mainTablePanel.setBorder(new TitledBorder("Configurações"));
+		
+		InpdfUtils.setButtonImage(prevBtn, "prev", "<", 14);
+		InpdfUtils.setButtonImage(nextBtn, "next", ">", 14);
 	}
 	
 	private void events() {

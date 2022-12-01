@@ -2,21 +2,14 @@ package inpdf.utils;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-import inpdf.Main;
+import javax.swing.JButton;
 
 public class InpdfUtils {
     static final Path resPath = Path.of("src/main/resources").toAbsolutePath();
@@ -27,21 +20,23 @@ public class InpdfUtils {
 		return time;
 	}
 	
-	public static ImageIcon getPngImage(String imageName, int size) {
+	public static void setButtonImage(JButton button, String imageName, String placeHolder, int size) {
+		ImageIcon icon = new ImageIcon();
+		
 		try {
 			BufferedImage img = ImageIO.read(Thread.currentThread().getContextClassLoader().getResource("resources/" + imageName + ".png"));
-			return new ImageIcon(img.getScaledInstance(size, size, Image.SCALE_SMOOTH));
-		} catch (Exception ex) {
-			
+			icon.setImage(img.getScaledInstance(size, size, Image.SCALE_SMOOTH));
+			button.setIcon(icon);
+		} catch (Exception ex) {	
 			try {
 				BufferedImage img = ImageIO.read(InpdfUtils.class.getResource("/"+ imageName + ".png"));
-				return new ImageIcon(img.getScaledInstance(size, size, Image.SCALE_SMOOTH));
+				icon.setImage(img.getScaledInstance(size, size, Image.SCALE_SMOOTH));
+				button.setIcon(icon);
 			} catch (IOException e) {
 				e.printStackTrace();
+				button.setText(placeHolder);
 			}
-			
-			ex.printStackTrace();
-			return null;
 		}
+		
 	}
 }

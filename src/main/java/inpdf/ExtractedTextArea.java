@@ -9,9 +9,9 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
- 
+
 public class ExtractedTextArea extends JPanel implements ActionListener {
-    private JTextArea textArea = new JTextArea(55, 65);
+	private JTextArea textArea = new JTextArea(55, 65);
     private List<String> pages = new ArrayList<String>();
     private int currentPage = 1;
     private JLabel pageLabel;

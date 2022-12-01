@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+
+import javax.swing.JOptionPane;
 
 import inpdf.DirectoryManager;
 
@@ -22,10 +23,11 @@ public class ButtonActionOpenFolder implements ActionListener {
 				Desktop.getDesktop().open(DirectoryManager.getOutputDirectoryPath().toFile());
 				break;
 			case 2:
-				Desktop.getDesktop().open(new File("./inpdf.log"));
+				Desktop.getDesktop().open(new File("inpdf.log"));
 				break;
 			}
 		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, e1);
 			e1.printStackTrace();
 		}
 	}

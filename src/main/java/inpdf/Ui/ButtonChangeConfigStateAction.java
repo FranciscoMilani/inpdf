@@ -9,10 +9,10 @@ import inpdf.ExtractedTextArea;
 
 public class ButtonChangeConfigStateAction implements ActionListener {
 	
-	private JComboBox comboBox;
+	private JComboBox<?> comboBox;
 	private ExtractedTextArea extractedArea;
 
-	public ButtonChangeConfigStateAction(JComboBox comboBox, ExtractedTextArea extractedArea) {
+	public ButtonChangeConfigStateAction(JComboBox<?> comboBox, ExtractedTextArea extractedArea) {
 		this.comboBox = comboBox;
 		this.extractedArea = extractedArea;
 	}

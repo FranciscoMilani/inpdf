@@ -13,10 +13,10 @@ import inpdf.ExtractedTextArea;
 import inpdf.Reader;
 
 public class ButtonActionReadToDisplay implements ActionListener {
-	private JComboBox comboBox;
+	private JComboBox<?> comboBox;
 	private ExtractedTextArea extractedArea;
 
-	public ButtonActionReadToDisplay(JComboBox comboBox, ExtractedTextArea extractedArea) {
+	public ButtonActionReadToDisplay(JComboBox<?> comboBox, ExtractedTextArea extractedArea) {
 		this.comboBox = comboBox;
 		this.extractedArea = extractedArea;
 	}
@@ -32,7 +32,10 @@ public class ButtonActionReadToDisplay implements ActionListener {
 			
 			try {
 				DocumentType type =  Reader.readAndShowPDFText(file.toPath().toAbsolutePath(), extractedArea);
-				if (((type != null && comboBox != null) && type != DocumentType.DECLARACAO_IMPOSTO_DE_RENDA)) {
+				if ( type != DocumentType.UNKNOWN 
+					 && type != DocumentType.DECLARACAO_IMPOSTO_DE_RENDA 
+					 && comboBox != null ) {
+					
 					comboBox.setEnabled(false);
 					comboBox.setSelectedItem(type);				
 				}

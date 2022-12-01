@@ -1,5 +1,5 @@
 {
-  "intervalo": 1,
+  "intervalo": 5,
   "entrada": "C:\\dev\\Java\\InPDF\\inpdf\\entrada",
   "saída": "C:\\dev\\Java\\InPDF\\inpdf\\saida",
   "processados": "C:\\dev\\Java\\InPDF\\inpdf\\processados",

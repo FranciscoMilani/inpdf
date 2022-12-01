@@ -2,10 +2,8 @@ package inpdf.irpf;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -64,10 +62,7 @@ public class ConfigTable extends JTable implements ActionListener {
 		setRowSelectionAllowed(true);
 		getTableHeader().setReorderingAllowed(false);
 
-		//tableModel.addTableModelListener();
-		this.buttonsPanel = buttons;
-		
-		//setup();	
+		this.buttonsPanel = buttons;	
 	}
 	
 	public void setup() {
@@ -112,7 +107,7 @@ public class ConfigTable extends JTable implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
-			JComboBox box = (JComboBox) e.getSource();
+			JComboBox<?> box = (JComboBox<?>) e.getSource();
 			IRSectionsEnum selected = (IRSectionsEnum) box.getSelectedItem();
 			
 			if (IRDocumentManager.getSection(selected) instanceof IAddable) {
@@ -126,32 +121,4 @@ public class ConfigTable extends JTable implements ActionListener {
 			selectSection(selected);
 		}
 	}
-
-//	private void updateFields(JComboBox box) {
-//		IRSectionsEnum selected = (IRSectionsEnum) box.getSelectedItem();
-//		
-//		if (selected == IRSectionsEnum.IDENTIFICACAO_CONTRIBUINTE) {
-//			
-//		}else if (selected == IRSectionsEnum.RENDIMENTOS_TRIBUTAVEIS_PJ_TITULAR) {
-//			
-//		}else if (selected == IRSectionsEnum.RENDIMENTOS_ISENTOS_NAO_TRIBUTAVEIS) {
-//			
-//		}else if (selected == IRSectionsEnum.RENDIMENTOS_TRIBUTACAO_EXCLUSIVA) {
-//			
-//		}else if (selected == IRSectionsEnum.RENDIMENTOS_ACUMULADOS_PJ_TITULAR) {
-//			
-//		}else if (selected == IRSectionsEnum.IMPOSTO_PAGO_RETIDO) {
-//			
-//		}else if (selected == IRSectionsEnum.PAGAMENTOS_EFETUADOS) {
-//			
-//		}else if (selected == IRSectionsEnum.BENS_DIREITOS) {
-//			
-//		}else if (selected == IRSectionsEnum.DIVIDAS_ONUS) {
-//			
-//		}else if (selected == IRSectionsEnum.RENDA_VARIAVEL_DAY_TRADE) {
-//			
-//		}else if (selected == IRSectionsEnum.RESUMO_DECLARACAO) {
-//			
-//		}
-//	}
 }

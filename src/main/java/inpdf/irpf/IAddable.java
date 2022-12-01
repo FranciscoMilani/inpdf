@@ -7,7 +7,6 @@ public interface IAddable {
 	public default void resetItems() {
 		List<IRItem> items = getItems();
 		items.clear();
-		System.out.println(items.size());
 	}
 	public IRItem createItem(List<IRField> fields);
 	public IRItem getItemByIndex(int i);

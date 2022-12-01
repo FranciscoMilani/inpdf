@@ -3,25 +3,19 @@ package inpdf.Ui;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import inpdf.DirectoryManager;
-import inpdf.watcher.WatcherService;
 
 public class ButtonActionSaveGeneralConfig implements ActionListener {
 
 	private DirectoryConfigPanel[] panels;
 	private ButtonActionWatcher watcherAction;
-	private JComboBox interval;
+	private JComboBox<?> interval;
 	
-	public ButtonActionSaveGeneralConfig(ButtonActionWatcher watcherAction, DirectoryConfigPanel[] panels, JComboBox intervalBox) {
+	public ButtonActionSaveGeneralConfig(ButtonActionWatcher watcherAction, DirectoryConfigPanel[] panels, JComboBox<?> intervalBox) {
 		this.watcherAction = watcherAction;
 		this.panels = panels;
 		this.interval = intervalBox;

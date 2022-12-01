@@ -17,10 +17,10 @@ import inpdf.DocumentConfigurationManager;
 import inpdf.DocumentType;
 
 public class ButtonActionSaveBoleto implements ActionListener{
-	JComboBox comboBox;
+	JComboBox<?> comboBox;
 	JTable table = TableManager.table;
 	
-	public ButtonActionSaveBoleto(JComboBox comboBox) {
+	public ButtonActionSaveBoleto(JComboBox<?> comboBox) {
 		this.comboBox = comboBox;
 	}
 

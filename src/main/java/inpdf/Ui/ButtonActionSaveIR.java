@@ -15,10 +15,10 @@ import inpdf.irpf.IRSection;
 import inpdf.irpf.IRSectionsEnum;
 
 public class ButtonActionSaveIR implements ActionListener{
-	JComboBox comboBox;
+	JComboBox<?> comboBox;
 	JTable table;
 	
-	public ButtonActionSaveIR(JComboBox comboBox, JTable table) {
+	public ButtonActionSaveIR(JComboBox<?> comboBox, JTable table) {
 		this.comboBox = comboBox;
 		this.table = table;
 	}
@@ -45,7 +45,7 @@ public class ButtonActionSaveIR implements ActionListener{
 		IRSection section = IRDocumentManager.getSection(selectedType);
 		IRDocumentManager.updateSectionValues(section);
 		
-		// TODO: Gson entra em loop, corrigir
+		// Não remover isso. Gson entra em loop se salva seções com arquivos
 		if (!(section instanceof IAddable)) {
 			IRDocumentManager.createJsonConfig();
 		} else {

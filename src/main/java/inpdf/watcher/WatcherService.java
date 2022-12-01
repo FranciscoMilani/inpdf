@@ -9,10 +9,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.commons.logging.Log;
 
 import inpdf.BoletoReader;
 import inpdf.DirectoryManager;
@@ -95,6 +91,7 @@ public class WatcherService implements Runnable {
 	}
 	
 	private <T> void convert(Path path, DocumentType docType) throws IOException {
+		@SuppressWarnings("unchecked")
 		T type = (T) Reader.createReaderFromType(path, docType);
 		
 		if (type instanceof IRPFReader) {

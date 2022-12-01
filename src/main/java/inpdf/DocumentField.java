@@ -1,8 +1,6 @@
 package inpdf;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import com.google.gson.annotations.Expose;
 

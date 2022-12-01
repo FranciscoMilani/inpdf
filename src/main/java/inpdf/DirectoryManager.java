@@ -1,28 +1,19 @@
 package inpdf;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.Level;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,13 +22,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonStreamParser;
-import com.google.gson.internal.GsonBuildConfig;
 import com.google.gson.stream.JsonReader;
 
 import inpdf.Ui.DirectoryConfigPanel;
 import inpdf.irpf.IRDocument;
-import inpdf.irpf.IRSectionsEnum;
+import inpdf.logger.LogWriter;
 import inpdf.watcher.WatcherService;
 
 public class DirectoryManager {
@@ -170,6 +159,8 @@ public class DirectoryManager {
 			
 			Files.move(filePath, nPath, StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {
+			String name = FilenameUtils.removeExtension(filePath.getFileName().toString());
+			LogWriter.log("Arquivo \"" + name + "\" não encontrado", Level.ERROR);
 			e.printStackTrace();
 		}
 	}
@@ -179,12 +170,12 @@ public class DirectoryManager {
 		Path newPath = path.resolve(fileName + ".json");
 		
 		try {
-			Files.write(newPath, jsonText.getBytes());	
+			Files.write(newPath, jsonText.getBytes(StandardCharsets.UTF_8));	
 		} catch (NoSuchFileException e) {
 			path.toFile().mkdir();
 			
 			try {
-				Files.write(newPath, jsonText.getBytes());
+				Files.write(newPath, jsonText.getBytes(StandardCharsets.UTF_8));
 			} catch (Exception er) {
 				er.printStackTrace();
 				throw new RuntimeException(e);
@@ -221,7 +212,7 @@ public class DirectoryManager {
 	public static DocumentConfiguration getConfigFromJson(DocumentType type) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getBoletoConfigPath(), StandardCharsets.ISO_8859_1)) {
+		try (BufferedReader br = Files.newBufferedReader(DirectoryManager.getBoletoConfigPath())) {//, StandardCharsets.ISO_8859_1)) {
 			JsonElement jElement = JsonParser.parseReader(gson.newJsonReader(br));
 			JsonArray arr = jElement.getAsJsonArray();
 			DocumentConfiguration dc = gson.fromJson( arr.get(0)
@@ -241,13 +232,13 @@ public class DirectoryManager {
 	
 	public static void saveConfigJson(String jsonText, Path path) {	
 		try {
-			Files.write(path, jsonText.getBytes());		
+			Files.write(path, jsonText.getBytes(StandardCharsets.UTF_8));		
 		} 
 		catch (NoSuchFileException e) {
 			path.toFile().mkdir();
 			
 			try {
-				Files.write(path, jsonText.getBytes());
+				Files.write(path, jsonText.getBytes(StandardCharsets.UTF_8));
 			}
 			catch (Exception er) {
 				er.printStackTrace();

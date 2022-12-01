@@ -5,97 +5,97 @@
       {
         "name": "Nome",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Data de Nascimento",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "CPF",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Título Eleitoral",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Possui cônjuge ou companheiro(a)",
-        "line": null,
-        "read": null
+        "line": 1,
+        "read": true
       },
       {
         "name": "CPF do cônjuge ou companheiro(a)",
-        "line": null,
-        "read": null
+        "line": 2,
+        "read": true
       },
       {
         "name": "Endereço",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Número",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Complemento",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Bairro/Distrito",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Município",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "UF",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "CEP",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "DDD/Telefone",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "DDD/Celular",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "E-mail",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Natureza da Ocupação",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Ocupação Principal",
         "line": null,
-        "read": null
+        "read": false
       },
       {
         "name": "Tipo de declaração",
         "line": null,
-        "read": null
+        "read": false
       }
     ]
   },
@@ -553,97 +553,97 @@
         {
           "name": "Nome",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Data de Nascimento",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "CPF",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Título Eleitoral",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Possui cônjuge ou companheiro(a)",
-          "line": null,
-          "read": null
+          "line": 1,
+          "read": true
         },
         {
           "name": "CPF do cônjuge ou companheiro(a)",
-          "line": null,
-          "read": null
+          "line": 2,
+          "read": true
         },
         {
           "name": "Endereço",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Número",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Complemento",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Bairro/Distrito",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Município",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "UF",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "CEP",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "DDD/Telefone",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "DDD/Celular",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "E-mail",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Natureza da Ocupação",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Ocupação Principal",
           "line": null,
-          "read": null
+          "read": false
         },
         {
           "name": "Tipo de declaração",
           "line": null,
-          "read": null
+          "read": false
         }
       ]
     },

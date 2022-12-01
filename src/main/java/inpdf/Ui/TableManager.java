@@ -1,13 +1,10 @@
 package inpdf.Ui;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.plaf.basic.BasicTableUI.FocusHandler;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
@@ -107,6 +104,7 @@ public class TableManager {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> ArrayList<T> getColumnValues(int column) {
 		ArrayList<T> list = new ArrayList<T>();
 		for (int i = 0; i < table.getRowCount(); i++) {

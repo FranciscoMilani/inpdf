@@ -2,25 +2,17 @@ package inpdf;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.util.Arrays;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -36,8 +28,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import org.apache.fontbox.util.autodetect.WindowsFontDirFinder;
 
 import inpdf.Ui.ButtonActionOpenFolder;
 import inpdf.Ui.ButtonActionReadToDisplay;
@@ -128,7 +118,6 @@ public class Main {
 		
 		JPanel centerP = new JPanel(new GridBagLayout());
 		JPanel bottomP = new JPanel(new BorderLayout(20, 20));
-		JPanel innerLeftBottom = new JPanel();
 		JPanel innerRightBottom = new JPanel();
 		JButton openEntry = new JButton();
 		JButton openExit = new JButton();
@@ -137,15 +126,10 @@ public class Main {
 		innerRightBottom.add(openExit);
 		innerRightBottom.add(openLog);
 		
-		try {
-			openEntry.setIcon(InpdfUtils.getPngImage("folder-in", 20));
-			openExit.setIcon(InpdfUtils.getPngImage("folder-out", 20));
-			openLog.setIcon(InpdfUtils.getPngImage("log", 20));
-		} catch (Exception ex) {
-			openEntry.setText("IN");
-			openExit.setText("OUT");
-			openLog.setText("LOG");
-		}
+		InpdfUtils.setButtonImage(openEntry, "folder-in", "IN", 20);
+		InpdfUtils.setButtonImage(openExit, "folder-out", "OUT", 20);
+		InpdfUtils.setButtonImage(openLog, "log", "LOG", 20);
+
 		openEntry.setActionCommand("0");
 		openExit.setActionCommand("1");
 		openLog.setActionCommand("2");
@@ -314,7 +298,7 @@ public class Main {
 		// middlePanel
 		JPanel timePanel = new JPanel();
 		JLabel timeLabel = new JLabel("Intervalo de procura: ");
-		JComboBox timeBox = new JComboBox(new Integer[] {1, 5, 15, 30, 60});
+		JComboBox<?> timeBox = new JComboBox<Object>(new Integer[] {1, 5, 15, 30, 60});
 
 		timePanel.add(timeLabel);
 		timePanel.add(timeBox);

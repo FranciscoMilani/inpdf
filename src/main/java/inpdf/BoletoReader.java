@@ -41,7 +41,6 @@ public class BoletoReader extends Reader {
 	
 	public void readPDF(Path readPath, DocumentType docType) {
 		PDDocument doc = null;
-		String txt;
 		String jsonTxt;
 		DocumentConfiguration docConfig;
 		LinkedHashMap<DocumentField, String> dataMap;

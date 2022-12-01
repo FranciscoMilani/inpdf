@@ -8,7 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.Level;
@@ -29,7 +30,7 @@ public abstract class Reader {
 	}
 	
 	public static DocumentType readAndShowPDFText(Path readPath, ExtractedTextArea extractedArea) {
-		DocumentType docType = null;
+		DocumentType docType = DocumentType.UNKNOWN;
 		PDDocument doc = null;
 		String txt;
 		
@@ -39,8 +40,10 @@ public abstract class Reader {
 			docType = determineDocumentType(txt);
 
 			if (docType == DocumentType.UNKNOWN) {
-				// TODO: LOG
-				throw new Exception("Não foi possível ler o tipo de documento");
+				LogWriter.log("Não foi possível ler o tipo de documento para o documento \""+ FilenameUtils.removeExtension(readPath.toString()+"\""), Level.DEBUG);
+				JOptionPane.showMessageDialog(null, "Não foi possível determinar o tipo de documento", "Erro", JOptionPane.ERROR_MESSAGE);
+				doc.close();
+				return docType;
 			}
 			
 			if (docType == DocumentType.DECLARACAO_IMPOSTO_DE_RENDA) {
@@ -215,9 +218,10 @@ public abstract class Reader {
 		return metaData;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T extends Reader> T createReaderFromType(Path docPath, DocumentType docType) throws IOException {		
 		if (docType == DocumentType.UNKNOWN) {
-			// TODO: Informar a falha no log
+			LogWriter.log("Não foi possível determinar o tipo de documento para o arquivo \"" + docPath + "\"", Level.INFO);
 			System.out.println("Não foi possível determinar o tipo de documento para o arquivo " + docPath);
 		}
 		else {

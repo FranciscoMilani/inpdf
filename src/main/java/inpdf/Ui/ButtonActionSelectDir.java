@@ -6,13 +6,8 @@ import java.io.File;
 import java.nio.file.Path;
 
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-import inpdf.DirectoryManager;
 
 public class ButtonActionSelectDir implements ActionListener {
-	private JLabel label;
 	private DirectoryConfigPanel dcp;
 
 	public ButtonActionSelectDir(DirectoryConfigPanel dcp) {

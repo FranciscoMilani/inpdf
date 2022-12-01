@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -31,13 +32,7 @@ public class DirectoryConfigPanel extends JPanel implements ActionListener {
 		button.setText(button.getText() + id);
 		button.setActionCommand(id);
 		
-		Object icon = InpdfUtils.getPngImage("trash-bin", 16);
-		if (icon instanceof String) {
-			clearButton.setText("X");		
-		} 
-		else {
-			clearButton.setIcon((ImageIcon) icon);
-		}
+		InpdfUtils.setButtonImage(clearButton, "trash-bin", "X", 16);
 
 		this.add(pathField, BorderLayout.WEST);
 		this.add(button, BorderLayout.CENTER);

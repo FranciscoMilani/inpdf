@@ -1,16 +1,7 @@
 package inpdf;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Path;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,14 +13,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
 
 import inpdf.irpf.IAddable;
 import inpdf.irpf.IRDocument;
@@ -38,7 +25,6 @@ import inpdf.irpf.IRField;
 import inpdf.irpf.IRItem;
 import inpdf.irpf.IRSection;
 import inpdf.irpf.IRSectionsEnum;
-import inpdf.utils.InpdfUtils;
 
 public class IRPFReader extends Reader {
 
@@ -52,18 +38,13 @@ public class IRPFReader extends Reader {
 		PDDocument doc = null;
 		String txt;
 		String jsonTxt;
-		LinkedHashMap<String, LinkedHashMap<String, String>> dataMap;
 		
 		try {
 		
 			doc = loadDocument(readPath);
 			txt = extractAllText(doc);	
-			//dataMap = extractFieldsFromText(txt);
 			jsonTxt = extractFieldsToJson(txt, readPath);
-//			
-//			if (jsonTxt == null)
-//				throw new Exception("JSON de saída ignorado. Não há campos marcados para esse tipo de documento");
-//			
+			
 			String fileName = FilenameUtils.removeExtension(readPath.getFileName().toString());
 			DirectoryManager.saveJsonToPath(jsonTxt, fileName, DirectoryManager.getOutputDirectoryPath());
 			DirectoryManager.moveToProcessedFolder(readPath);
@@ -129,22 +110,19 @@ public class IRPFReader extends Reader {
 					innermostMap = new LinkedHashMap<>();
 				}
 			} else {
-				//if (section.getFields() != null) {
-					for (IRField field : section.getFields()) {
-						if (field.getRead() != null && field.getRead()) {	
-							if (field.getLine() > outputLines.length || field.getLine() <= 0) {
-								continue;
-							}
-							
-							innermostMap.put(field.getName(), outputLines[field.getLine() - 1]);
+				for (IRField field : section.getFields()) {
+					if (field.getRead() != null && field.getRead()) {	
+						if (field.getLine() > outputLines.length || field.getLine() <= 0) {
+							continue;
 						}
+						
+						innermostMap.put(field.getName(), outputLines[field.getLine() - 1]);
 					}
 				}
-				
-				map.put(section.getType().toString(), innermostMap);
 			}
-			
-		//}
+				
+			map.put(section.getType().toString(), innermostMap);
+		}
 		
 		return generateJson(map, itemMap, readPath);
 	}
@@ -154,9 +132,9 @@ public class IRPFReader extends Reader {
 			LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, String>>> itemsFields,
 			Path readPath) {
 		
-		if (fields.isEmpty()) {
-			return null;
-		}
+//		if (fields.isEmpty()) {
+//			return null;
+//		}
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -177,7 +155,7 @@ public class IRPFReader extends Reader {
 		}
 		
 		String outText = gson.toJson(base);	
-		System.out.println(outText);
+//		System.out.println(outText);
 
 		return outText;
 	}
