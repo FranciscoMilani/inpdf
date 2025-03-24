@@ -32,10 +32,9 @@ Este projeto foi desenvolvido por [alunos](#autores) da disciplina de Projeto Te
    Clone ou baixe o repositório do projeto.
 
 2. **Configuração do Ambiente**  
-   Certifique-se de ter o Java JDK 17 e Maven instalados.  
-   Ajuste as configurações necessárias (ex.: caminhos de diretórios para entrada, saída, rejeição de arquivos e log).
+   Certifique-se de ter o Java JDK 17 e Maven instalados.
 
-3. **Build do Projeto**  
+4. **Build do Projeto**  
    No diretório do projeto, execute:
 ```
 mvn clean install
