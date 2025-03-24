@@ -5,7 +5,7 @@ Uma ferramenta para Windows que lê e interpreta documentos PDF a partir de uma 
   <img src="https://github.com/user-attachments/assets/1233771c-2a48-47f7-bc9e-d9a76e36f4d1" width="700" />
 </p>
 
-## Descrição
+## Sobre
 
 O InPDF (Interpretador de arquivos Portable Document Format) foi desenvolvido para solucionar problemas de empresas na região da Serra Gaúcha, automatizando a extração de informações de boletos bancários e declarações de imposto de renda (DIRPF 2022) para o formato JSON. O sistema possibilita que o usuário configure e persista os pontos de extração dos dados (por exemplo, indicando as linhas onde as informações se encontram), garantindo flexibilidade para diferentes modelos de documentos.
 
@@ -26,7 +26,7 @@ Este projeto foi desenvolvido por [alunos](#autores) da disciplina de Projeto Te
 - **Log4j** – Biblioteca para geração de logs ([Log4j Website](https://logging.apache.org/log4j/2.x/))
 - **Maven** – Para gerenciamento de dependências e build do projeto ([Maven Website](https://maven.apache.org/))
 
-### Installing
+### Instalando
 
 1. **Download do Código-Fonte**  
    Clone ou baixe o repositório do projeto.
@@ -99,12 +99,13 @@ Para cada tipo de documento (boletos bancários e declarações de imposto de re
 - [Maven](https://maven.apache.org/)
 - Referências metodológicas e documentação técnica adotada durante o desenvolvimento do projeto.
 
+<br/>
 
 ## Artigo Técnico de Desenvolvimento
 
 Ao longo do desenvolvimento do projeto, a equipe documentou todas as etapas de Engenharia de Software que culminaram nos resultados e versão final entregue. Para isto, foi utilizado o template LaTeX da Sociedade Brasileira de Computação (SBC).
-
-### Versão Final em PDF
+<br/>
+<br/>
 O download da versão final do documento, em .PDF, pode ser feito através do link abaixo:
 
 <table>
