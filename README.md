@@ -1,9 +1,7 @@
-# InPDF – Extrator de Dados de PDFs
+# InPDF – Interpretador de PDFs
 
-Uma ferramenta para Windows que lê e interpreta documentos PDF a partir de uma configuração personalizada, extraindo os dados para arquivos formatados em JSON.
-<p style="text-align: center;">
-  <img src="https://github.com/user-attachments/assets/1233771c-2a48-47f7-bc9e-d9a76e36f4d1" width="700" />
-</p>
+Uma ferramenta para Windows que lê e interpreta documentos de boletos bancários e DIRPFs no formato PDF a partir de uma configuração personalizada, extraindo os dados para arquivos formatados em JSON.
+<img src="https://github.com/user-attachments/assets/fd47ca33-4106-48e1-a64d-5f2b88762846" width="600" />
 
 ## Sobre
 
